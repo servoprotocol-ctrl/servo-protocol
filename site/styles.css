@@ -72,11 +72,9 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 
 .brand-mark {
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   align-self: center;
-  background: var(--accent);
-  clip-path: polygon(0 0, 100% 0, 100% 35%, 35% 35%, 35% 100%, 0 100%);
   transition: transform 0.25s steps(2);
 }
 .nav-brand:hover .brand-mark { transform: rotate(90deg); }
