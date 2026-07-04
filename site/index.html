@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servo Protocol | The Financial Layer for the Machine Economy</title>
+  <meta name="description" content="Servo gives every robot a verified identity, a policy-guarded account, and a place to trade. Built on Base. Settled in USDC. Compatible with x402." />
+  <meta name="theme-color" content="#07100b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ============================================================ NAV -->
+  <header class="nav">
+    <a class="nav-brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-word">SERVO</span>
+      <span class="brand-sub">PROTOCOL</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#identity">Identity</a>
+      <a href="#banking">Banking</a>
+      <a href="#commerce">Commerce</a>
+      <a href="#loop">The Loop</a>
+      <a href="#treasury">Treasury</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-accent nav-cta" href="#access">Get early access</a>
+  </header>
+
+  <!-- ============================================================ HERO -->
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow reveal">// THE FINANCIAL LAYER FOR THE MACHINE ECONOMY</p>
+      <h1 class="reveal">MACHINES<br /><span class="accent">BANK</span> HERE</h1>
+      <p class="hero-sub reveal">
+        Servo gives every robot a verified identity, a policy-guarded account, and a place to trade.
+        Built on Base. Settled in USDC. Compatible with x402.
+      </p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-accent" href="#loop">See the loop</a>
+        <a class="btn btn-ghost" href="#identity">Explore the protocol</a>
+      </div>
+      <p class="hero-status reveal"><span class="status-dot"></span>CORE PROTOCOL LIVE | 30/30 TESTS PASSING</p>
+    </section>
+
+    <!-- receipt ticker -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+
+    <!-- ============================================================ STATS -->
+    <section class="stats">
+      <div class="stat">
+        <span class="stat-num" data-count="119" data-suffix="M+">0</span>
+        <span class="stat-label">x402 payments already settled on Base</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="200" data-suffix="ms">0</span>
+        <span class="stat-label">settlement UX via Base Flashblocks</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="100" data-suffix="%">0</span>
+        <span class="stat-label">of machine trades leave onchain receipts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" data-count="1" data-suffix="%">0</span>
+        <span class="stat-label">protocol fee, hard-capped at 5%</span>
+      </div>
+    </section>
+
+    <!-- ============================================================ 01 IDENTITY -->
+    <section class="section" id="identity">
+      <div class="section-head reveal">
+        <span class="section-num">01</span>
+        <span class="section-tag">// KNOW YOUR MACHINE</span>
+        <h2>Every robot gets a verified identity</h2>
+      </div>
+      <div class="split">
+        <div class="split-copy reveal">
+          <p>
+            A Machine ID is an ERC-721 bound to three things: the hardware itself, the operator
+            responsible for it, and a session key the device proves it holds.
+          </p>
+          <ul class="feature-list">
+            <li><span class="li-key">HARDWARE BOUND</span> Unique secure-element commitment. One machine, one identity, forever.</li>
+            <li><span class="li-key">KEY PROVEN</span> The device signs an EIP-712 binding. Sell the machine and the key revokes itself.</li>
+            <li><span class="li-key">RECORD ATTESTED</span> Jobs, uptime and revenue written by attestors. A work history you can underwrite.</li>
+            <li><span class="li-key">KILL SWITCH</span> Pause the identity and money stops moving. Everywhere. Instantly.</li>
+          </ul>
+        </div>
+        <div class="split-visual reveal">
+          <div class="id-card">
+            <div class="id-card-head">
+              <span>SERVO MACHINE ID</span>
+              <span class="badge badge-live">ACTIVE</span>
+            </div>
+            <div class="id-card-mid">MID-0002</div>
+            <div class="id-card-rows">
+              <div><span>CLASS</span><span>MOBILE_GROUND</span></div>
+              <div><span>OPERATOR</span><span>0x7099...79C8</span></div>
+              <div><span>SESSION KEY</span><span class="accent">BOUND ✓</span></div>
+              <div><span>JOBS ATTESTED</span><span>1,204</span></div>
+              <div><span>LIFETIME REVENUE</span><span>6,020.00 USDC</span></div>
+            </div>
+            <div class="id-card-foot">ERC-721 | BASE | HW:9f2a...c771</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 02 BANKING -->
+    <section class="section" id="banking">
+      <div class="section-head reveal">
+        <span class="section-num">02</span>
+        <span class="section-tag">// POLICY-GUARDED ACCOUNTS</span>
+        <h2>Autonomy inside an envelope</h2>
+      </div>
+      <div class="split split-flip">
+        <div class="split-copy reveal">
+          <p>
+            Operators own the funds. Machines spend them autonomously, but only inside a policy
+            envelope the operator defines. Compromise the robot and the blast radius is one day's cap.
+          </p>
+          <ul class="feature-list">
+            <li><span class="li-key">DAILY CAPS</span> Per-token spend limits that reset on UTC epochs.</li>
+            <li><span class="li-key">ALLOWLISTS</span> Optional counterparty restriction, from open commerce to a closed circle.</li>
+            <li><span class="li-key">TWO KILL SWITCHES</span> Account-level pause and registry-level pause. Either one stops spend.</li>
+            <li><span class="li-key">OPERATOR ESCAPE HATCH</span> Unrestricted execute for the human who owns the machine.</li>
+          </ul>
+        </div>
+        <div class="split-visual reveal">
+          <div class="policy-panel">
+            <div class="panel-title">POLICY ENVELOPE | MID-0002</div>
+            <div class="gauge">
+              <div class="gauge-labels"><span>DAILY CAP: USDC</span><span>15.00 / 20.00</span></div>
+              <div class="gauge-bar"><div class="gauge-fill" style="width:75%"></div></div>
+            </div>
+            <div class="panel-rows">
+              <div><span>ALLOWLIST</span><span class="accent">ENABLED</span></div>
+              <div><span>COUNTERPARTIES</span><span>3 APPROVED</span></div>
+              <div><span>KILL SWITCH</span><span>ARMED</span></div>
+            </div>
+            <div class="denied-line">TX DENIED | DailyCapExceeded | attempted 5.00 | remaining 0.00</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 03 COMMERCE -->
+    <section class="section" id="commerce">
+      <div class="section-head reveal">
+        <span class="section-num">03</span>
+        <span class="section-tag">// MACHINE-TO-MACHINE TRADE</span>
+        <h2>A marketplace where robots are the customers</h2>
+      </div>
+      <p class="section-lede reveal">
+        Charging bays, map tiles, compute bursts, task handoffs. Services are listed once and settle
+        on two rails: direct onchain purchases and x402 gateway payments. Both converge on one
+        canonical receipt stream.
+      </p>
+      <div class="cards-3 reveal">
+        <div class="svc-card">
+          <div class="svc-head"><span class="svc-cat">CHARGING</span><span class="badge">SVC-001</span></div>
+          <div class="svc-price">5.00 <span>USDC / session</span></div>
+          <div class="svc-rows">
+            <div><span>PROVIDER</span><span>MID-0001</span></div>
+            <div><span>UNITS SOLD</span><span>4,812</span></div>
+            <div><span>SETTLEMENT</span><span>VAULT ✓</span></div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-head"><span class="svc-cat">MAP_DATA</span><span class="badge">SVC-014</span></div>
+          <div class="svc-price">0.35 <span>USDC / tile</span></div>
+          <div class="svc-rows">
+            <div><span>PROVIDER</span><span>MID-0117</span></div>
+            <div><span>UNITS SOLD</span><span>96,304</span></div>
+            <div><span>SETTLEMENT</span><span>x402 ✓</span></div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-head"><span class="svc-cat">COMPUTE</span><span class="badge">SVC-029</span></div>
+          <div class="svc-price">1.20 <span>USDC / burst</span></div>
+          <div class="svc-rows">
+            <div><span>PROVIDER</span><span>MID-0033</span></div>
+            <div><span>UNITS SOLD</span><span>18,566</span></div>
+            <div><span>SETTLEMENT</span><span>VAULT ✓</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 04 THE LOOP -->
+    <section class="section" id="loop">
+      <div class="section-head reveal">
+        <span class="section-num">04</span>
+        <span class="section-tag">// HOW IT WORKS</span>
+        <h2>The Servo loop</h2>
+      </div>
+      <div class="loop-steps">
+        <div class="loop-step reveal">
+          <div class="loop-step-num">402</div>
+          <h3>REQUEST</h3>
+          <p>A robot hits a paywalled endpoint. The gateway answers HTTP 402 with machine-readable terms: service, price, settlement contract.</p>
+          <div class="loop-code">GET /charge → 402 PAYMENT REQUIRED</div>
+        </div>
+        <div class="loop-step reveal">
+          <div class="loop-step-num">PAY</div>
+          <h3>AUTONOMOUS PAYMENT</h3>
+          <p>The machine settles from its own account, signed by its bound key, checked against the operator's policy envelope.</p>
+          <div class="loop-code">MachineAccount.purchase(serviceId) ✓</div>
+        </div>
+        <div class="loop-step reveal">
+          <div class="loop-step-num">RCPT</div>
+          <h3>CANONICAL RECEIPT</h3>
+          <p>A ServiceReceipt lands onchain: buyer MID, provider MID, amount, protocol fee. Replay-protected, verified by the gateway.</p>
+          <div class="loop-code">ServiceReceipt(svc, buyer, provider, 5.00)</div>
+        </div>
+        <div class="loop-step reveal">
+          <div class="loop-step-num">P&amp;L</div>
+          <h3>VERIFIED LEDGER</h3>
+          <p>Revenue attributes to the providing machine's P&amp;L inside its fleet vault. Work history becomes a financeable asset.</p>
+          <div class="loop-code">machineRevenue[MID-0001] += 4.95</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 05 TREASURY -->
+    <section class="section" id="treasury">
+      <div class="section-head reveal">
+        <span class="section-num">05</span>
+        <span class="section-tag">// FLEET VAULTS</span>
+        <h2>Every robot runs a P&amp;L</h2>
+      </div>
+      <div class="split">
+        <div class="split-copy reveal">
+          <p>
+            Fleet vaults hold USDC revenue with per-machine attribution. Distributions flow to
+            beneficiaries by fixed splits, claimed, never pushed. This ledger is what fleet
+            financing and insurance will underwrite in Phase 3.
+          </p>
+          <div class="splits-visual">
+            <div class="splits-bar">
+              <div class="splits-op" style="width:70%">OPERATOR 70%</div>
+              <div class="splits-fin" style="width:30%">FINANCIER 30%</div>
+            </div>
+            <p class="splits-note">Splits are basis points, enforced onchain, settled in USDC.</p>
+          </div>
+        </div>
+        <div class="split-visual reveal">
+          <table class="pnl-table">
+            <thead><tr><th>MACHINE</th><th>JOBS</th><th>REVENUE</th><th>STATUS</th></tr></thead>
+            <tbody>
+              <tr><td>MID-0001</td><td>4,812</td><td>23,819.40</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
+              <tr><td>MID-0002</td><td>1,204</td><td>6,020.00</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
+              <tr><td>MID-0017</td><td>883</td><td>4,395.10</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
+              <tr><td>MID-0021</td><td>102</td><td>512.55</td><td><span class="badge badge-idle">PAUSED</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 06 STACK -->
+    <section class="section" id="stack">
+      <div class="section-head reveal">
+        <span class="section-num">06</span>
+        <span class="section-tag">// PROTOCOL STACK</span>
+        <h2>Built in phases, shipped in public</h2>
+      </div>
+      <div class="cards-3 reveal">
+        <div class="phase-card">
+          <div class="phase-head"><span>PHASE 1</span><span class="badge badge-live">LIVE</span></div>
+          <h3>Core protocol</h3>
+          <p>Machine identity, policy-guarded accounts, service registry, fleet vaults. 30/30 tests passing.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><span>PHASE 2</span><span class="badge badge-build">IN BUILD</span></div>
+          <h3>Gateway + registry</h3>
+          <p>x402-style paywall gateway and machine agent shipped. Indexer and public registry explorer in build.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><span>PHASE 3</span><span class="badge badge-next">NEXT</span></div>
+          <h3>Risk + capital</h3>
+          <p>Staked attestation, uptime and liability insurance, fleet financing with revenue-share offerings.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ FAQ -->
+    <section class="section" id="faq">
+      <div class="section-head reveal">
+        <span class="section-num">07</span>
+        <span class="section-tag">// QUESTIONS</span>
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq-list reveal">
+        <details>
+          <summary>Who owns a machine's money?</summary>
+          <p>The operator, always. The machine holds a session key that can spend inside the policy envelope, and nothing else. The operator keeps an unrestricted escape hatch and two kill switches.</p>
+        </details>
+        <details>
+          <summary>What stops a hijacked robot from draining funds?</summary>
+          <p>The envelope. A compromised machine key is limited to the daily cap on tokens the operator enabled, against counterparties the allowlist admits. Worst case is one day's cap, then the key is revoked and rebound.</p>
+        </details>
+        <details>
+          <summary>Does Servo work with x402?</summary>
+          <p>Yes, natively. Services settle on two rails: direct onchain purchases and x402 gateway payments mirrored by authorized facilitators. Both produce the same canonical receipt stream.</p>
+        </details>
+        <details>
+          <summary>Which chain, which currency?</summary>
+          <p>Base, settled in USDC. Sub-second confirmation UX via Flashblocks, and the deepest agentic payment rails in crypto: 119M+ x402 transactions and counting.</p>
+        </details>
+        <details>
+          <summary>Is the code open source?</summary>
+          <p>Apache 2.0. The repository opens with the mainnet launch, following a security review. The protocol ships with a full test suite and a one-command local demo.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================================================ CTA -->
+    <section class="final-cta" id="access">
+      <p class="eyebrow reveal">// EARLY ACCESS</p>
+      <h2 class="reveal">PUT YOUR FLEET<br />ON <span class="accent">PAYROLL</span></h2>
+      <p class="hero-sub reveal">Deploy identity, accounts, and commerce for your machines in an afternoon.</p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-accent" href="mailto:hello@servoprotocol.xyz">Get early access</a>
+        <a class="btn btn-ghost" href="https://x.com/" rel="noreferrer">Follow the build</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================ FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>SERVO PROTOCOL © 2026</span>
+    </div>
+    <div class="footer-links">
+      <a href="#top">TOP</a><span>/</span>
+      <a href="#identity">PROTOCOL</a><span>/</span>
+      <a href="#loop">LOOP</a><span>/</span>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-meta">BUILT ON BASE | SETTLED IN USDC | X402 COMPATIBLE</div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
