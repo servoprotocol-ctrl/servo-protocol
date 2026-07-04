@@ -69,7 +69,8 @@ servo-protocol/
 ## Development
 
 ```bash
-cd contracts
+git clone --recurse-submodules https://github.com/servoprotocol-ctrl/servo-protocol.git
+cd servo-protocol/contracts
 forge build
 forge test
 ```
