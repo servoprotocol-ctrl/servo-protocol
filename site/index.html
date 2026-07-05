@@ -23,11 +23,12 @@
       <span class="brand-sub">PROTOCOL</span>
     </a>
     <nav class="nav-links">
+      <a href="#why">Why Servo</a>
       <a href="#identity">Identity</a>
       <a href="#banking">Banking</a>
-      <a href="#commerce">Commerce</a>
+      <a href="#commerce">Market</a>
       <a href="#loop">The Loop</a>
-      <a href="#treasury">Treasury</a>
+      <a href="#products">Products</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a class="btn btn-accent nav-cta" href="#access">Get early access</a>
@@ -39,8 +40,9 @@
       <p class="eyebrow reveal">// THE FINANCIAL LAYER FOR THE MACHINE ECONOMY</p>
       <h1 class="reveal">MACHINES<br /><span class="accent">BANK</span> HERE</h1>
       <p class="hero-sub reveal">
-        Servo gives every robot a verified identity, a policy-guarded account, and a place to trade.
-        Built on Base. Settled in USDC. Compatible with x402.
+        Robots are becoming workers. Servo gives them what every worker needs: an identity,
+        a bank account their owner controls, and a marketplace to buy and sell services.
+        Built on Base, settled in USDC.
       </p>
       <div class="hero-ctas reveal">
         <a class="btn btn-accent" href="#loop">See the loop</a>
@@ -74,13 +76,63 @@
       </div>
     </section>
 
-    <!-- ============================================================ 01 IDENTITY -->
-    <section class="section" id="identity">
+    <!-- ============================================================ 01 WHY SERVO -->
+    <section class="section" id="why">
       <div class="section-head reveal">
         <span class="section-num">01</span>
+        <span class="section-tag">// WHY SERVO EXISTS</span>
+        <h2>The robot economy has a money problem</h2>
+      </div>
+      <p class="section-lede reveal">
+        Robots are leaving the lab and entering the workforce: delivering, cleaning, inspecting,
+        hauling. But the economy they are joining was built for humans with credit cards.
+        Three things break the moment a machine tries to take part. Servo fixes all three.
+      </p>
+      <div class="cards-3 reveal">
+        <div class="pain-card">
+          <div class="pain-head">PAYING FOR THINGS</div>
+          <div class="pain-today">
+            <span class="pain-label">TODAY</span>
+            <p>A robot that needs a charge needs a human, a credit card on file, and an invoice at month-end. Nothing happens without someone in the loop.</p>
+          </div>
+          <div class="pain-servo">
+            <span class="pain-label">WITH SERVO</span>
+            <p>The robot pays for its own charge in seconds, from its own account, inside spending limits its owner set once.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-head">KNOWING WHO IS WHO</div>
+          <div class="pain-today">
+            <span class="pain-label">TODAY</span>
+            <p>Which machine did the work? Whose drone is that? There is no ID system for robots, so every interaction needs trust or paperwork.</p>
+          </div>
+          <div class="pain-servo">
+            <span class="pain-label">WITH SERVO</span>
+            <p>Every machine carries a verified onchain ID: who it is, who owns it, and its full work record. Checkable by anyone, forgeable by no one.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-head">PROVING THE MONEY</div>
+          <div class="pain-today">
+            <span class="pain-label">TODAY</span>
+            <p>Fleet revenue lives in spreadsheets. Lenders and insurers cannot verify any of it, so robot businesses cannot get credit or coverage.</p>
+          </div>
+          <div class="pain-servo">
+            <span class="pain-label">WITH SERVO</span>
+            <p>Every dollar a robot earns is logged to its name, onchain. Work history becomes credit history. Fleets become financeable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 02 IDENTITY -->
+    <section class="section" id="identity">
+      <div class="section-head reveal">
+        <span class="section-num">02</span>
         <span class="section-tag">// KNOW YOUR MACHINE</span>
         <h2>Every robot gets a verified identity</h2>
       </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> A passport and work record for a robot. You always know who a machine is, who answers for it, and what it has done.</p>
       <div class="split">
         <div class="split-copy reveal">
           <p>
@@ -114,13 +166,14 @@
       </div>
     </section>
 
-    <!-- ============================================================ 02 BANKING -->
+    <!-- ============================================================ 03 BANKING -->
     <section class="section" id="banking">
       <div class="section-head reveal">
-        <span class="section-num">02</span>
+        <span class="section-num">03</span>
         <span class="section-tag">// POLICY-GUARDED ACCOUNTS</span>
         <h2>Autonomy inside an envelope</h2>
       </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Give your robot pocket money, not your credit card. It can spend 20 dollars a day at the charger, and nothing else, and you can freeze it instantly.</p>
       <div class="split split-flip">
         <div class="split-copy reveal">
           <p>
@@ -152,18 +205,64 @@
       </div>
     </section>
 
-    <!-- ============================================================ 03 COMMERCE -->
+    <!-- ============================================================ 04 MARKET -->
     <section class="section" id="commerce">
       <div class="section-head reveal">
-        <span class="section-num">03</span>
+        <span class="section-num">04</span>
         <span class="section-tag">// MACHINE-TO-MACHINE TRADE</span>
         <h2>A marketplace where robots are the customers</h2>
       </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Robots need things all day: power, maps, compute, a hand with a task. Other machines sell exactly those things. Servo is where they meet, and how they pay each other.</p>
       <p class="section-lede reveal">
-        Charging bays, map tiles, compute bursts, task handoffs. Services are listed once and settle
-        on two rails: direct onchain purchases and x402 gateway payments. Both converge on one
-        canonical receipt stream.
+        Watch it work. A delivery bot buys charge from a station, buys map tiles from a drone,
+        and every trade settles in USDC with a receipt anyone can verify.
       </p>
+
+      <!-- live market simulation -->
+      <div class="market-sim reveal">
+        <div class="sim-stage">
+          <div class="sim-stage-head">LIVE MARKET SIMULATION</div>
+          <svg viewBox="0 0 560 400" id="simSvg" aria-label="Animated diagram of machines trading services">
+            <!-- edges -->
+            <line class="sim-edge" x1="280" y1="96" x2="112" y2="300" />
+            <line class="sim-edge" x1="280" y1="96" x2="448" y2="300" />
+            <line class="sim-edge" x1="112" y2="300" x2="448" y1="300" />
+            <!-- payment packet -->
+            <circle id="simPkt" class="sim-pkt" r="6" cx="-20" cy="-20" />
+            <!-- charge station -->
+            <g class="sim-node" id="nodeA" transform="translate(280 76)">
+              <rect x="-34" y="-34" width="68" height="56" rx="4" />
+              <path class="sim-icon" d="M4 -26 L-10 -4 L0 -4 L-4 12 L12 -12 L2 -12 Z" />
+              <text y="40" text-anchor="middle" class="sim-name">CHARGE STATION</text>
+              <text y="54" text-anchor="middle" class="sim-mid">MID-0001</text>
+            </g>
+            <!-- delivery bot -->
+            <g class="sim-node" id="nodeB" transform="translate(112 292)">
+              <rect x="-36" y="-30" width="72" height="44" rx="6" />
+              <circle class="sim-wheel" cx="-18" cy="16" r="8" />
+              <circle class="sim-wheel" cx="18" cy="16" r="8" />
+              <rect class="sim-icon-rect" x="-20" y="-18" width="40" height="12" rx="2" />
+              <text y="42" text-anchor="middle" class="sim-name">DELIVERY BOT</text>
+              <text y="56" text-anchor="middle" class="sim-mid">MID-0002</text>
+            </g>
+            <!-- mapping drone -->
+            <g class="sim-node" id="nodeC" transform="translate(448 292)">
+              <rect x="-16" y="-14" width="32" height="24" rx="4" />
+              <line class="sim-arm" x1="-16" y1="-14" x2="-34" y2="-28" />
+              <line class="sim-arm" x1="16" y1="-14" x2="34" y2="-28" />
+              <circle class="sim-rotor" cx="-34" cy="-28" r="9" />
+              <circle class="sim-rotor" cx="34" cy="-28" r="9" />
+              <text y="38" text-anchor="middle" class="sim-name">MAPPING DRONE</text>
+              <text y="52" text-anchor="middle" class="sim-mid">MID-0117</text>
+            </g>
+          </svg>
+        </div>
+        <div class="sim-log">
+          <div class="sim-log-head">RECEIPT STREAM</div>
+          <ul id="simLog"></ul>
+        </div>
+      </div>
+
       <div class="cards-3 reveal">
         <div class="svc-card">
           <div class="svc-head"><span class="svc-cat">CHARGING</span><span class="badge">SVC-001</span></div>
@@ -195,13 +294,14 @@
       </div>
     </section>
 
-    <!-- ============================================================ 04 THE LOOP -->
+    <!-- ============================================================ 05 THE LOOP -->
     <section class="section" id="loop">
       <div class="section-head reveal">
-        <span class="section-num">04</span>
+        <span class="section-num">05</span>
         <span class="section-tag">// HOW IT WORKS</span>
         <h2>The Servo loop</h2>
       </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Four beats, two seconds, no humans: the robot asks, pays, gets a receipt, and its books update. Watch the steps light up.</p>
       <div class="loop-steps">
         <div class="loop-step reveal">
           <div class="loop-step-num">402</div>
@@ -230,13 +330,14 @@
       </div>
     </section>
 
-    <!-- ============================================================ 05 TREASURY -->
+    <!-- ============================================================ 06 TREASURY -->
     <section class="section" id="treasury">
       <div class="section-head reveal">
-        <span class="section-num">05</span>
+        <span class="section-num">06</span>
         <span class="section-tag">// FLEET VAULTS</span>
         <h2>Every robot runs a P&amp;L</h2>
       </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Automatic bookkeeping. Every dollar a robot earns is logged to its name, and owners and backers get their share without anyone sending an invoice.</p>
       <div class="split">
         <div class="split-copy reveal">
           <p>
@@ -266,28 +367,47 @@
       </div>
     </section>
 
-    <!-- ============================================================ 06 STACK -->
-    <section class="section" id="stack">
+    <!-- ============================================================ 07 PRODUCTS -->
+    <section class="section" id="products">
       <div class="section-head reveal">
-        <span class="section-num">06</span>
-        <span class="section-tag">// PROTOCOL STACK</span>
-        <h2>Built in phases, shipped in public</h2>
+        <span class="section-num">07</span>
+        <span class="section-tag">// WHAT SHIPS UNDER SERVO</span>
+        <h2>Six products, one protocol</h2>
       </div>
+      <p class="section-lede reveal">
+        Everything a machine needs to take part in an economy, and everything its owner needs to
+        stay in control of it.
+      </p>
       <div class="cards-3 reveal">
         <div class="phase-card">
-          <div class="phase-head"><span>PHASE 1</span><span class="badge badge-live">LIVE</span></div>
-          <h3>Core protocol</h3>
-          <p>Machine identity, policy-guarded accounts, service registry, fleet vaults. 30/30 tests passing.</p>
+          <div class="phase-head"><span>MACHINE ID</span><span class="badge badge-live">LIVE</span></div>
+          <h3>A passport for every robot</h3>
+          <p>Proves who a machine is, who owns it, and the work it has done. Bound to the hardware itself, revoked automatically when the machine changes hands.</p>
         </div>
         <div class="phase-card">
-          <div class="phase-head"><span>PHASE 2</span><span class="badge badge-build">IN BUILD</span></div>
-          <h3>Gateway + registry</h3>
-          <p>x402-style paywall gateway and machine agent shipped. Indexer and public registry explorer in build.</p>
+          <div class="phase-head"><span>MACHINE ACCOUNT</span><span class="badge badge-live">LIVE</span></div>
+          <h3>A bank account with limits</h3>
+          <p>The robot spends on its own, inside daily caps and approved counterparties its owner sets. Two kill switches, always.</p>
         </div>
         <div class="phase-card">
-          <div class="phase-head"><span>PHASE 3</span><span class="badge badge-next">NEXT</span></div>
-          <h3>Risk + capital</h3>
-          <p>Staked attestation, uptime and liability insurance, fleet financing with revenue-share offerings.</p>
+          <div class="phase-head"><span>THE MARKETPLACE</span><span class="badge badge-live">LIVE</span></div>
+          <h3>Where machines trade</h3>
+          <p>Charging, map data, compute, task handoffs. List a service once, sell it to any machine, get paid in USDC with onchain receipts.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><span>FLEET VAULTS</span><span class="badge badge-live">LIVE</span></div>
+          <h3>Bookkeeping that runs itself</h3>
+          <p>Revenue lands against each robot's name and splits itself between owner, crew, and backers. A provable P&amp;L for every machine.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><span>GATEWAY KIT</span><span class="badge badge-build">IN BUILD</span></div>
+          <h3>Plug anything in</h3>
+          <p>One wrapper makes any web service payable by machines, x402 compatible. Plus the public registry explorer for browsing every machine and market.</p>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><span>RISK + CAPITAL</span><span class="badge badge-next">NEXT</span></div>
+          <h3>Insurance and financing</h3>
+          <p>Work histories become credit histories. Coverage and capital for fleets, priced from real onchain performance, not promises.</p>
         </div>
       </div>
     </section>
@@ -295,7 +415,7 @@
     <!-- ============================================================ FAQ -->
     <section class="section" id="faq">
       <div class="section-head reveal">
-        <span class="section-num">07</span>
+        <span class="section-num">08</span>
         <span class="section-tag">// QUESTIONS</span>
         <h2>FAQ</h2>
       </div>
