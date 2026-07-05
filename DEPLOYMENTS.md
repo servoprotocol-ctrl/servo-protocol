@@ -17,7 +17,7 @@ transferable to a Safe later). Protocol fee: 1% (100 bps), hard cap 5%.
 - Settlement asset (canonical USDC on Base): `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 
 ### Post-launch checklist
-- [ ] Verify contracts on BaseScan (needs an Etherscan/BaseScan API key)
-- [ ] Wire live addresses into the marketing site's "LIVE" badges
+- [x] Verify contracts on BaseScan (all three verified, source public)
+- [x] Wire live addresses into the marketing site's "LIVE" badges
 - [ ] Migrate governance + treasury to a Safe before inviting outside fleets
 - [ ] Register the first machines and a demo service (dogfood with small amounts)
