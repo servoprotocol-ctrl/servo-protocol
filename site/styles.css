@@ -578,6 +578,67 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 .loop-step.active .loop-step-num { text-shadow: 0 0 18px rgba(140, 255, 102, 0.6); }
 
+/* ------------------------------------------------------------ roadmap timeline */
+.roadmap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.roadmap-col { display: flex; flex-direction: column; gap: 14px; }
+.roadmap-phase {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+.phase-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.dot-live { background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 2.2s infinite; }
+.dot-build { background: #ffd166; box-shadow: 0 0 10px rgba(255, 209, 102, 0.6); }
+.dot-next { background: var(--ink-faint); }
+
+.rm-item {
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  padding: 18px 20px;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+.rm-item p { color: var(--ink-dim); font-size: 13.5px; margin-top: 8px; }
+.rm-item p b { color: var(--accent); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; }
+.rm-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+.rm-arrow { color: var(--ink-faint); transition: color 0.2s, transform 0.2s; }
+a.rm-item { border-left: 2px solid rgba(140, 255, 102, 0.5); }
+a.rm-item:hover {
+  border-color: rgba(140, 255, 102, 0.45);
+  border-left-color: var(--accent);
+  transform: translateY(-3px);
+  background: var(--bg-raise);
+}
+a.rm-item:hover .rm-arrow { color: var(--accent); transform: translateX(3px); }
+a.rm-item:hover .rm-name { color: var(--accent); }
+.rm-static { cursor: default; }
+.rm-horizon { border-style: dashed; background: transparent; }
+
+@media (max-width: 900px) {
+  .roadmap { grid-template-columns: 1fr; gap: 32px; }
+}
+
 /* ------------------------------------------------------------ deployed address cards */
 .addr-card {
   display: block;

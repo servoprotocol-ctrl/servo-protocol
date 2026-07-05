@@ -33,7 +33,7 @@
       <a href="#deployed">Live</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-accent nav-cta" href="#access">Get early access</a>
+    <a class="btn btn-accent nav-cta" href="#deployed">Live on Base</a>
   </header>
 
   <!-- ============================================================ HERO -->
@@ -369,48 +369,67 @@
       </div>
     </section>
 
-    <!-- ============================================================ 07 PRODUCTS -->
+    <!-- ============================================================ 07 ROADMAP -->
     <section class="section" id="products">
       <div class="section-head reveal">
         <span class="section-num">07</span>
-        <span class="section-tag">// WHAT SHIPS UNDER SERVO</span>
-        <h2>Six products, one protocol</h2>
+        <span class="section-tag">// THE ROADMAP</span>
+        <h2>From money to the full stack</h2>
       </div>
       <p class="section-lede reveal">
-        Everything a machine needs to take part in an economy, and everything its owner needs to
-        stay in control of it.
+        We shipped the hard part first: the financial layer is live on Base today. Everything a robot
+        economy needs is built outward from it.
       </p>
-      <div class="cards-3 reveal">
-        <div class="phase-card">
-          <div class="phase-head"><span>MACHINE ID</span><span class="badge badge-live">LIVE</span></div>
-          <h3>A passport for every robot</h3>
-          <p>Proves who a machine is, who owns it, and the work it has done. Bound to the hardware itself, revoked automatically when the machine changes hands.</p>
+      <div class="roadmap">
+
+        <div class="roadmap-col reveal">
+          <div class="roadmap-phase"><span class="phase-dot dot-live"></span>LIVE NOW</div>
+          <a class="rm-item" href="https://basescan.org/address/0x78A6DfC16BD166f86F0263B1Eec3c697372d8ab6" target="_blank" rel="noreferrer">
+            <div class="rm-name">MACHINE ID <span class="rm-arrow">&rarr;</span></div>
+            <p>A passport for every robot: who it is, who owns it, what it has done. Bound to the hardware, revoked on resale.</p>
+          </a>
+          <a class="rm-item" href="https://basescan.org/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer">
+            <div class="rm-name">MACHINE ACCOUNTS <span class="rm-arrow">&rarr;</span></div>
+            <p>A bank account with limits. The robot spends on its own inside caps its owner sets. Two kill switches, always.</p>
+          </a>
+          <a class="rm-item" href="https://basescan.org/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">
+            <div class="rm-name">THE MARKETPLACE <span class="rm-arrow">&rarr;</span></div>
+            <p>Where machines trade: charging, data, compute, handoffs. List once, sell to any machine, settle in USDC with receipts.</p>
+          </a>
+          <a class="rm-item" href="https://basescan.org/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">
+            <div class="rm-name">FLEET VAULTS <span class="rm-arrow">&rarr;</span></div>
+            <p>Bookkeeping that runs itself. Revenue lands against each robot's name and splits to owner, crew, and backers.</p>
+          </a>
         </div>
-        <div class="phase-card">
-          <div class="phase-head"><span>MACHINE ACCOUNT</span><span class="badge badge-live">LIVE</span></div>
-          <h3>A bank account with limits</h3>
-          <p>The robot spends on its own, inside daily caps and approved counterparties its owner sets. Two kill switches, always.</p>
+
+        <div class="roadmap-col reveal">
+          <div class="roadmap-phase"><span class="phase-dot dot-build"></span>IN BUILD</div>
+          <div class="rm-item rm-static">
+            <div class="rm-name">GATEWAY KIT</div>
+            <p>One wrapper makes any web service payable by machines, x402 compatible. Drop it in front of an endpoint and robots can pay.</p>
+          </div>
+          <div class="rm-item rm-static">
+            <div class="rm-name">REGISTRY EXPLORER</div>
+            <p>The public face of the protocol: browse every machine, service, and receipt as it settles onchain.</p>
+          </div>
         </div>
-        <div class="phase-card">
-          <div class="phase-head"><span>THE MARKETPLACE</span><span class="badge badge-live">LIVE</span></div>
-          <h3>Where machines trade</h3>
-          <p>Charging, map data, compute, task handoffs. List a service once, sell it to any machine, get paid in USDC with onchain receipts.</p>
+
+        <div class="roadmap-col reveal">
+          <div class="roadmap-phase"><span class="phase-dot dot-next"></span>ON THE HORIZON</div>
+          <div class="rm-item rm-static rm-horizon">
+            <div class="rm-name">SERVO DATA</div>
+            <p>Machines sell what they see. <b>Feeds</b>: a live sensor market. <b>Corpus</b>: licensing real-world data to embodied-AI labs, royalties to the machines that earned it.</p>
+          </div>
+          <div class="rm-item rm-static rm-horizon">
+            <div class="rm-name">SERVO COMPUTE</div>
+            <p>Heavy thinking, off the chassis. Robots offload inference, mapping, and planning to GPU providers and pay per burst.</p>
+          </div>
+          <div class="rm-item rm-static rm-horizon">
+            <div class="rm-name">FLEET FINANCING</div>
+            <p>Robots that fund themselves. Fleets raise against their own provable revenue; backers earn through vault splits.</p>
+          </div>
         </div>
-        <div class="phase-card">
-          <div class="phase-head"><span>FLEET VAULTS</span><span class="badge badge-live">LIVE</span></div>
-          <h3>Bookkeeping that runs itself</h3>
-          <p>Revenue lands against each robot's name and splits itself between owner, crew, and backers. A provable P&amp;L for every machine.</p>
-        </div>
-        <div class="phase-card">
-          <div class="phase-head"><span>GATEWAY KIT</span><span class="badge badge-build">IN BUILD</span></div>
-          <h3>Plug anything in</h3>
-          <p>One wrapper makes any web service payable by machines, x402 compatible. Plus the public registry explorer for browsing every machine and market.</p>
-        </div>
-        <div class="phase-card">
-          <div class="phase-head"><span>FLEET FINANCING</span><span class="badge badge-next">NEXT</span></div>
-          <h3>Robots that fund themselves</h3>
-          <p>Fleets raise capital against their own provable revenue, and backers get their share automatically through vault splits.</p>
-        </div>
+
       </div>
     </section>
 
@@ -545,11 +564,11 @@
 
     <!-- ============================================================ CTA -->
     <section class="final-cta" id="access">
-      <p class="eyebrow reveal">// EARLY ACCESS</p>
+      <p class="eyebrow reveal">// LIVE ON BASE MAINNET</p>
       <h2 class="reveal">PUT YOUR FLEET<br />ON <span class="accent">PAYROLL</span></h2>
-      <p class="hero-sub reveal">Deploy identity, accounts, and commerce for your machines in an afternoon.</p>
+      <p class="hero-sub reveal">Identity, accounts, and a marketplace for your machines. Deployed, verified, and settling in USDC today.</p>
       <div class="hero-ctas reveal">
-        <a class="btn btn-accent" href="mailto:hello@servoprotocol.xyz">Get early access</a>
+        <a class="btn btn-accent" href="#deployed">View the contracts</a>
         <a class="btn btn-ghost" href="https://x.com/" rel="noreferrer">Follow the build</a>
       </div>
     </section>
