@@ -119,6 +119,8 @@ async function main() {
     const services = await deploy(gov, "ServiceRegistry", [registry, gov.account!.address, treasuryAddr]);
     const factory = await deploy(gov, "MachineAccountFactory", [registry, services]);
     const usdc = await deploy(gov, "MockUSDC", []);
+    // Authorize the ServiceRegistry to write machine P&L from settled commerce.
+    await write(gov, registry, "MachineRegistry", "setRecorder", [services, true]);
     console.log(`      MachineRegistry       ${registry}`);
     console.log(`      ServiceRegistry       ${services}`);
     console.log(`      MachineAccountFactory ${factory}`);

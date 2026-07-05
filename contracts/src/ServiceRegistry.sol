@@ -121,6 +121,7 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
         if (price == 0) revert ZeroPrice();
         if (vaultSettlement && providerMid == 0) revert VaultSettlementNeedsMachine();
         if (providerMid != 0) {
+            REGISTRY.requireActive(providerMid);
             address op = REGISTRY.ownerOf(providerMid);
             address key = REGISTRY.machineKeyOf(providerMid);
             if (msg.sender != op && msg.sender != key) revert NotProvider(0);
@@ -172,19 +173,27 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
         uint256 fee = (price * protocolFeeBps) / 10_000;
 
         IERC20 token = IERC20(s.token);
+        uint256 net = price - fee;
         if (s.vaultSettlement) {
             // Route through FleetVault.deposit so the sale is attributed to the
-            // providing machine's onchain P&L.
-            token.safeTransferFrom(msg.sender, address(this), price - fee);
-            token.forceApprove(s.payTo, price - fee);
-            FleetVault(s.payTo).deposit(s.providerMid, price - fee);
+            // providing machine's onchain P&L. Measure the balance actually
+            // received so non-standard (e.g. fee-on-transfer) tokens cannot
+            // desync the vault deposit from the tokens in hand.
+            uint256 before = token.balanceOf(address(this));
+            token.safeTransferFrom(msg.sender, address(this), net);
+            uint256 received = token.balanceOf(address(this)) - before;
+            token.forceApprove(s.payTo, received);
+            FleetVault(s.payTo).deposit(s.providerMid, received);
         } else {
-            token.safeTransferFrom(msg.sender, s.payTo, price - fee);
+            token.safeTransferFrom(msg.sender, s.payTo, net);
         }
         if (fee > 0) token.safeTransferFrom(msg.sender, treasury, fee);
 
         s.unitsSold += 1;
         s.grossRevenue += SafeCast.toUint128(price);
+
+        // Write the provider machine's provable P&L from this settled payment.
+        if (s.providerMid != 0) REGISTRY.recordCommerce(s.providerMid, net);
 
         emit ServiceReceipt(serviceId, buyerMid, s.providerMid, s.token, price, fee, false);
     }
@@ -194,6 +203,7 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
     function recordExternalReceipt(uint256 serviceId, uint256 buyerMid, uint256 amount) external {
         if (!isFacilitator[msg.sender]) revert NotFacilitator(msg.sender);
         Service storage s = _service(serviceId);
+        if (s.providerMid != 0) REGISTRY.requireActive(s.providerMid);
 
         s.unitsSold += 1;
         s.grossRevenue += SafeCast.toUint128(amount);

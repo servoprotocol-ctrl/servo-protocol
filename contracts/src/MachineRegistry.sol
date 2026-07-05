@@ -63,6 +63,10 @@ contract MachineRegistry is ERC721, Ownable, EIP712 {
     mapping(bytes32 hardwareHash => uint256 mid) public midByHardwareHash;
     mapping(address machineKey => uint256 mid) public midByMachineKey;
     mapping(address attestor => bool) public isAttestor;
+    /// @notice Recorders (canonically the ServiceRegistry) are the ONLY writers of the
+    ///         financial service record. Revenue and job counts are therefore derived
+    ///         from real onchain settlement, not from arbitrary attestor input.
+    mapping(address recorder => bool) public isRecorder;
 
     bytes32 public constant KEY_BINDING_TYPEHASH =
         keccak256("KeyBinding(uint256 mid,address operator,address machineKey)");
@@ -79,6 +83,8 @@ contract MachineRegistry is ERC721, Ownable, EIP712 {
         uint256 indexed mid, address indexed attestor, bytes32 indexed kind, uint256 value, bytes32 dataHash
     );
     event AttestorSet(address indexed attestor, bool allowed);
+    event RecorderSet(address indexed recorder, bool allowed);
+    event CommerceRecorded(uint256 indexed mid, address indexed recorder, uint256 revenue, uint256 jobs);
     event MetadataURIUpdated(uint256 indexed mid, string uri);
 
     // --------------------------------------------------------------- errors
@@ -86,6 +92,7 @@ contract MachineRegistry is ERC721, Ownable, EIP712 {
     error HardwareAlreadyRegistered(bytes32 hardwareHash);
     error MachineKeyAlreadyBound(address machineKey);
     error InvalidKeyBindingSignature();
+    error NotRecorder(address caller);
     error NotOperator(uint256 mid);
     error NotAttestor(address caller);
     error MachineNotActive(uint256 mid);
@@ -203,30 +210,45 @@ contract MachineRegistry is ERC721, Ownable, EIP712 {
 
     // ------------------------------------------------------------ attestation
 
-    /// @notice Protocol governance authorizes attestors (oracles, facilitators,
-    ///         audited fleet software) that write service records.
+    /// @notice Protocol governance authorizes attestors (oracles, audited fleet
+    ///         software) that publish non-financial records such as uptime.
     function setAttestor(address attestor, bool allowed) external onlyOwner {
         if (attestor == address(0)) revert ZeroAddress();
         isAttestor[attestor] = allowed;
         emit AttestorSet(attestor, allowed);
     }
 
-    /// @notice Append an entry to a machine's service record.
-    /// @param kind     Attestation type, e.g. keccak256("JOB_COMPLETED"),
-    ///                 keccak256("UPTIME_EPOCH"), keccak256("REVENUE").
-    /// @param value    Numeric payload (job count, seconds of uptime, USDC amount).
+    /// @notice Governance authorizes recorders (canonically the ServiceRegistry)
+    ///         that write the financial service record from settled commerce.
+    function setRecorder(address recorder, bool allowed) external onlyOwner {
+        if (recorder == address(0)) revert ZeroAddress();
+        isRecorder[recorder] = allowed;
+        emit RecorderSet(recorder, allowed);
+    }
+
+    /// @notice Publish a non-financial attestation (e.g. uptime, inspection pass).
+    ///         Attestations are events only: they never mutate the machine's
+    ///         revenue or job counters, so a rogue attestor cannot forge P&L.
+    /// @param kind     Attestation type, e.g. keccak256("UPTIME_EPOCH").
+    /// @param value    Numeric payload (e.g. seconds of uptime).
     /// @param dataHash Commitment to offchain evidence.
     function attest(uint256 mid, bytes32 kind, uint256 value, bytes32 dataHash) external {
         if (!isAttestor[msg.sender]) revert NotAttestor(msg.sender);
         _requireOwned(mid);
-
-        Machine storage m = _machines[mid];
-        if (kind == keccak256("JOB_COMPLETED")) {
-            m.jobsAttested += SafeCast.toUint64(value);
-        } else if (kind == keccak256("REVENUE")) {
-            m.revenueAttested += SafeCast.toUint128(value);
-        }
         emit MachineAttested(mid, msg.sender, kind, value, dataHash);
+    }
+
+    /// @notice Record settled commerce against a machine's P&L. Callable only by an
+    ///         authorized recorder, and only from an actual onchain payment, so
+    ///         revenueAttested is provable rather than asserted. Each call counts
+    ///         one completed job.
+    function recordCommerce(uint256 mid, uint256 revenue) external {
+        if (!isRecorder[msg.sender]) revert NotRecorder(msg.sender);
+        _requireOwned(mid);
+        Machine storage m = _machines[mid];
+        m.revenueAttested += SafeCast.toUint128(revenue);
+        m.jobsAttested += 1;
+        emit CommerceRecorded(mid, msg.sender, revenue, 1);
     }
 
     // ----------------------------------------------------------------- views

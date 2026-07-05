@@ -170,26 +170,50 @@ contract MachineRegistryTest is Test {
         assertEq(registry.midByMachineKey(machineKey), 0);
     }
 
-    function test_attest_updatesServiceRecord() public {
+    function test_attest_isEventOnly_doesNotTouchFinancialRecord() public {
         uint256 mid = _register();
 
         vm.prank(gov);
         registry.setAttestor(attestor, true);
 
-        vm.startPrank(attestor);
-        registry.attest(mid, keccak256("JOB_COMPLETED"), 3, keccak256("evidence1"));
-        registry.attest(mid, keccak256("REVENUE"), 25e6, keccak256("evidence2"));
-        vm.stopPrank();
+        // Attestations publish non-financial records (e.g. uptime) and must NOT
+        // move the machine's revenue or job counters.
+        vm.prank(attestor);
+        registry.attest(mid, keccak256("UPTIME_EPOCH"), 86_400, keccak256("evidence"));
 
         MachineRegistry.Machine memory m = registry.getMachine(mid);
-        assertEq(m.jobsAttested, 3);
-        assertEq(m.revenueAttested, 25e6);
+        assertEq(m.jobsAttested, 0);
+        assertEq(m.revenueAttested, 0);
     }
 
     function test_attest_revertsForNonAttestor() public {
         uint256 mid = _register();
         vm.prank(makeAddr("rando"));
         vm.expectRevert(abi.encodeWithSelector(MachineRegistry.NotAttestor.selector, makeAddr("rando")));
-        registry.attest(mid, keccak256("JOB_COMPLETED"), 1, bytes32(0));
+        registry.attest(mid, keccak256("UPTIME_EPOCH"), 1, bytes32(0));
+    }
+
+    function test_recordCommerce_onlyRecorder() public {
+        uint256 mid = _register();
+
+        // A non-recorder (even an authorized attestor) cannot write the P&L.
+        vm.prank(gov);
+        registry.setAttestor(attestor, true);
+        vm.prank(attestor);
+        vm.expectRevert(abi.encodeWithSelector(MachineRegistry.NotRecorder.selector, attestor));
+        registry.recordCommerce(mid, 25e6);
+
+        // An authorized recorder writes revenue and increments the job count.
+        address recorder = makeAddr("recorder");
+        vm.prank(gov);
+        registry.setRecorder(recorder, true);
+        vm.startPrank(recorder);
+        registry.recordCommerce(mid, 5e6);
+        registry.recordCommerce(mid, 7e6);
+        vm.stopPrank();
+
+        MachineRegistry.Machine memory m = registry.getMachine(mid);
+        assertEq(m.revenueAttested, 12e6);
+        assertEq(m.jobsAttested, 2);
     }
 }

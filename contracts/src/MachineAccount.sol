@@ -63,6 +63,7 @@ contract MachineAccount is ReentrancyGuard {
     error DailyCapExceeded(address token, uint256 attempted, uint256 remaining);
     error CounterpartyNotAllowed(address counterparty);
     error ExecutionFailed();
+    error ZeroAmount();
 
     // ---------------------------------------------------------- constructor
 
@@ -150,6 +151,10 @@ contract MachineAccount is ReentrancyGuard {
 
     // ----------------------------------------------------------------- views
 
+    /// @notice Daily caps use fixed UTC-day windows (like a card's daily limit).
+    ///         Spend resets at each UTC midnight, so up to one full cap can be
+    ///         spent just before and just after a boundary. This is intended: the
+    ///         cap bounds sustained daily spend, not any rolling 24h interval.
     function currentEpoch() public view returns (uint256) {
         return block.timestamp / 1 days;
     }
@@ -179,6 +184,7 @@ contract MachineAccount is ReentrancyGuard {
     // ------------------------------------------------------------- internals
 
     function _checkAndConsume(address token, address counterparty, uint256 amount) internal {
+        if (amount == 0) revert ZeroAmount();
         uint256 cap = _policy.dailyCap[token];
         if (cap == 0) revert TokenNotSpendable(token);
         if (_policy.allowlistEnabled && !_policy.allowed[counterparty]) {

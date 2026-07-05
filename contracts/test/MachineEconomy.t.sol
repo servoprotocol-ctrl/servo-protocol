@@ -42,6 +42,10 @@ contract MachineEconomyTest is Test {
         factory = new MachineAccountFactory(registry, services);
         usdc = new MockUSDC();
 
+        // ServiceRegistry is the authorized commerce recorder (as in deployment).
+        vm.prank(gov);
+        registry.setRecorder(address(services), true);
+
         (botKey, botPk) = makeAddrAndKey("botKey");
 
         // --- delivery robot: identity + bound key + funded account
@@ -117,6 +121,12 @@ contract MachineEconomyTest is Test {
         // Vault settlement attributed the sale to the charger's onchain P&L.
         assertEq(chargerVault.machineRevenue(chargerMid), 4.95e6);
         assertEq(chargerVault.totalRevenue(), 4.95e6);
+
+        // The provable service record was written from the real settlement:
+        // net revenue (price minus fee) and one completed job.
+        MachineRegistry.Machine memory cm = registry.getMachine(chargerMid);
+        assertEq(cm.revenueAttested, 4.95e6);
+        assertEq(cm.jobsAttested, 1);
 
         // Beneficiaries can claim their splits of the settled revenue: 70/30.
         vm.prank(chargeCo);

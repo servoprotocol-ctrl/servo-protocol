@@ -21,9 +21,14 @@ contract Deploy is Script {
         address treasury = vm.envOr("SERVO_TREASURY", deployer);
 
         vm.startBroadcast();
-        MachineRegistry registry = new MachineRegistry(gov);
+        // Own the registry during setup so we can authorize the ServiceRegistry
+        // as the sole commerce recorder, then hand governance to `gov`.
+        MachineRegistry registry = new MachineRegistry(deployer);
         ServiceRegistry services = new ServiceRegistry(registry, gov, treasury);
         MachineAccountFactory factory = new MachineAccountFactory(registry, services);
+
+        registry.setRecorder(address(services), true);
+        if (gov != deployer) registry.transferOwnership(gov);
         vm.stopBroadcast();
 
         console.log("MachineRegistry:      ", address(registry));
