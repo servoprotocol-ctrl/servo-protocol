@@ -16,8 +16,16 @@ transferable to a Safe later). Protocol fee: 1% (100 bps), hard cap 5%.
 - ServiceRegistry authorized as commerce recorder: yes
 - Settlement asset (canonical USDC on Base): `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 
+### Genesis dogfood (live on mainnet)
+- MID-0001 — charging station (provider), operator = deployer
+- MID-0002 — delivery bot (buyer), MachineAccount `0x9a8bFd742bdc3ccDcFd435dB0E50542efAC9FC7f`, session key bound, 5 USDC/day cap
+- Service #1 — CHARGING, 0.05 USDC/session, provider MID-0001
+- Browse it live at `/explorer`
+
 ### Post-launch checklist
 - [x] Verify contracts on BaseScan (all three verified, source public)
 - [x] Wire live addresses into the marketing site's "LIVE" badges
+- [x] Register the first machines and a demo service (genesis dogfood)
+- [x] Build the Registry Explorer (`site/explorer`, reads live from Base)
+- [ ] Run the first purchase (needs ~$1 USDC in the bot account) -> first receipt + P&L
 - [ ] Migrate governance + treasury to a Safe before inviting outside fleets
-- [ ] Register the first machines and a demo service (dogfood with small amounts)
