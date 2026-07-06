@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servo Registry Explorer | Live on Base</title>
+  <meta name="description" content="The public registry of the Servo Protocol machine economy: every machine, service, and receipt, read live from Base mainnet." />
+  <meta name="theme-color" content="#07100b" />
+  <link rel="icon" type="image/svg+xml" href="../logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="explorer.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="nav-brand" href="../">
+      <img src="../logo.svg" alt="" aria-hidden="true" />
+      <b>SERVO</b><span>REGISTRY</span>
+    </a>
+    <div class="nav-right">
+      <a href="../">&larr; Home</a>
+      <div class="net-pill"><span class="net-dot"></span>BASE MAINNET</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="head">
+      <p class="tag">// LIVE REGISTRY</p>
+      <h1>The machine economy, onchain</h1>
+      <p>Every machine, service, and receipt below is read live from the Servo contracts on Base mainnet. Nothing here is mocked.</p>
+      <div class="refresh-row">
+        <button class="btn-refresh" id="refreshBtn">Refresh</button>
+        <span class="updated" id="updated">Loading&hellip;</span>
+      </div>
+    </div>
+
+    <section class="stats" id="stats">
+      <div class="stat"><span class="n" id="statMachines">&mdash;</span><span class="l">machines registered</span></div>
+      <div class="stat"><span class="n" id="statServices">&mdash;</span><span class="l">services listed</span></div>
+      <div class="stat"><span class="n" id="statReceipts">&mdash;</span><span class="l">settled receipts</span></div>
+      <div class="stat"><span class="n" id="statVolume">&mdash;</span><span class="l">USDC volume settled</span></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><h2>Machines</h2><span class="c" id="cMachines">0</span></div>
+      <div class="cards" id="machines"><div class="loading">reading registry</div></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><h2>Services</h2><span class="c" id="cServices">0</span></div>
+      <div class="cards" id="services"><div class="loading">reading marketplace</div></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><h2>Receipts</h2><span class="c" id="cReceipts">0</span></div>
+      <div class="rcpt-wrap" id="receiptsWrap">
+        <div class="loading" style="padding:26px 16px">reading receipt stream</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    SERVO PROTOCOL REGISTRY | BASE MAINNET | CHAIN 8453 |
+    <a id="scanReg" href="#" target="_blank" rel="noreferrer">CONTRACTS ON BASESCAN &rarr;</a>
+  </footer>
+
+  <script type="module" src="explorer.js"></script>
+</body>
+</html>
