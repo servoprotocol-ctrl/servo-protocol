@@ -961,6 +961,8 @@ a.hero-status:hover { color: var(--accent); }
 .footer-links { margin-left: auto; display: flex; gap: 12px; }
 .footer-links a { color: var(--ink-dim); text-decoration: none; }
 .footer-links a:hover { color: var(--accent); }
+.footer-x { display: inline-flex; align-items: center; gap: 5px; }
+.footer-x svg { display: block; }
 .footer-links span { color: var(--ink-faint); }
 
 /* ------------------------------------------------------------ reveal animation */
