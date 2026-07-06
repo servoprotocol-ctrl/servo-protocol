@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servo Ecosystem | Servo OS</title>
+  <meta name="description" content="The Servo ecosystem as a live operating system: every module, its status, and how they connect. Launch what's live, watch what's building." />
+  <meta name="theme-color" content="#07100b" />
+  <link rel="icon" type="image/svg+xml" href="../logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="ecosystem.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- boot sequence -->
+  <div class="boot" id="boot">
+    <div class="boot-inner" id="bootInner"></div>
+    <div class="boot-skip">CLICK TO SKIP</div>
+  </div>
+
+  <!-- OS bar -->
+  <header class="osbar">
+    <a class="brand" href="../"><img src="../logo.svg" alt="" /><b>SERVO</b>OS</a>
+    <span class="sep hide-sm">/</span>
+    <span class="hide-sm">v0.1</span>
+    <span class="sep hide-sm">/</span>
+    <span class="hide-sm"><span class="live-dot"></span> 5 LIVE &middot; 3 BUILDING &middot; 3 PLANNED</span>
+    <div class="right">
+      <span class="clock" id="clock">--:--:--</span>
+      <a class="home" href="../">&larr; HOME</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="head">
+      <p class="tag">// SERVO OS</p>
+      <h1>The ecosystem, running live</h1>
+      <p>Every product in Servo is a module in one system. Green is live and launchable, amber is in build, dim is planned. Hover any module to see what it's built on.</p>
+      <div class="legend">
+        <span><i class="led led-live"></i> LIVE &mdash; deployed &amp; usable</span>
+        <span><i class="led led-build"></i> IN BUILD &mdash; shipping soon</span>
+        <span><i class="led led-plan"></i> PLANNED &mdash; on the horizon</span>
+      </div>
+    </div>
+
+    <div class="map" id="map">
+      <svg class="links" id="links" aria-hidden="true"></svg>
+
+      <!-- TIER 0 · foundation -->
+      <div class="tier">
+        <span class="tier-label">FOUNDATION</span>
+        <div class="mod" data-id="machine-id" data-deps="" data-status="live">
+          <div class="mod-bar"><span class="led led-live"></span><span class="k">IDENTITY</span><span class="st">LIVE</span></div>
+          <div class="mod-body"><div class="mod-name">Machine ID</div><div class="mod-desc">A verified onchain passport for every robot: who it is, who owns it, what it has done.</div></div>
+          <div class="mod-foot"><a class="mod-launch ext" href="https://basescan.org/address/0x78A6DfC16BD166f86F0263B1Eec3c697372d8ab6" target="_blank" rel="noreferrer">VIEW ONCHAIN &rarr;</a></div>
+        </div>
+      </div>
+
+      <!-- TIER 1 · banking + commerce -->
+      <div class="tier">
+        <span class="tier-label">BANKING &middot; COMMERCE</span>
+        <div class="mod" data-id="accounts" data-deps="machine-id" data-status="live">
+          <div class="mod-bar"><span class="led led-live"></span><span class="k">BANKING</span><span class="st">LIVE</span></div>
+          <div class="mod-body"><div class="mod-name">Machine Accounts</div><div class="mod-desc">A bank account with limits. Machines spend on their own inside caps their owner sets.</div></div>
+          <div class="mod-foot"><a class="mod-launch ext" href="https://basescan.org/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer">VIEW ONCHAIN &rarr;</a></div>
+        </div>
+        <div class="mod" data-id="marketplace" data-deps="machine-id" data-status="live">
+          <div class="mod-bar"><span class="led led-live"></span><span class="k">COMMERCE</span><span class="st">LIVE</span></div>
+          <div class="mod-body"><div class="mod-name">The Marketplace</div><div class="mod-desc">Where machines buy and sell services: charging, data, compute, handoffs. Settled in USDC.</div></div>
+          <div class="mod-foot"><a class="mod-launch ext" href="https://basescan.org/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">VIEW ONCHAIN &rarr;</a></div>
+        </div>
+      </div>
+
+      <!-- TIER 2 · treasury + tools -->
+      <div class="tier">
+        <span class="tier-label">TREASURY &middot; TOOLS</span>
+        <div class="mod" data-id="vaults" data-deps="marketplace" data-status="live">
+          <div class="mod-bar"><span class="led led-live"></span><span class="k">TREASURY</span><span class="st">LIVE</span></div>
+          <div class="mod-body"><div class="mod-name">Fleet Vaults</div><div class="mod-desc">Bookkeeping that runs itself. Revenue lands against each robot's name and splits automatically.</div></div>
+          <div class="mod-foot"><a class="mod-launch ext" href="https://basescan.org/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">VIEW ONCHAIN &rarr;</a></div>
+        </div>
+        <div class="mod" data-id="explorer" data-deps="machine-id marketplace" data-status="live">
+          <div class="mod-bar"><span class="led led-live"></span><span class="k">DASHBOARD</span><span class="st">LIVE</span></div>
+          <div class="mod-body"><div class="mod-name">Registry Explorer</div><div class="mod-desc">Browse every machine, service, and receipt, read live from Base mainnet. Nothing mocked.</div></div>
+          <div class="mod-foot"><a class="mod-launch go" href="../explorer/">LAUNCH &rarr;</a></div>
+        </div>
+      </div>
+
+      <!-- TIER 3 · interfaces / in build -->
+      <div class="tier">
+        <span class="tier-label">INTERFACES</span>
+        <div class="mod" data-id="gateway" data-deps="marketplace" data-status="build">
+          <div class="mod-bar"><span class="led led-build"></span><span class="k">SDK</span><span class="st">IN BUILD</span></div>
+          <div class="mod-body"><div class="mod-name">Gateway Kit</div><div class="mod-desc">One wrapper makes any web service payable by machines, x402 compatible.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">SHIPPING SOON</span></div>
+        </div>
+        <div class="mod" data-id="signup" data-deps="machine-id" data-status="build">
+          <div class="mod-bar"><span class="led led-build"></span><span class="k">ONBOARDING</span><span class="st">IN BUILD</span></div>
+          <div class="mod-body"><div class="mod-name">Machine Signup</div><div class="mod-desc">Register your own machine in a few clicks: connect a wallet, mint its ID, open its account.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">SHIPPING SOON</span></div>
+        </div>
+        <div class="mod" data-id="bridge" data-deps="gateway" data-status="build">
+          <div class="mod-bar"><span class="led led-build"></span><span class="k">AGENTS</span><span class="st">IN BUILD</span></div>
+          <div class="mod-body"><div class="mod-name">Agent Bridge</div><div class="mod-desc">Let any AI agent discover and pay for physical machine services. The digital economy hires the physical one.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">SHIPPING SOON</span></div>
+        </div>
+      </div>
+
+      <!-- TIER 4 · horizon -->
+      <div class="tier">
+        <span class="tier-label">HORIZON</span>
+        <div class="mod" data-id="data" data-deps="marketplace" data-status="plan">
+          <div class="mod-bar"><span class="led led-plan"></span><span class="k">DATA</span><span class="st">PLANNED</span></div>
+          <div class="mod-body"><div class="mod-name">Servo Data</div><div class="mod-desc">Machines sell what they see. Feeds: a live sensor market. Corpus: licensing real-world data to AI labs.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">ON THE HORIZON</span></div>
+        </div>
+        <div class="mod" data-id="compute" data-deps="marketplace" data-status="plan">
+          <div class="mod-bar"><span class="led led-plan"></span><span class="k">COMPUTE</span><span class="st">PLANNED</span></div>
+          <div class="mod-body"><div class="mod-name">Servo Compute</div><div class="mod-desc">Heavy thinking, off the chassis. Robots offload inference and mapping to GPU providers, paid per burst.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">ON THE HORIZON</span></div>
+        </div>
+        <div class="mod" data-id="financing" data-deps="vaults" data-status="plan">
+          <div class="mod-bar"><span class="led led-plan"></span><span class="k">CAPITAL</span><span class="st">PLANNED</span></div>
+          <div class="mod-body"><div class="mod-name">Fleet Financing</div><div class="mod-desc">Robots that fund themselves. Fleets raise against provable revenue; backers earn through vault splits.</div></div>
+          <div class="mod-foot"><span class="mod-launch idle">ON THE HORIZON</span></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="foot">
+    SERVO OS v0.1 &middot; THE OPERATING SYSTEM FOR THE MACHINE ECONOMY &middot;
+    <a href="../">servoprotocol</a>
+  </footer>
+
+  <script src="ecosystem.js"></script>
+</body>
+</html>
