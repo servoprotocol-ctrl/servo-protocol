@@ -27,5 +27,6 @@ transferable to a Safe later). Protocol fee: 1% (100 bps), hard cap 5%.
 - [x] Wire live addresses into the marketing site's "LIVE" badges
 - [x] Register the first machines and a demo service (genesis dogfood)
 - [x] Build the Registry Explorer (`site/explorer`, reads live from Base)
-- [ ] Run the first purchase (needs ~$1 USDC in the bot account) -> first receipt + P&L
+- [x] Run the first purchases -> the bot autonomously bought 3 charging sessions
+      (3 receipts, 0.15 USDC volume, charger P&L 0.1485 USDC across 3 jobs)
 - [ ] Migrate governance + treasury to a Safe before inviting outside fleets
