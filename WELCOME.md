@@ -1,6 +1,6 @@
 # Welcome to Servo Protocol 👋
 
-**Servo is money for robots.**
+**Servo is money for robots. The robotics RWA on Robinhood Chain.**
 
 Robots are starting to do real jobs. They deliver food, clean floors, carry boxes, and inspect buildings. But there is a problem: robots cannot handle money the way people do. They have no wallet, no bank card, and no name the world can trust.
 

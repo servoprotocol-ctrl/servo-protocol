@@ -1,8 +1,8 @@
 # Servo Protocol
 
-**The financial layer for the machine economy, built on Robinhood Chain.**
+**The robotics RWA on Robinhood Chain. The financial layer for the machine economy.**
 
-Robots are becoming economic actors: they earn for tasks, and they pay for charging, data, maps, compute, and repairs. Servo Protocol is the identity, banking, and commerce infrastructure that makes that possible, with USDG settlement and x402 compatibility from day one.
+Robots are real-world assets that work and earn. They earn for tasks, and they pay for charging, data, maps, compute, and repairs. Servo Protocol is the identity, banking, and commerce infrastructure that makes that possible, with USDG settlement over HTTP 402 from day one.
 
 ## The ecosystem
 
