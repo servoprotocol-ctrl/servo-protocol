@@ -105,7 +105,7 @@ function receiptRow(r) {
     <td>${a.providerMid > 0n ? mid(a.providerMid) : "—"}</td>
     <td class="amt">${usdc(a.amount)} USDG</td>
     <td>${usdc(a.fee)} USDG</td>
-    <td>${a.external_ ? '<span class="ext">x402</span>' : "onchain"}</td>
+    <td>${a.external_ ? '<span class="ext">gateway</span>' : "onchain"}</td>
   </tr>`;
 }
 

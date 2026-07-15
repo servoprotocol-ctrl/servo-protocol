@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Servo Protocol | The Financial Layer for the Machine Economy</title>
-  <meta name="description" content="Servo gives every robot a verified identity, a policy-guarded account, and a place to trade. Built on Robinhood Chain. Settled in USDG. Compatible with x402." />
+  <meta name="description" content="Servo gives every robot a verified identity, a policy-guarded account, and a place to trade. Built on Robinhood Chain. Settled in USDG. Pay-per-request over HTTP 402." />
   <meta name="theme-color" content="#07100b" />
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -288,7 +288,7 @@
           <div class="svc-rows">
             <div><span>PROVIDER</span><span>MID-0117</span></div>
             <div><span>UNITS SOLD</span><span>96,304</span></div>
-            <div><span>SETTLEMENT</span><span>x402 ✓</span></div>
+            <div><span>SETTLEMENT</span><span>GATEWAY ✓</span></div>
           </div>
         </div>
         <div class="svc-card">
@@ -417,11 +417,11 @@
           <div class="roadmap-phase"><span class="phase-dot dot-build"></span>IN BUILD</div>
           <div class="rm-item rm-static">
             <div class="rm-name">GATEWAY KIT</div>
-            <p>One wrapper makes any web service payable by machines, x402 compatible. Drop it in front of an endpoint and robots can pay.</p>
+            <p>One wrapper makes any web service payable by machines over HTTP 402. Drop it in front of an endpoint and robots can pay.</p>
           </div>
           <div class="rm-item rm-static">
             <div class="rm-name">AGENT BRIDGE</div>
-            <p>Let any AI agent discover and pay for physical machine services over x402. The digital economy hires the physical one.</p>
+            <p>Let any AI agent discover and pay for physical machine services with a single HTTP request. The digital economy hires the physical one.</p>
           </div>
         </div>
 
@@ -555,8 +555,8 @@
           <p>The envelope. A compromised machine key is limited to the daily cap on tokens the operator enabled, against counterparties the allowlist admits. Worst case is one day's cap, then the key is revoked and rebound.</p>
         </details>
         <details>
-          <summary>Does Servo work with x402?</summary>
-          <p>Yes, natively. Services settle on two rails: direct onchain purchases and x402 gateway payments mirrored by authorized facilitators. Both produce the same canonical receipt stream.</p>
+          <summary>How does a machine pay for a service?</summary>
+          <p>Over plain HTTP. A robot hits a paywalled endpoint, gets an HTTP 402 with machine-readable terms, pays from its own account, and retries with proof. Payments settle on two rails, direct onchain purchases and gateway payments mirrored by authorized facilitators, both producing the same canonical receipt stream.</p>
         </details>
         <details>
           <summary>Which chain, which currency?</summary>
