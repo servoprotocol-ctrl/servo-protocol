@@ -199,6 +199,12 @@ main, .nav, .footer { position: relative; z-index: 1; }
   font-size: 18px;
   color: var(--ink-dim);
 }
+/* RWA tagline: a cooler, brighter emerald so it stands apart from the lime accent */
+.rwa {
+  color: #2fffa3;
+  font-weight: 600;
+  text-shadow: 0 0 14px rgba(47, 255, 163, 0.45);
+}
 
 .hero-ctas { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
 
