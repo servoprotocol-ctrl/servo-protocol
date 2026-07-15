@@ -13,10 +13,10 @@ import {MachineAccount} from "../src/MachineAccount.sol";
 ///   MACHINE_PK=<demo session key> forge script script/Dogfood.s.sol \
 ///     --rpc-url robinhood --account servo-deployer --broadcast
 contract Dogfood is Script {
-    // Robinhood Chain deployment (see DEPLOYMENTS.md). REG/SVC/FAC are filled on redeploy.
-    MachineRegistry constant REG = MachineRegistry(0x78A6DfC16BD166f86F0263B1Eec3c697372d8ab6);
-    ServiceRegistry constant SVC = ServiceRegistry(0x7896Dba19A72278d66C9f0640262C511D24CB871);
-    MachineAccountFactory constant FAC = MachineAccountFactory(0x24f2f3536F65CA2AE36136E3B217a390251a1a90);
+    // Robinhood Chain deployment (chain 4663, see DEPLOYMENTS.md).
+    MachineRegistry constant REG = MachineRegistry(0x7896Dba19A72278d66C9f0640262C511D24CB871);
+    ServiceRegistry constant SVC = ServiceRegistry(0x24f2f3536F65CA2AE36136E3B217a390251a1a90);
+    MachineAccountFactory constant FAC = MachineAccountFactory(0x6458665705D496b8ec84d4C4e98e1B23f07512B4);
     // USDG (Global Dollar) — Robinhood Chain's canonical stablecoin.
     address constant USDG = 0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168;
 

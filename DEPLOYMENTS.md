@@ -13,21 +13,27 @@ canonical stablecoin.
 - USDG (settlement): `0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168`
 - WETH: `0x0Bd7D308f8E1639FAb988df18A8011f41EAcAD73`
 
-### Status: pending redeploy
-The core is built, security-reviewed, and passing 31 tests. To go live it must be
-redeployed on Robinhood Chain, which requires the deployer funded with a little ETH
-on chain 4663 (plus some USDG to re-run the genesis dogfood).
+### Live contracts (verified on Blockscout)
 
-Deployer: `0x08F3b58CACDd16Bc6B71cAfC16b7886F3205E27d` (keystore `servo-deployer`).
-Governance + treasury: deployer EOA for launch (Option A; migrate to a Safe later).
+| Contract | Address |
+|---|---|
+| MachineRegistry | [`0x7896Dba19A72278d66C9f0640262C511D24CB871`](https://robinhoodchain.blockscout.com/address/0x7896Dba19A72278d66C9f0640262C511D24CB871) |
+| ServiceRegistry | [`0x24f2f3536F65CA2AE36136E3B217a390251a1a90`](https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90) |
+| MachineAccountFactory | [`0x6458665705D496b8ec84d4C4e98e1B23f07512B4`](https://robinhoodchain.blockscout.com/address/0x6458665705D496b8ec84d4C4e98e1B23f07512B4) |
 
-### Redeploy checklist
-- [ ] Bridge ETH to the deployer on Robinhood Chain (gas)
-- [ ] Confirm USDG decimals via `cast call <USDG> "decimals()(uint8)"` before dogfood
-- [ ] `forge script script/Deploy.s.sol --rpc-url robinhood --account servo-deployer --broadcast`
-- [ ] Verify all three contracts on Blockscout
-- [ ] Wire the new addresses into the site (`index.html` deployed section + roadmap, `explorer/explorer.js`, `ecosystem/index.html`) and re-enable the Explorer
-- [ ] Re-run the genesis dogfood in USDG (`script/Dogfood.s.sol`)
+- Governance (owner): `0x08F3b58CACDd16Bc6B71cAfC16b7886F3205E27d` (deployer EOA, Option A)
+- Treasury (fees): same. Protocol fee 1% (100 bps), hard cap 5%.
+- ServiceRegistry authorized as commerce recorder: yes
+- USDG confirmed 6 decimals.
+
+### Genesis dogfood (live on Robinhood Chain)
+- MID-0001 — charging station (provider)
+- MID-0002 — delivery bot (buyer), MachineAccount `0x23FDEfF1545494998bbe3238b6030689f7A1470C`, session key bound, 5 USDG/day cap
+- Service #1 — CHARGING, 0.05 USDG/session, provider MID-0001
+- Browse it live at `/explorer`
+
+### Remaining
+- [ ] Fund the bot account with USDG -> run the first purchases (receipts + P&L)
 - [ ] Migrate governance + treasury to a Safe before inviting outside fleets
 
 ---

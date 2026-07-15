@@ -9,12 +9,11 @@ import {
 } from "https://esm.sh/viem@2.21.0";
 
 // ---------------------------------------------------------------- config
-// Robinhood Chain (id 4663). REGISTRY/SERVICES/DEPLOY_BLOCK are filled the moment
-// the core deploys to Robinhood Chain; until then the Explorer shows a deploying state.
+// Robinhood Chain (id 4663).
 const RPC = "https://rpc.mainnet.chain.robinhood.com";
-const REGISTRY = "";
-const SERVICES = "";
-const DEPLOY_BLOCK = 0n;
+const REGISTRY = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
+const SERVICES = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90";
+const DEPLOY_BLOCK = 10126181n;
 const SCAN = "https://robinhoodchain.blockscout.com/address/";
 
 document.getElementById("scanReg").href = SERVICES ? SCAN + SERVICES : "https://robinhoodchain.blockscout.com";
