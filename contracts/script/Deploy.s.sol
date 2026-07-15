@@ -6,7 +6,7 @@ import {MachineRegistry} from "../src/MachineRegistry.sol";
 import {ServiceRegistry} from "../src/ServiceRegistry.sol";
 import {MachineAccountFactory} from "../src/MachineAccountFactory.sol";
 
-/// @notice Deploys the Servo core to Base / Base Sepolia.
+/// @notice Deploys the Servo core to Robinhood Chain / Robinhood Chain testnet.
 ///
 ///   forge script script/Deploy.s.sol --rpc-url base_sepolia --broadcast \
 ///     --account <keystore> [--verify]

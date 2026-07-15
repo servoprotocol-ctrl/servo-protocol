@@ -33,7 +33,7 @@ contract MachineEconomyTest is Test {
     FleetVault chargerVault;
     uint256 serviceId;
 
-    uint96 constant CHARGE_PRICE = 5e6; // 5 USDC per session
+    uint96 constant CHARGE_PRICE = 5e6; // 5 USDG per session
     bytes32 constant CATEGORY_CHARGING = keccak256("CHARGING");
 
     function setUp() public {
@@ -55,7 +55,7 @@ contract MachineEconomyTest is Test {
         );
         registry.bindMachineKey(botMid, botKey, _bindingSig(botMid, operator, botPk, botKey));
         botAccount = MachineAccount(payable(factory.createAccount(botMid)));
-        botAccount.setDailyCap(address(usdc), 20e6); // 20 USDC/day
+        botAccount.setDailyCap(address(usdc), 20e6); // 20 USDG/day
         vm.stopPrank();
         usdc.mint(address(botAccount), 100e6);
 
@@ -108,7 +108,7 @@ contract MachineEconomyTest is Test {
         vm.prank(botKey);
         botAccount.purchase(serviceId);
 
-        // Payment left the robot's account: price 5 USDC, 1% protocol fee.
+        // Payment left the robot's account: price 5 USDG, 1% protocol fee.
         assertEq(usdc.balanceOf(address(botAccount)), 95e6);
         assertEq(usdc.balanceOf(address(chargerVault)), 4.95e6);
         assertEq(usdc.balanceOf(treasury), 0.05e6);
@@ -138,7 +138,7 @@ contract MachineEconomyTest is Test {
     }
 
     function test_e2e_attributedDeposit_thenClaims() public {
-        // A gateway (any payer) attributes 10 USDC of revenue to the charger.
+        // A gateway (any payer) attributes 10 USDG of revenue to the charger.
         address gateway = makeAddr("gateway");
         usdc.mint(gateway, 10e6);
         vm.startPrank(gateway);
@@ -162,7 +162,7 @@ contract MachineEconomyTest is Test {
     // ------------------------------------------------------ policy envelope
 
     function test_policy_dailyCapEnforced() public {
-        // Cap is 20 USDC/day; each session is 5 USDC. Four succeed, fifth fails.
+        // Cap is 20 USDG/day; each session is 5 USDG. Four succeed, fifth fails.
         vm.startPrank(botKey);
         for (uint256 i = 0; i < 4; i++) {
             botAccount.purchase(serviceId);

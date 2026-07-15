@@ -7,17 +7,18 @@ import {ServiceRegistry} from "../src/ServiceRegistry.sol";
 import {MachineAccountFactory} from "../src/MachineAccountFactory.sol";
 import {MachineAccount} from "../src/MachineAccount.sol";
 
-/// @notice Seeds the live Base mainnet deployment with the first machines and the
-///         first service (the "genesis" dogfood). Gas-only: no USDC required.
+/// @notice Seeds the live Robinhood Chain deployment with the first machines and the
+///         first service (the "genesis" dogfood). Gas-only: no USDG required.
 ///
 ///   MACHINE_PK=<demo session key> forge script script/Dogfood.s.sol \
-///     --rpc-url base --account servo-deployer --broadcast
+///     --rpc-url robinhood --account servo-deployer --broadcast
 contract Dogfood is Script {
-    // Base mainnet deployment (see DEPLOYMENTS.md).
+    // Robinhood Chain deployment (see DEPLOYMENTS.md). REG/SVC/FAC are filled on redeploy.
     MachineRegistry constant REG = MachineRegistry(0x78A6DfC16BD166f86F0263B1Eec3c697372d8ab6);
     ServiceRegistry constant SVC = ServiceRegistry(0x7896Dba19A72278d66C9f0640262C511D24CB871);
     MachineAccountFactory constant FAC = MachineAccountFactory(0x24f2f3536F65CA2AE36136E3B217a390251a1a90);
-    address constant USDC = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913;
+    // USDG (Global Dollar) — Robinhood Chain's canonical stablecoin.
+    address constant USDG = 0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168;
 
     function run() external {
         address operator = msg.sender;
@@ -47,15 +48,15 @@ contract Dogfood is Script {
         bytes memory sig = _bindingSig(machinePk, botMid, operator, machineKey);
         REG.bindMachineKey(botMid, machineKey, sig);
 
-        // Operator sets the policy envelope: 5 USDC/day spend cap.
-        MachineAccount(payable(botAccount)).setDailyCap(USDC, 5e6);
+        // Operator sets the policy envelope: 5 USDG/day spend cap.
+        MachineAccount(payable(botAccount)).setDailyCap(USDG, 5e6);
 
-        // --- Genesis service: charging, sold by the station, priced in USDC.
+        // --- Genesis service: charging, sold by the station, priced in USDG.
         uint256 serviceId = SVC.registerService(
             chargerMid,
             operator, // payTo (revenue destination) for this first listing
-            USDC,
-            0.05e6, // 0.05 USDC per session
+            USDG,
+            0.05e6, // 0.05 USDG per session
             keccak256("CHARGING"),
             false, // direct settlement (still records provider P&L)
             "https://servoprotocol.xyz/svc/1"

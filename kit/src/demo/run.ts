@@ -1,11 +1,11 @@
 /**
- * Servo end-to-end demo: a complete machine economy on a local Base fork.
+ * Servo end-to-end demo: a complete machine economy on a local EVM fork.
  *
- *   1. Boots anvil and deploys the Servo core + mock USDC.
+ *   1. Boots anvil and deploys the Servo core + mock USDG.
  *   2. ChargeCo registers a charging station (machine identity + fleet vault
  *      with a 70/30 operator/financier split) and lists a charging service.
  *   3. An operator registers a delivery robot, binds its hardware session key,
- *      opens its MachineAccount, funds it, and sets a 20 USDC/day policy cap.
+ *      opens its MachineAccount, funds it, and sets a 20 USDG/day policy cap.
  *   4. A paywall gateway (x402-style HTTP 402) fronts the charging service.
  *   5. The robot autonomously buys charging sessions over HTTP until its
  *      policy envelope blocks overspend.
@@ -33,8 +33,8 @@ import { MachineAgent } from "../agent.js";
 
 const RPC = "http://127.0.0.1:8547";
 const GATEWAY_PORT = 4021;
-const USDC = (n: string) => BigInt(Math.round(parseFloat(n) * 1e6));
-const fmt = (n: bigint) => `${formatUnits(n, 6)} USDC`;
+const USDG = (n: string) => BigInt(Math.round(parseFloat(n) * 1e6));
+const fmt = (n: bigint) => `${formatUnits(n, 6)} USDG`;
 
 // Anvil's well-known dev accounts.
 const KEYS = {
@@ -114,7 +114,7 @@ async function main() {
 
   try {
     // ------------------------------------------------------------- deploy
-    console.log("[2/6] deploying Servo core to local Base fork...");
+    console.log("[2/6] deploying Servo core to local EVM fork...");
     const registry = await deploy(gov, "MachineRegistry", [gov.account!.address]);
     const services = await deploy(gov, "ServiceRegistry", [registry, gov.account!.address, treasuryAddr]);
     const factory = await deploy(gov, "MachineAccountFactory", [registry, services]);
@@ -124,7 +124,7 @@ async function main() {
     console.log(`      MachineRegistry       ${registry}`);
     console.log(`      ServiceRegistry       ${services}`);
     console.log(`      MachineAccountFactory ${factory}`);
-    console.log(`      USDC (mock)           ${usdc}`);
+    console.log(`      USDG (mock)           ${usdc}`);
 
     // -------------------------------------------- charging provider setup
     console.log("[3/6] ChargeCo: registering charging station + fleet vault + service listing...");
@@ -151,12 +151,12 @@ async function main() {
       chargerMid,
       vault,
       usdc,
-      USDC("5"), // 5 USDC per charging session
+      USDG("5"), // 5 USDG per charging session
       keccak256(toBytes("CHARGING")),
       true, // vault settlement: attribute revenue to the charger's P&L
       `http://127.0.0.1:${GATEWAY_PORT}/charge`,
     ]);
-    console.log(`      charger MID ${chargerMid}, vault ${vault}, service #${serviceId} @ 5 USDC/session`);
+    console.log(`      charger MID ${chargerMid}, vault ${vault}, service #${serviceId} @ 5 USDG/session`);
 
     // ------------------------------------------------- delivery bot setup
     console.log("[4/6] Operator: registering delivery robot, binding key, funding account...");
@@ -184,8 +184,8 @@ async function main() {
     await write(operator, factory, "MachineAccountFactory", "createAccount", [botMid]);
     const botAccount = await read<Hex>(factory, "MachineAccountFactory", "accountOf", [botMid]);
 
-    await write(gov, usdc, "MockUSDC", "mint", [botAccount, USDC("100")]);
-    await write(operator, botAccount, "MachineAccount", "setDailyCap", [usdc, USDC("20")]);
+    await write(gov, usdc, "MockUSDC", "mint", [botAccount, USDG("100")]);
+    await write(operator, botAccount, "MachineAccount", "setDailyCap", [usdc, USDG("20")]);
     // Gas for the device key (mainnet: 4337 paymaster; local demo: small ETH grant).
     const gasHash = await operator.sendTransaction({
       account: operator.account!,
@@ -194,7 +194,7 @@ async function main() {
       value: parseEther("1"),
     });
     await pub.waitForTransactionReceipt({ hash: gasHash });
-    console.log(`      bot MID ${botMid}, account ${botAccount}, funded 100 USDC, policy cap 20 USDC/day`);
+    console.log(`      bot MID ${botMid}, account ${botAccount}, funded 100 USDG, policy cap 20 USDG/day`);
 
     // -------------------------------------------------------- gateway up
     console.log("[5/6] starting x402-style paywall gateway for the charging service...");
@@ -223,10 +223,10 @@ async function main() {
     for (let i = 1; i <= 4; i++) {
       const { resource, paidTx } = await agent.fetchPaid(`http://127.0.0.1:${GATEWAY_PORT}/charge`);
       const r = resource as { session: number; bay: string; kwhAuthorized: number };
-      console.log(`      session ${r.session}: charged at bay ${r.bay} (${r.kwhAuthorized} kWh) | paid 5 USDC | tx ${paidTx?.slice(0, 18)}...`);
+      console.log(`      session ${r.session}: charged at bay ${r.bay} (${r.kwhAuthorized} kWh) | paid 5 USDG | tx ${paidTx?.slice(0, 18)}...`);
     }
 
-    console.log("\n      5th session of the day (would exceed the 20 USDC policy cap):");
+    console.log("\n      5th session of the day (would exceed the 20 USDG policy cap):");
     try {
       await agent.fetchPaid(`http://127.0.0.1:${GATEWAY_PORT}/charge`);
       console.log("      UNEXPECTED: purchase succeeded");

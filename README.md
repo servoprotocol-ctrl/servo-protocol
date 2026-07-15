@@ -1,8 +1,8 @@
 # Servo Protocol
 
-**The financial layer for the machine economy, built on Base.**
+**The financial layer for the machine economy, built on Robinhood Chain.**
 
-Robots are becoming economic actors: they earn for tasks, and they pay for charging, data, maps, compute, and repairs. Servo Protocol is the identity, banking, and commerce infrastructure that makes that possible, with USDC settlement and x402 compatibility from day one.
+Robots are becoming economic actors: they earn for tasks, and they pay for charging, data, maps, compute, and repairs. Servo Protocol is the identity, banking, and commerce infrastructure that makes that possible, with USDG settlement and x402 compatibility from day one.
 
 ## The ecosystem
 
@@ -42,7 +42,7 @@ The **Service Registry** is the discovery and settlement layer for machine-to-ma
 
 ### 4. Fleet treasuries
 
-**Fleet Vaults** hold USDC revenue with per-machine attribution: the verifiable "robot P&L." Distributions flow to beneficiaries (operator, financiers, crew) by fixed basis-point splits with pull-based claims. This earnings history is the dataset that fleet financing and insurance underwriting price against in later phases.
+**Fleet Vaults** hold USDG revenue with per-machine attribution: the verifiable "robot P&L." Distributions flow to beneficiaries (operator, financiers, crew) by fixed basis-point splits with pull-based claims. This earnings history is the dataset that fleet financing and insurance underwriting price against in later phases.
 
 ## Repository layout
 
@@ -56,7 +56,7 @@ servo-protocol/
       ServiceRegistry.sol        commerce discovery + receipts, vault settlement
       FleetVault.sol             fleet treasury + robot P&L
     test/           30 tests incl. end-to-end economy flows
-    script/         Base / Base Sepolia deployment
+    script/         Robinhood Chain / Robinhood Chain Sepolia deployment
   kit/              TypeScript reference stack
     src/
       gateway.ts    x402-style HTTP 402 paywall with onchain receipt verification
@@ -75,15 +75,15 @@ forge build
 forge test
 ```
 
-Deploy to Base Sepolia:
+Deploy to Robinhood Chain Sepolia:
 
 ```bash
 forge script script/Deploy.s.sol --rpc-url base_sepolia --broadcast --account <keystore>
 ```
 
-## Why Base
+## Why Robinhood Chain
 
-- **x402**: 100M+ agentic payments already settled on Base; Servo gives that rail its machine-side ledger.
-- **USDC native**: machine commerce needs a stable unit of account.
-- **Smart wallet sub-accounts and Flashblocks**: sub-second settlement UX for physical-world interactions.
-- **The gap**: robotics-crypto lives on Solana and bespoke L1s today; Base has no flagship machine-economy protocol.
+- **Onchain finance, natively**: Robinhood Chain (an Arbitrum-based Ethereum L2) is purpose-built for onchain markets, tokenized assets, and 24/7 settlement, the right home for a machine economy that pays and gets paid.
+- **USDG settlement**: machine commerce needs a stable unit of account; USDG is the chain's canonical stablecoin.
+- **EVM-standard**: the same Solidity contracts and tooling run unchanged, so identity, accounts, and receipts port directly.
+- **The gap**: robotics-crypto lives on Solana and bespoke L1s today; Robinhood Chain has no flagship machine-economy protocol.

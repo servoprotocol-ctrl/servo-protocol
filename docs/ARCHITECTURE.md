@@ -34,7 +34,7 @@ MachineRegistry (ERC-721, EIP-712)
   |
   |--> FleetVault (per fleet)
           membership: operator-enrolled MIDs (must own them in registry)
-          deposit(mid, amount): USDC in, attributed to machine
+          deposit(mid, amount): USDG in, attributed to machine
           distribute()/claim(): bps splits, last beneficiary absorbs dust
 ```
 
@@ -71,6 +71,6 @@ For pure-x402 offchain settlements, the gateway holds a facilitator key and mirr
 
 ## Phase plan
 
-- **Phase 1 (this repo):** identity, accounts, commerce, vaults on Base Sepolia, then Base mainnet.
+- **Phase 1 (this repo):** identity, accounts, commerce, vaults on Robinhood Chain Sepolia, then Robinhood Chain.
 - **Phase 2:** x402 gateway reference implementation (TypeScript), indexer + registry explorer app, fleet dashboard, operator SDK.
 - **Phase 3:** staked attestation network, insurance market (uptime and liability underwriting against service records), fleet financing vaults (revenue-share offerings via batch auction).

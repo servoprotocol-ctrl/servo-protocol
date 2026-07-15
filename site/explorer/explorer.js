@@ -1,4 +1,4 @@
-// SERVO REGISTRY EXPLORER — reads the live protocol state from Base mainnet.
+// SERVO REGISTRY EXPLORER — reads the live protocol state from Robinhood Chain.
 import {
   createPublicClient,
   http,
@@ -9,19 +9,20 @@ import {
 } from "https://esm.sh/viem@2.21.0";
 
 // ---------------------------------------------------------------- config
-const RPC = "https://mainnet.base.org";
-const REGISTRY = "0x78A6DfC16BD166f86F0263B1Eec3c697372d8ab6";
-const SERVICES = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
-const DEPLOY_BLOCK = 48235196n;
-const SCAN = "https://basescan.org/address/";
+// Robinhood Chain (id 4663). REGISTRY/SERVICES/DEPLOY_BLOCK are filled the moment
+// the core deploys to Robinhood Chain; until then the Explorer shows a deploying state.
+const RPC = "https://rpc.mainnet.chain.robinhood.com";
+const REGISTRY = "";
+const SERVICES = "";
+const DEPLOY_BLOCK = 0n;
+const SCAN = "https://robinhoodchain.blockscout.com/address/";
 
-document.getElementById("scanReg").href = SCAN + SERVICES;
+document.getElementById("scanReg").href = SERVICES ? SCAN + SERVICES : "https://robinhoodchain.blockscout.com";
 
-// Batch reads through Multicall3 + JSON-RPC batching, with retry/backoff, so a
-// full refresh is only a couple of HTTP requests and survives rate limits.
+// JSON-RPC batching with retry/backoff. (Multicall batching is enabled once
+// Multicall3 is confirmed on Robinhood Chain.)
 const client = createPublicClient({
   transport: http(RPC, { batch: true, retryCount: 4, retryDelay: 700 }),
-  batch: { multicall: true },
 });
 
 const registryAbi = parseAbi([
@@ -76,7 +77,7 @@ function machineCard(id, m, owner) {
       <div><span>OPERATOR</span><span>${scanLink(owner, short(owner))}</span></div>
       <div><span>SESSION KEY</span><span>${m.machineKey && m.machineKey !== "0x0000000000000000000000000000000000000000" ? '<span class="accent">BOUND ✓</span>' : "—"}</span></div>
       <div><span>JOBS</span><span>${m.jobsAttested}</span></div>
-      <div><span>REVENUE</span><span>${usdc(m.revenueAttested)} USDC</span></div>
+      <div><span>REVENUE</span><span>${usdc(m.revenueAttested)} USDG</span></div>
       <div><span>REGISTERED</span><span>${ago(m.registeredAt)}</span></div>
     </div>
   </div>`;
@@ -86,12 +87,12 @@ function serviceCard(id, s) {
   return `<div class="card">
     <div class="card-head"><span class="card-cat">${cat(s.category)}</span>
       <span class="badge ${s.active ? "b-active" : "b-paused"}">${s.active ? "ACTIVE" : "INACTIVE"}</span></div>
-    <div class="card-id" style="font-size:22px;margin-bottom:14px">${usdc(s.price)} <span style="font-size:11px;color:var(--ink-faint)">USDC</span></div>
+    <div class="card-id" style="font-size:22px;margin-bottom:14px">${usdc(s.price)} <span style="font-size:11px;color:var(--ink-faint)">USDG</span></div>
     <div class="card-rows">
       <div><span>SERVICE</span><span>SVC-${String(id).padStart(3, "0")}</span></div>
       <div><span>PROVIDER</span><span>${s.providerMid > 0n ? mid(s.providerMid) : "—"}</span></div>
       <div><span>UNITS SOLD</span><span>${s.unitsSold}</span></div>
-      <div><span>GROSS</span><span>${usdc(s.grossRevenue)} USDC</span></div>
+      <div><span>GROSS</span><span>${usdc(s.grossRevenue)} USDG</span></div>
       <div><span>SETTLEMENT</span><span>${s.vaultSettlement ? "VAULT" : "DIRECT"}</span></div>
     </div>
   </div>`;
@@ -103,8 +104,8 @@ function receiptRow(r) {
     <td>${scanLink(r.transactionHash, "RCPT " + r.transactionHash.slice(0, 8))}</td>
     <td>${a.buyerMid > 0n ? mid(a.buyerMid) : "external"}</td>
     <td>${a.providerMid > 0n ? mid(a.providerMid) : "—"}</td>
-    <td class="amt">${usdc(a.amount)} USDC</td>
-    <td>${usdc(a.fee)} USDC</td>
+    <td class="amt">${usdc(a.amount)} USDG</td>
+    <td>${usdc(a.fee)} USDG</td>
     <td>${a.external_ ? '<span class="ext">x402</span>' : "onchain"}</td>
   </tr>`;
 }
@@ -135,8 +136,17 @@ async function fetchReceipts() {
 // ---------------------------------------------------------------- load
 async function load() {
   const btn = $("refreshBtn");
+  // Pre-deployment: no contracts on Robinhood Chain yet — show a deploying state.
+  if (!REGISTRY || !SERVICES) {
+    $("updated").textContent = "deploying to Robinhood Chain";
+    const msg = '<div class="empty">Deploying to Robinhood Chain. Machines, services, and receipts appear here live the moment the core lands onchain.</div>';
+    $("machines").innerHTML = msg;
+    $("services").innerHTML = msg;
+    $("receiptsWrap").innerHTML = msg;
+    return;
+  }
   btn.disabled = true;
-  $("updated").textContent = "reading base mainnet…";
+  $("updated").textContent = "reading Robinhood Chain…";
   try {
     const [nextMid, nextSvc] = await Promise.all([
       client.readContract({ address: REGISTRY, abi: registryAbi, functionName: "nextMid" }),

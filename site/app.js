@@ -3,16 +3,16 @@
 // ------------------------------------------------------------ receipt ticker
 // Rendered twice so the CSS -50% translate loops seamlessly.
 const RECEIPTS = [
-  "RCPT#0492 | MID-0002 -> MID-0001 | <b>CHARGING</b> | 5.00 USDC | bay A-07 | settled",
-  "RCPT#0493 | MID-0117 -> MID-0033 | <b>COMPUTE</b> | 1.20 USDC | burst 9ms | settled",
-  "RCPT#0494 | MID-0021 -> MID-0117 | <b>MAP_DATA</b> | 0.35 USDC | tile 88:41 | settled",
-  "RCPT#0495 | MID-0002 -> MID-0090 | <b>TOLL</b> | 0.85 USDC | route 7 | settled",
-  "RCPT#0496 | MID-0033 -> MID-0001 | <b>CHARGING</b> | 5.00 USDC | bay C-02 | settled",
-  "RCPT#0497 | MID-0090 -> MID-0117 | <b>SENSOR_FEED</b> | 0.12 USDC | lidar 4s | settled",
-  "RCPT#0498 | MID-0017 -> MID-0044 | <b>DOCKING</b> | 2.10 USDC | port 12 | settled",
+  "RCPT#0492 | MID-0002 -> MID-0001 | <b>CHARGING</b> | 5.00 USDG | bay A-07 | settled",
+  "RCPT#0493 | MID-0117 -> MID-0033 | <b>COMPUTE</b> | 1.20 USDG | burst 9ms | settled",
+  "RCPT#0494 | MID-0021 -> MID-0117 | <b>MAP_DATA</b> | 0.35 USDG | tile 88:41 | settled",
+  "RCPT#0495 | MID-0002 -> MID-0090 | <b>TOLL</b> | 0.85 USDG | route 7 | settled",
+  "RCPT#0496 | MID-0033 -> MID-0001 | <b>CHARGING</b> | 5.00 USDG | bay C-02 | settled",
+  "RCPT#0497 | MID-0090 -> MID-0117 | <b>SENSOR_FEED</b> | 0.12 USDG | lidar 4s | settled",
+  "RCPT#0498 | MID-0017 -> MID-0044 | <b>DOCKING</b> | 2.10 USDG | port 12 | settled",
   "TX DENIED | MID-0002 | DailyCapExceeded | attempted 5.00 | remaining 0.00",
-  "RCPT#0499 | MID-0044 -> MID-0001 | <b>CHARGING</b> | 5.00 USDC | bay A-03 | settled",
-  "RCPT#0500 | MID-0117 -> MID-0021 | <b>TASK_HANDOFF</b> | 3.40 USDC | pkg 7781 | settled",
+  "RCPT#0499 | MID-0044 -> MID-0001 | <b>CHARGING</b> | 5.00 USDG | bay A-03 | settled",
+  "RCPT#0500 | MID-0117 -> MID-0021 | <b>TASK_HANDOFF</b> | 3.40 USDG | pkg 7781 | settled",
 ];
 
 const track = document.getElementById("tickerTrack");
@@ -119,7 +119,7 @@ if (simSvg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         const li = document.createElement("li");
         li.innerHTML =
           "RCPT#0" + rcpt++ + " | " + SIM_NODES[t.from].mid + " → " + SIM_NODES[t.to].mid +
-          " | <b>" + t.svc + "</b> | <span class='log-amt'>" + t.amt + " USDC</span> | settled";
+          " | <b>" + t.svc + "</b> | <span class='log-amt'>" + t.amt + " USDG</span> | settled";
         log.prepend(li);
         while (log.children.length > 6) log.removeChild(log.lastChild);
       }

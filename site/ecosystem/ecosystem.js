@@ -10,7 +10,7 @@ const BOOT_LINES = [
   "SERVO OS v0.1",
   "",
   "> mounting machine registry .......... <ok>OK</ok>",
-  "> connecting to base mainnet ......... <ok>OK</ok>",
+  "> connecting to robinhood chain ...... <ok>OK</ok>",
   "> loading modules ................... 11 found",
   "> 5 live &middot; 3 in build &middot; 3 planned",
 ];

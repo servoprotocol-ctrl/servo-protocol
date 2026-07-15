@@ -14,7 +14,7 @@ import {FleetVault} from "./FleetVault.sol";
 ///         services that machines buy and sell, such as charging bays, map and
 ///         route data, compute bursts, sensor feeds, and task handoffs.
 ///
-///         Services are priced in an ERC-20 (canonically USDC on Base) and can be
+///         Services are priced in an ERC-20 (canonically USDG on Robinhood Chain) and can be
 ///         settled two ways:
 ///
 ///           1. Onchain: `purchase` pulls payment from the buyer (typically a
