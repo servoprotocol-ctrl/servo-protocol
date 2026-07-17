@@ -61,6 +61,30 @@ Robinhood Chain deployment above.
   - LIVE: a real buyer paid 5 USDG for 10 shares (10%) of the charger; capital to operator, buyer now earns 10% of its income.
 - Wired into the Servo App (/app): Sell shares (create offering + fund), Invest (browse + buy).
 
+## Stock Rewards (Robinhood Chain) — LIVE 2026-07-17
+
+Earn tokenized stock for using the marketplace: half the 1% protocol fee on every
+settled trade becomes a buyer dividend, claimable as NVDA via Uniswap v4.
+
+| Contract | Address |
+|---|---|
+| StockRewards | [`0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7`](https://robinhoodchain.blockscout.com/address/0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7) (verified) |
+| UniswapV4SwapAdapter | [`0x4F6A5Ac90a6D1E4a27c78c84e948cD13237682bB`](https://robinhoodchain.blockscout.com/address/0x4F6A5Ac90a6D1E4a27c78c84e948cD13237682bB) (verified) |
+| ServiceRegistry v2 (rewards-enabled) | [`0x954AC5b2772de8D20069bdC51683E9757CA9F697`](https://robinhoodchain.blockscout.com/address/0x954AC5b2772de8D20069bdC51683E9757CA9F697) (verified) |
+| MachineAccountFactory v2 | [`0x4903D8AB91fC9F2d29255c6cfb5F096964110354`](https://robinhoodchain.blockscout.com/address/0x4903D8AB91fC9F2d29255c6cfb5F096964110354) (verified) |
+| Bot MachineAccount v2 (MID-0002) | [`0x09c11C2E607d8b273853C2b84F6594ED832F876D`](https://robinhoodchain.blockscout.com/address/0x09c11C2E607d8b273853C2b84F6594ED832F876D) |
+
+- Wiring: v2 is the commerce recorder (v1 recorder revoked, its service delisted and
+  re-listed on v2 as service 1, same 0.05 USDG price, payTo = sCHG). Reward split
+  50/50 (rewardShareBps 5000). Adapter pinned to the live USDG/NVDA v4 pool
+  (fee 3000, tickSpacing 60, hooks 0x0). NVDA = `0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC`
+  (the BeaconProxy Robinhood stock token). Default claim stock: NVDA.
+- PROVEN LIVE: the delivery bot bought 2 charging sessions on v2
+  (0x30b70e2b…, 0xe4c2f56d…), accrued 0.0005 USDG of dividends (50% of the fee),
+  and claimed them as REAL NVDA via Uniswap v4 (0xa3b2db35…): the robot's account
+  now holds 0.0000024333 NVDA. Machines earning stock, onchain.
+- v1 ServiceRegistry remains onchain for receipt history; Explorer reads both.
+
 ## Chainlink integration (Robinhood Chain)
 
 - ServoOracle: [`0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107`](https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107) (verified)

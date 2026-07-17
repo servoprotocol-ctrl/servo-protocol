@@ -12,10 +12,11 @@ import {
 // Robinhood Chain (id 4663).
 const RPC = "https://rpc.mainnet.chain.robinhood.com";
 const REGISTRY = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
-const SERVICES = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90";
+const SERVICES = "0x954AC5b2772de8D20069bdC51683E9757CA9F697"; // v2: stock-rewards marketplace
+const SERVICES_V1 = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90"; // legacy, frozen (history)
 const REVENUE_FACTORY = "0x4ea7aDfE7501E0a925F89545650A28E7c0797E97";
 const ORACLE = "0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107"; // ServoOracle -> Chainlink USDG/USD
-const DEPLOY_BLOCK = 10126181n;
+const STOCK_REWARDS = "0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7"; // marketplace dividends -> NVDA
 const SCAN = "https://robinhoodchain.blockscout.com/address/";
 
 document.getElementById("scanReg").href = SERVICES ? SCAN + SERVICES : "https://robinhoodchain.blockscout.com";
@@ -47,6 +48,11 @@ const revenueFactoryAbi = parseAbi([
 ]);
 
 const oracleAbi = parseAbi(["function usdgPrice() view returns (int256, uint8)"]);
+
+const rewardsAbi = parseAbi([
+  "function totalEarned() view returns (uint256)",
+  "function totalClaimed() view returns (uint256)",
+]);
 
 const revenueShareAbi = parseAbi([
   "function name() view returns (string)",
@@ -141,26 +147,30 @@ function receiptRow(r) {
   </tr>`;
 }
 
-// receipts fetched in <=10k block windows (public RPC limit)
+// Recent receipts: scan backward from the head in <=10k block windows (public RPC
+// limit) across both marketplace versions, stopping once we have a screenful.
+// Totals come from per-service aggregates, so nothing depends on a full scan.
 async function fetchReceipts() {
   const latest = await client.getBlockNumber();
   const CHUNK = 9000n;
   const all = [];
-  let from = DEPLOY_BLOCK;
+  let to = latest;
   let guard = 0;
-  while (from <= latest && guard < 60) {
-    const to = from + CHUNK > latest ? latest : from + CHUNK;
+  while (to > 0n && guard < 40 && all.length < 24) {
+    const from = to > CHUNK ? to - CHUNK : 0n;
     const logs = await client.getContractEvents({
-      address: SERVICES,
+      address: [SERVICES_V1, SERVICES],
       abi: servicesAbi,
       eventName: "ServiceReceipt",
       fromBlock: from,
       toBlock: to,
     });
     all.push(...logs);
-    from = to + 1n;
+    if (from === 0n) break;
+    to = from - 1n;
     guard++;
   }
+  all.sort((a, b) => (b.blockNumber === a.blockNumber ? Number(b.logIndex - a.logIndex) : Number(b.blockNumber - a.blockNumber)));
   return all;
 }
 
@@ -186,12 +196,14 @@ async function load() {
       $("chainlink").innerHTML = `USDG <b>$${window._usdgUsd.toFixed(4)}</b> <span class="cl">&middot; Chainlink</span>`;
     } catch { window._usdgUsd = null; }
 
-    const [nextMid, nextSvc] = await Promise.all([
+    const [nextMid, nextSvc, nextSvcV1] = await Promise.all([
       client.readContract({ address: REGISTRY, abi: registryAbi, functionName: "nextMid" }),
       client.readContract({ address: SERVICES, abi: servicesAbi, functionName: "nextServiceId" }),
+      client.readContract({ address: SERVICES_V1, abi: servicesAbi, functionName: "nextServiceId" }),
     ]);
     const machineCount = Number(nextMid) - 1;
     const serviceCount = Number(nextSvc) - 1;
+    const serviceCountV1 = Number(nextSvcV1) - 1;
 
     // machines
     const midIds = Array.from({ length: machineCount }, (_, i) => BigInt(i + 1));
@@ -224,18 +236,35 @@ async function load() {
     $("cServices").textContent = serviceCount;
     $("statServices").textContent = serviceCount;
 
-    // receipts — public RPC caps eth_getLogs at a 10k block range, so chunk it.
-    const logs = await fetchReceipts();
-    logs.reverse(); // newest first
-    const volume = logs.reduce((acc, l) => acc + l.args.amount, 0n);
-    $("cReceipts").textContent = logs.length;
-    $("statReceipts").textContent = logs.length;
+    // Totals from per-service aggregates (v1 history + v2), no log scan needed.
+    const v1Svcs = await Promise.all(
+      Array.from({ length: serviceCountV1 }, (_, i) =>
+        client.readContract({ address: SERVICES_V1, abi: servicesAbi, functionName: "getService", args: [BigInt(i + 1)] })),
+    );
+    let receiptCount = 0n;
+    let volume = 0n;
+    for (const s of [...v1Svcs, ...services.map((x) => x.s)]) {
+      receiptCount += BigInt(s.unitsSold);
+      volume += s.grossRevenue;
+    }
+    $("cReceipts").textContent = receiptCount.toString();
+    $("statReceipts").textContent = receiptCount.toString();
     $("statVolume").textContent = usdc(volume);
     $("volumeUsd").textContent = usdEq(volume);
+
+    // Recent receipts table (head-window scan across both marketplace versions).
+    const logs = await fetchReceipts();
     $("receiptsWrap").innerHTML = logs.length
       ? `<table><thead><tr><th>RECEIPT</th><th>BUYER</th><th>PROVIDER</th><th>AMOUNT</th><th>FEE</th><th>RAIL</th></tr></thead>
          <tbody>${logs.map(receiptRow).join("")}</tbody></table>`
       : '<div class="empty">No receipts yet. The first settlement will appear here live.</div>';
+
+    // Stock dividends: marketplace fees turned into stock rewards for buyers.
+    try {
+      const earned = await client.readContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "totalEarned" });
+      const fmt = Number(formatUnits(earned, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 });
+      $("divNote").innerHTML = ` Buyers have earned <b>${fmt} USDG</b> of stock dividends, claimable as NVDA.`;
+    } catch { /* rewards stat is decorative */ }
 
     // RWA Revenue Rails — tokenized assets distributing income to holders
     const shareAddrs = await client.readContract({

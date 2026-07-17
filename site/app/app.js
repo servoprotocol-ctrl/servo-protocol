@@ -20,7 +20,7 @@ const SCAN = "https://robinhoodchain.blockscout.com";
 
 // Stock rewards: earn tokenized stock for using the marketplace. Set STOCK_REWARDS to
 // the deployed pool address to switch the panel live; null shows the pre-launch state.
-const STOCK_REWARDS = null; // e.g. "0x..."
+const STOCK_REWARDS = "0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7"; // live on Robinhood Chain
 const NVDA = "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC"; // NVIDIA · Robinhood stock token
 const V4_QUOTER = "0x8DC178EFb8111bb0973dD9D722EBEFF267C98F94"; // Uniswap v4 quoter
 const NVDA_POOL = { fee: 3000, tickSpacing: 60, hooks: "0x0000000000000000000000000000000000000000" };
