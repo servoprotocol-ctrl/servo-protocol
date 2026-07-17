@@ -46,3 +46,10 @@ Servo was first deployed and dogfooded on Base mainnet (chain 8453): MachineRegi
 `0x24f2f3536F65CA2AE36136E3B217a390251a1a90`, verified on BaseScan, with a genesis
 dogfood of 2 machines, 1 service, and 3 autonomous receipts. Superseded by the
 Robinhood Chain deployment above.
+
+## RWA Revenue Rails (Robinhood Chain)
+
+- RevenueShareFactory: [`0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f`](https://robinhoodchain.blockscout.com/address/0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f) (verified)
+- Demo RevenueShare (Servo Genesis Charger, sCHG1): [`0x81138bAeD99D7F51f0BED3fcCe09D024902d6759`](https://robinhoodchain.blockscout.com/address/0x81138bAeD99D7F51f0BED3fcCe09D024902d6759) (verified)
+  - 100 shares, operator 70 / backer 30; 1 USDG income distributed pro-rata.
+- Explorer shows the live RWA Revenue section reading the factory.
