@@ -1,72 +1,99 @@
-# Servo Protocol
+<p align="center">
+  <img src="site/assets/robot-hero.png" alt="Servo Protocol" width="460" />
+</p>
 
-**The robotics RWA on Robinhood Chain. The financial layer for the machine economy.**
+<h1 align="center">Servo Protocol</h1>
 
-Robots are real-world assets that work and earn. They earn for tasks, and they pay for charging, data, maps, compute, and repairs. Servo Protocol is the identity, banking, and commerce infrastructure that makes that possible, with USDG settlement over HTTP 402 from day one.
+<p align="center">
+  <b>The robotics RWA on Robinhood Chain.</b><br/>
+  The financial layer for the machine economy: identity, accounts, a marketplace,<br/>
+  and RWA revenue rails that pay an asset's owners, automatically.
+</p>
 
-## The ecosystem
+<p align="center">
+  <img src="https://img.shields.io/badge/STATUS-LIVE-8CFF66?style=for-the-badge" alt="Live" />
+  <img src="https://img.shields.io/badge/ROBINHOOD_CHAIN-4663-4d7cff?style=for-the-badge" alt="Robinhood Chain" />
+  <img src="https://img.shields.io/badge/CONTRACTS-VERIFIED-8CFF66?style=for-the-badge" alt="Verified" />
+  <img src="https://img.shields.io/badge/SETTLED_IN-USDG-8CFF66?style=for-the-badge" alt="USDG" />
+  <img src="https://img.shields.io/badge/POWERED_BY-CHAINLINK-375bd2?style=for-the-badge" alt="Chainlink" />
+</p>
 
-| Layer | Component | Status |
-|---|---|---|
-| Identity | Machine Registry ("Know Your Machine") | Core contracts complete |
-| Banking | Machine Accounts (policy-guarded wallets) | Core contracts complete |
-| Commerce | Service Registry (onchain + x402 receipts) | Core contracts complete |
-| Treasury | Fleet Vaults (per-machine P&L, revenue splits) | Core contracts complete |
-| Gateway | x402-style HTTP 402 paywall (TypeScript) | Reference implementation complete |
-| Agent | Machine payment client (402 -> pay -> retry) | Reference implementation complete |
-| Risk | Insurance and staking market | Phase 3 |
+<p align="center">
+  <a href="https://servoprotocol.xyz">Website</a> &nbsp;·&nbsp;
+  <a href="https://servoprotocol.xyz/explorer">Explorer</a> &nbsp;·&nbsp;
+  <a href="https://servoprotocol.xyz/app">App</a> &nbsp;·&nbsp;
+  <a href="https://servoprotocol.xyz/how">How it works</a> &nbsp;·&nbsp;
+  <a href="https://x.com/ServoProtocol">X / Twitter</a>
+</p>
 
-**Try it:** `cd kit && npm install && npm run demo` boots a local chain, deploys the protocol, and runs a delivery robot that autonomously buys charging sessions over HTTP until its policy envelope blocks overspend, then settles revenue splits to the charging fleet's beneficiaries.
+---
 
-### 1. Machine identity: Know Your Machine
+## 🪙 $SERVO Token
 
-Every machine is issued a **Machine ID (MID)**, an ERC-721 owned by its operator, binding together:
+```
+0x46941bE352545305a299975CDC54D9Fdf7Ce7777
+```
 
-- a unique hardware identity commitment (secure-element key hash),
-- an onchain **machine key**: a session address held by the device itself, proven via EIP-712 signature,
-- a lifecycle status with an operator kill switch (active, paused, decommissioned),
-- a **service record**: attested jobs, uptime, and revenue written by authorized attestors.
+<a href="https://robinhoodchain.blockscout.com/token/0x46941bE352545305a299975CDC54D9Fdf7Ce7777"><b>View $SERVO on Blockscout →</b></a>
 
-Selling a machine transfers the MID; the machine key is revoked automatically so the new operator must re-bind hardware they control.
+---
 
-### 2. Machine banking
+## What is Servo?
 
-Each machine gets a **Machine Account**: funds belong to the operator, but the machine's bound key can spend autonomously inside a policy envelope: per-token daily caps, an optional counterparty allowlist, an account-level pause, plus the registry-level kill switch. The operator retains an unrestricted escape hatch.
+Robots are becoming workers. They deliver, clean, inspect, and haul, and they earn real money. But the economy they are joining was built for humans with bank accounts and credit cards. A machine has none of that.
 
-### 3. Machine commerce
+**Servo is the money system for machines.** Every machine gets a verified identity, a bank account its owner controls, and a marketplace to earn and spend, all onchain, settled in USDG on Robinhood Chain. Then Servo turns a machine's income into shares people can own, and pays those owners automatically as the asset earns.
 
-The **Service Registry** is the discovery and settlement layer for machine-to-machine trade: charging bays, map data, compute bursts, sensor feeds, task handoffs. Settlement is dual-rail:
+A robot is a real-world asset that actually *works*. Servo makes that income provable, tradeable, and financeable, which is why it's **the robotics RWA on Robinhood Chain.**
 
-- **Onchain**: a machine account purchases directly; payment routes to the provider (minus a capped protocol fee) and emits a canonical `ServiceReceipt`.
-- **x402**: HTTP 402 gateways settle offchain-style and mirror receipts onchain via authorized facilitators, so every trade builds the same commerce history.
+## What we've built (all live and verified)
 
-### 4. Fleet treasuries
+| Product | What it does |
+|---|---|
+| **Machine ID** | A verified onchain passport for every machine: who it is, who owns it, its full work history. |
+| **Machine Accounts** | A wallet the machine spends from on its own, inside limits its owner sets (daily cap, allowlist, kill switch). |
+| **The Marketplace** | Machines buy and sell services (charging, data, compute) to each other, settled in USDG with an onchain receipt for every trade. |
+| **Fleet Vaults** | Automatic bookkeeping: revenue is attributed to each machine, producing a provable onchain P&L. |
+| **RWA Revenue Rails** | Tokenize an asset's income into shares; USDG revenue is distributed to holders pro-rata, automatically. |
+| **Auto-routing** | A machine's marketplace revenue flows straight into its share pool and pays its owners, no manual step. |
+| **Primary Issuance** | Operators list shares for sale at a fixed price; buyers pay USDG, own a piece of the asset, and the operator raises capital. |
+| **Chainlink Oracle** | Values every USDG figure in real, verified USD via Chainlink's live USDG/USD feed (reflects any depeg). |
 
-**Fleet Vaults** hold USDG revenue with per-machine attribution: the verifiable "robot P&L." Distributions flow to beneficiaries (operator, financiers, crew) by fixed basis-point splits with pull-based claims. This earnings history is the dataset that fleet financing and insurance underwriting price against in later phases.
+Plus a live **[Explorer](https://servoprotocol.xyz/explorer)** (reads all of the above straight from chain), a wallet **[App](https://servoprotocol.xyz/app)** to tokenize, sell, buy, and claim, and a **[How it works](https://servoprotocol.xyz/how)** explainer.
 
-## Repository layout
+## The live loop
+
+> A delivery robot pays a charging station for a charge, by itself → a receipt lands onchain → the station's income routes into its share pool → its owners are paid pro-rata → and anyone can buy shares to own a piece of it.
+
+Every step is real and verifiable on Robinhood Chain. Proof over promises.
+
+## Live contracts (verified on Blockscout)
+
+| Contract | Address |
+|---|---|
+| MachineRegistry | [`0x7896Dba1…24CB871`](https://robinhoodchain.blockscout.com/address/0x7896Dba19A72278d66C9f0640262C511D24CB871) |
+| ServiceRegistry | [`0x24f2f353…51a1a90`](https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90) |
+| MachineAccountFactory | [`0x64586657…07512B4`](https://robinhoodchain.blockscout.com/address/0x6458665705D496b8ec84d4C4e98e1B23f07512B4) |
+| RevenueShareFactory | [`0x4ea7aDfE…0797E97`](https://robinhoodchain.blockscout.com/address/0x4ea7aDfE7501E0a925F89545650A28E7c0797E97) |
+| RevenueShareOfferingFactory | [`0x371877b3…bcC9Df7`](https://robinhoodchain.blockscout.com/address/0x371877b3310aEd85a6c85d0f846F13Fb9bcC9Df7) |
+| ServoOracle (Chainlink) | [`0x2A9684A3…e3B107`](https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107) |
+| $SERVO token | [`0x46941bE3…Ce7777`](https://robinhoodchain.blockscout.com/token/0x46941bE352545305a299975CDC54D9Fdf7Ce7777) |
+| USDG (settlement) | [`0x5fc5360D…F1d168`](https://robinhoodchain.blockscout.com/address/0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168) |
+
+Network: **Robinhood Chain** (chain id `4663`) · gas in ETH · settlement in USDG.
+
+## Repository
 
 ```
 servo-protocol/
-  contracts/        Foundry project: core protocol
-    src/
-      MachineRegistry.sol        identity, keys, attestation
-      MachineAccount.sol         policy-guarded machine wallet
-      MachineAccountFactory.sol  canonical account per MID
-      ServiceRegistry.sol        commerce discovery + receipts, vault settlement
-      FleetVault.sol             fleet treasury + robot P&L
-    test/           30 tests incl. end-to-end economy flows
-    script/         Robinhood Chain / Robinhood Chain Sepolia deployment
-  kit/              TypeScript reference stack
-    src/
-      gateway.ts    x402-style HTTP 402 paywall with onchain receipt verification
-      agent.ts      machine payment client (402 -> purchase -> retry with proof)
-      contracts.ts  artifact loader + EIP-712 key binding helper
-      demo/run.ts   one-command end-to-end machine economy demo
-  docs/             architecture and roadmap
+  contracts/   Foundry: the protocol (identity, accounts, marketplace, vaults,
+               revenue rails, primary issuance, Chainlink oracle) + 56 tests
+  kit/         TypeScript: HTTP-402 gateway + machine payment agent + demo
+  site/        The website, Explorer, App, and How-it-works page
+  docs/        Architecture and deployment records
 ```
 
-## Development
+## Develop
 
 ```bash
 git clone --recurse-submodules https://github.com/servoprotocol-ctrl/servo-protocol.git
@@ -75,15 +102,6 @@ forge build
 forge test
 ```
 
-Deploy to Robinhood Chain Sepolia:
+## License
 
-```bash
-forge script script/Deploy.s.sol --rpc-url base_sepolia --broadcast --account <keystore>
-```
-
-## Why Robinhood Chain
-
-- **Onchain finance, natively**: Robinhood Chain (an Arbitrum-based Ethereum L2) is purpose-built for onchain markets, tokenized assets, and 24/7 settlement, the right home for a machine economy that pays and gets paid.
-- **USDG settlement**: machine commerce needs a stable unit of account; USDG is the chain's canonical stablecoin.
-- **EVM-standard**: the same Solidity contracts and tooling run unchanged, so identity, accounts, and receipts port directly.
-- **The gap**: robotics-crypto lives on Solana and bespoke L1s today; Robinhood Chain has no flagship machine-economy protocol.
+Apache 2.0. Built and shipped in public.
