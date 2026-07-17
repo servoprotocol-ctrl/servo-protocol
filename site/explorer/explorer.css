@@ -122,6 +122,8 @@ tr:hover td { background: rgba(140, 255, 102, 0.03); }
 td.amt { color: var(--ink); }
 td .ext { color: var(--amber); }
 
+.rwa-note { font-size: 14px; color: var(--ink-dim); margin: -6px 0 20px; }
+.rwa-note b { font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
 .empty { font-family: var(--font-mono); font-size: 13px; color: var(--ink-faint); padding: 26px; border: 1px dashed var(--line); text-align: center; }
 .loading { font-family: var(--font-mono); font-size: 13px; color: var(--ink-dim); padding: 26px 0; }
 .loading::after { content: "_"; animation: blink 1s steps(1) infinite; }

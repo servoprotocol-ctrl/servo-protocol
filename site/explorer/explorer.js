@@ -13,6 +13,7 @@ import {
 const RPC = "https://rpc.mainnet.chain.robinhood.com";
 const REGISTRY = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
 const SERVICES = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90";
+const REVENUE_FACTORY = "0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f";
 const DEPLOY_BLOCK = 10126181n;
 const SCAN = "https://robinhoodchain.blockscout.com/address/";
 
@@ -37,6 +38,19 @@ const servicesAbi = parseAbi([
   "function getService(uint256) view returns (Service)",
   "function protocolFeeBps() view returns (uint16)",
   "event ServiceReceipt(uint256 indexed serviceId, uint256 indexed buyerMid, uint256 indexed providerMid, address token, uint256 amount, uint256 fee, bool external_)",
+]);
+
+const revenueFactoryAbi = parseAbi([
+  "function count() view returns (uint256)",
+  "function shares() view returns (address[])",
+]);
+
+const revenueShareAbi = parseAbi([
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function totalSupply() view returns (uint256)",
+  "function totalRevenueDistributed() view returns (uint256)",
+  "function assetURI() view returns (string)",
 ]);
 
 // ---------------------------------------------------------------- lookups
@@ -95,6 +109,20 @@ function serviceCard(id, s) {
       <div><span>SETTLEMENT</span><span>${s.vaultSettlement ? "VAULT" : "DIRECT"}</span></div>
     </div>
   </div>`;
+}
+
+function revenueCard(addr, r) {
+  const shares = Math.round(Number(formatUnits(r.totalSupply, 18))).toLocaleString();
+  return `<a class="card" href="${SCAN}${addr}" target="_blank" rel="noreferrer" style="text-decoration:none;display:block">
+    <div class="card-head"><span class="card-cat">${r.symbol}</span>
+      <span class="badge b-active">REVENUE</span></div>
+    <div class="card-id" style="font-size:22px;margin-bottom:6px">${usdc(r.totalRevenue)} <span style="font-size:11px;color:var(--ink-faint)">USDG to holders</span></div>
+    <div class="card-sub" style="margin-bottom:14px">${r.name}</div>
+    <div class="card-rows">
+      <div><span>SHARES</span><span>${shares}</span></div>
+      <div><span>ONCHAIN</span><span>${addr.slice(0, 6)}…${addr.slice(-4)} &rarr;</span></div>
+    </div>
+  </a>`;
 }
 
 function receiptRow(r) {
@@ -196,6 +224,30 @@ async function load() {
       ? `<table><thead><tr><th>RECEIPT</th><th>BUYER</th><th>PROVIDER</th><th>AMOUNT</th><th>FEE</th><th>RAIL</th></tr></thead>
          <tbody>${logs.map(receiptRow).join("")}</tbody></table>`
       : '<div class="empty">No receipts yet. The first settlement will appear here live.</div>';
+
+    // RWA Revenue Rails — tokenized assets distributing income to holders
+    const shareAddrs = await client.readContract({
+      address: REVENUE_FACTORY,
+      abi: revenueFactoryAbi,
+      functionName: "shares",
+    });
+    const rwas = await Promise.all(
+      shareAddrs.map(async (addr) => {
+        const [name, symbol, totalSupply, totalRevenue] = await Promise.all([
+          client.readContract({ address: addr, abi: revenueShareAbi, functionName: "name" }),
+          client.readContract({ address: addr, abi: revenueShareAbi, functionName: "symbol" }),
+          client.readContract({ address: addr, abi: revenueShareAbi, functionName: "totalSupply" }),
+          client.readContract({ address: addr, abi: revenueShareAbi, functionName: "totalRevenueDistributed" }),
+        ]);
+        return { addr, name, symbol, totalSupply, totalRevenue };
+      }),
+    );
+    const rwaVolume = rwas.reduce((acc, r) => acc + r.totalRevenue, 0n);
+    $("cRevenue").textContent = rwas.length;
+    $("statRwaVolume").textContent = usdc(rwaVolume);
+    $("revenue").innerHTML = rwas.length
+      ? rwas.map((r) => revenueCard(r.addr, r)).join("")
+      : '<div class="empty">No revenue-share assets yet.</div>';
 
     const now = new Date();
     $("updated").textContent = "updated " + now.toLocaleTimeString();
