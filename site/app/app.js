@@ -21,10 +21,21 @@ const SCAN = "https://robinhoodchain.blockscout.com";
 // Stock rewards: earn tokenized stock for using the marketplace. Set STOCK_REWARDS to
 // the deployed pool address to switch the panel live; null shows the pre-launch state.
 const STOCK_REWARDS = "0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7"; // live on Robinhood Chain
-const NVDA = "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC"; // NVIDIA · Robinhood stock token
 const V4_QUOTER = "0x8DC178EFb8111bb0973dD9D722EBEFF267C98F94"; // Uniswap v4 quoter
-const NVDA_POOL = { fee: 3000, tickSpacing: 60, hooks: "0x0000000000000000000000000000000000000000" };
+const ZERO = "0x0000000000000000000000000000000000000000";
 const SLIPPAGE_BPS = 100n; // 1% claim slippage bound
+
+// Claimable stocks: each token's v4 pool validated within 3% of its Chainlink feed.
+const STOCKS = [
+  { sym: "NVDA", name: "Nvidia", addr: "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC", fee: 3000, tickSpacing: 60 },
+  { sym: "TSLA", name: "Tesla", addr: "0x322F0929c4625eD5bAd873c95208D54E1c003b2d", fee: 3000, tickSpacing: 60 },
+  { sym: "AMZN", name: "Amazon", addr: "0x12f190a9F9d7D37a250758b26824B97CE941bF54", fee: 3000, tickSpacing: 60 },
+  { sym: "GOOGL", name: "Alphabet", addr: "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3", fee: 3000, tickSpacing: 60 },
+  { sym: "SPY", name: "S&P 500 ETF", addr: "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C", fee: 3000, tickSpacing: 60 },
+  { sym: "PLTR", name: "Palantir", addr: "0x894E1EC2D74FFE5AEF8Dc8A9e84686acCB964F2A", fee: 20000, tickSpacing: 400 },
+  { sym: "MSFT", name: "Microsoft", addr: "0xe93237C50D904957Cf27E7B1133b510C669c2e74", fee: 20000, tickSpacing: 400 },
+  { sym: "AMD", name: "AMD", addr: "0x86923f96303D656E4aa86D9d42D1e57ad2023fdC", fee: 10000, tickSpacing: 200 },
+];
 
 const chain = {
   id: CHAIN_ID,
@@ -367,17 +378,41 @@ async function sellShares() {
 }
 
 // ------------------------------------------------------------ stock rewards
-const nvda = (v) => Number(formatUnits(v, 18)).toLocaleString(undefined, { maximumFractionDigits: 6 });
+const shareFmt = (v) => Number(formatUnits(v, 18)).toLocaleString(undefined, { maximumFractionDigits: 6 });
+const selectedStock = () => STOCKS.find((s) => s.sym === ($("rwStock")?.value)) || STOCKS[0];
 
-async function quoteNvda(usdgIn) {
+function poolKeyFor(stock) {
+  const usdgFirst = BigInt(USDG) < BigInt(stock.addr);
+  const [currency0, currency1] = usdgFirst ? [USDG, stock.addr] : [stock.addr, USDG];
+  return {
+    poolKey: { currency0, currency1, fee: stock.fee, tickSpacing: stock.tickSpacing, hooks: ZERO },
+    zeroForOne: usdgFirst, // USDG in: true when USDG is currency0
+  };
+}
+
+async function quoteStock(stock, usdgIn) {
+  const { poolKey, zeroForOne } = poolKeyFor(stock);
   const { result } = await pub.simulateContract({
     address: V4_QUOTER, abi: quoterAbi, functionName: "quoteExactInputSingle",
-    args: [{
-      poolKey: { currency0: USDG, currency1: NVDA, fee: NVDA_POOL.fee, tickSpacing: NVDA_POOL.tickSpacing, hooks: NVDA_POOL.hooks },
-      zeroForOne: true, exactAmount: usdgIn, hookData: "0x",
-    }],
+    args: [{ poolKey, zeroForOne, exactAmount: usdgIn, hookData: "0x" }],
   });
   return result[0];
+}
+
+// render the ≈ stock quote for the current selection and claimable balance
+async function renderRewardQuote() {
+  const stock = selectedStock();
+  $("claimStockBtn").textContent = "Claim as " + stock.sym;
+  const claimable = window._rwClaimable || 0n;
+  if (claimable === 0n) { $("rwQuote").textContent = "—"; return; }
+  try {
+    const out = await quoteStock(stock, claimable);
+    window._rwQuote = out;
+    $("rwQuote").textContent = "≈ " + shareFmt(out) + " " + stock.sym;
+  } catch {
+    window._rwQuote = 0n;
+    $("rwQuote").textContent = "quote unavailable";
+  }
 }
 
 async function loadRewards() {
@@ -387,41 +422,41 @@ async function loadRewards() {
     $("rwLifetime").textContent = "—";
     return;
   }
+  // populate the stock picker once
+  const sel = $("rwStock");
+  if (sel && !sel.options.length) {
+    sel.innerHTML = STOCKS.map((s) => `<option value="${s.sym}">${s.sym} · ${s.name}</option>`).join("");
+    sel.addEventListener("change", renderRewardQuote);
+  }
   try {
-    const [earned] = await Promise.all([
-      pub.readContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "totalEarned" }),
-    ]);
+    const earned = await pub.readContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "totalEarned" });
     $("rwLifetime").textContent = usdg(earned) + " USDG";
     if (!account) { $("rwHint").textContent = "Connect your wallet to see your dividends."; return; }
 
     const claimable = await pub.readContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "claimable", args: [account] });
+    window._rwClaimable = claimable;
     $("rwClaimable").textContent = usdg(claimable) + " USDG";
-    if (claimable > 0n) {
-      const out = await quoteNvda(claimable);
-      $("rwQuote").textContent = "≈ " + nvda(out) + " NVDA";
-      window._rwQuote = out;
-      $("claimStockBtn").disabled = false;
-      $("claimUsdgBtn").disabled = false;
-      $("rwHint").textContent = "Dividends earned from your marketplace activity.";
-    } else {
-      $("rwQuote").textContent = "—";
-      $("claimStockBtn").disabled = true;
-      $("claimUsdgBtn").disabled = true;
-      $("rwHint").textContent = "Trade on the marketplace to earn stock dividends.";
-    }
+    const has = claimable > 0n;
+    $("claimStockBtn").disabled = !has;
+    $("claimUsdgBtn").disabled = !has;
+    $("rwHint").textContent = has
+      ? "Dividends earned from your marketplace activity. Claim as any stock below."
+      : "Trade on the marketplace to earn stock dividends.";
+    await renderRewardQuote();
   } catch (e) {
     $("rwHint").textContent = "Failed to read rewards: " + (e?.shortMessage || e?.message || e);
   }
 }
 
 async function claimRewardsAsStock() {
+  const stock = selectedStock();
   try {
     $("claimStockBtn").disabled = true;
     const minOut = ((window._rwQuote || 0n) * (10000n - SLIPPAGE_BPS)) / 10000n;
     setStatus("Confirm the claim in your wallet…");
-    const hash = await wallet.writeContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "claimAsStock", args: [NVDA, minOut] });
+    const hash = await wallet.writeContract({ address: STOCK_REWARDS, abi: rewardsAbi, functionName: "claimAsStock", args: [stock.addr, minOut] });
     await pub.waitForTransactionReceipt({ hash });
-    setStatus("Dividends claimed as NVDA. Real stock, earned by using the network.", "ok");
+    setStatus(`Dividends claimed as ${stock.sym}. Real stock, earned by using the network.`, "ok");
     await loadRewards();
   } catch (e) {
     setStatus("Claim failed: " + (e?.shortMessage || e?.message || e), "err");
