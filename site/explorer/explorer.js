@@ -13,7 +13,7 @@ import {
 const RPC = "https://rpc.mainnet.chain.robinhood.com";
 const REGISTRY = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
 const SERVICES = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90";
-const REVENUE_FACTORY = "0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f";
+const REVENUE_FACTORY = "0x4ea7aDfE7501E0a925F89545650A28E7c0797E97";
 const DEPLOY_BLOCK = 10126181n;
 const SCAN = "https://robinhoodchain.blockscout.com/address/";
 

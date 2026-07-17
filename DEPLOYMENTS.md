@@ -49,7 +49,7 @@ Robinhood Chain deployment above.
 
 ## RWA Revenue Rails (Robinhood Chain)
 
-- RevenueShareFactory: [`0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f`](https://robinhoodchain.blockscout.com/address/0xa1e5fd12719Ae6a98c1b35bbE75bb71e4543529f) (verified)
-- Demo RevenueShare (Servo Genesis Charger, sCHG1): [`0x81138bAeD99D7F51f0BED3fcCe09D024902d6759`](https://robinhoodchain.blockscout.com/address/0x81138bAeD99D7F51f0BED3fcCe09D024902d6759) (verified)
-  - 100 shares, operator 70 / backer 30; 1 USDG income distributed pro-rata.
-- Explorer shows the live RWA Revenue section reading the factory.
+- RevenueShareFactory (v2, auto-routing): [`0x4ea7aDfE7501E0a925F89545650A28E7c0797E97`](https://robinhoodchain.blockscout.com/address/0x4ea7aDfE7501E0a925F89545650A28E7c0797E97) (verified) — the address the Explorer reads.
+- Charger RevenueShare (sCHG): [`0x664b19AC98fEb5051d4aE659eBb4D8B6e326CD0e`](https://robinhoodchain.blockscout.com/address/0x664b19AC98fEb5051d4aE659eBb4D8B6e326CD0e) (verified) — 70/30 split.
+  - AUTO-ROUTING LIVE: SVC #1 payTo routes charging revenue here; syncRevenue()/claim() distributes to holders. Proven: bot bought 2 charges -> 0.099 USDG routed -> operator 0.0693 / backer 0.0297.
+- Superseded: old factory 0xa1e5fd12... + demo share 0x81138bAe... (pre-auto-routing).

@@ -39,12 +39,14 @@ contract RevenueShare is ERC20, Ownable, ReentrancyGuard {
     mapping(address holder => int256) internal magnifiedCorrections;
     mapping(address holder => uint256) public withdrawnRevenue;
 
-    /// @notice Lifetime revenue paid into the asset. The asset's onchain P&L.
+    /// @notice Lifetime revenue routed through distribution. The asset's onchain P&L.
     uint256 public totalRevenueDistributed;
+    /// @notice Lifetime revenue claimed by holders.
+    uint256 public totalWithdrawn;
     /// @notice Metadata pointer for the underlying real-world asset.
     string public assetURI;
 
-    event RevenueDeposited(address indexed from, uint256 amount, uint256 perShareAdded);
+    event RevenueDistributed(uint256 amount, uint256 perShareAdded);
     event RevenueClaimed(address indexed holder, uint256 amount);
     event SharesMinted(address indexed to, uint256 amount);
     event AssetURIUpdated(string uri);
@@ -83,27 +85,48 @@ contract RevenueShare is ERC20, Ownable, ReentrancyGuard {
 
     // ------------------------------------------------------------------------- revenue
 
-    /// @notice Pay revenue into the asset. Distributed pro-rata to current holders.
-    ///         Permissionless: anyone can route income to the asset.
+    /// @notice Pay revenue into the asset (explicit push). Distributed pro-rata.
     function depositRevenue(uint256 amount) external nonReentrant {
         if (amount == 0) revert ZeroAmount();
-        uint256 supply = totalSupply();
-        if (supply == 0) revert NoShares();
-
+        if (totalSupply() == 0) revert NoShares();
         ASSET.safeTransferFrom(msg.sender, address(this), amount);
-        uint256 perShareAdded = (amount * MAGNITUDE) / supply;
-        magnifiedRevenuePerShare += perShareAdded;
-        totalRevenueDistributed += amount;
-        emit RevenueDeposited(msg.sender, amount, perShareAdded);
+        _sync();
     }
 
-    /// @notice Claim your accrued revenue.
+    /// @notice Distribute any income that has landed in this contract but not yet been
+    ///         accounted, then... this is the auto-routing hook. A machine's marketplace
+    ///         revenue can pay directly into this contract; a single permissionless
+    ///         sync (or any holder's claim) distributes it to shareholders. No manual
+    ///         deposit needed: the asset earns, and its owners get paid.
+    function syncRevenue() external nonReentrant {
+        _sync();
+    }
+
+    /// @notice Claim your accrued revenue. Auto-syncs first so any freshly-routed
+    ///         income is included.
     function claim() external nonReentrant {
+        _sync();
         uint256 claimable = withdrawableRevenueOf(msg.sender);
         if (claimable == 0) revert NothingToClaim();
         withdrawnRevenue[msg.sender] += claimable;
+        totalWithdrawn += claimable;
         ASSET.safeTransfer(msg.sender, claimable);
         emit RevenueClaimed(msg.sender, claimable);
+    }
+
+    /// @dev Distribute the untracked balance: everything the contract holds beyond what
+    ///      is already owed to holders. Dust from prior rounding is never re-distributed.
+    function _sync() internal {
+        uint256 supply = totalSupply();
+        if (supply == 0) return;
+        uint256 tracked = totalRevenueDistributed - totalWithdrawn; // owed + accumulated dust
+        uint256 bal = ASSET.balanceOf(address(this));
+        if (bal <= tracked) return;
+        uint256 pending = bal - tracked;
+        uint256 perShareAdded = (pending * MAGNITUDE) / supply;
+        magnifiedRevenuePerShare += perShareAdded;
+        totalRevenueDistributed += pending;
+        emit RevenueDistributed(pending, perShareAdded);
     }
 
     // ----------------------------------------------------------------------------- views

@@ -166,4 +166,49 @@ contract RevenueShareTest is Test {
         assertEq(factory.operatorOf(address(share)), operator);
         assertEq(factory.allShares(0), address(share));
     }
+
+    // ------------------------------------------------ auto-routing (income lands directly)
+
+    /// @notice The killer feature: income sent straight to the contract (e.g. a machine's
+    ///         marketplace revenue) is distributed to holders on sync, no deposit call.
+    function test_autoRouting_directTransferThenSync() public {
+        // simulate the asset earning: USDG lands directly in the contract
+        vm.prank(payer);
+        usdg.transfer(address(share), 100e6);
+
+        // nothing distributed until synced
+        assertEq(share.withdrawableRevenueOf(alice), 0);
+
+        share.syncRevenue(); // permissionless
+        assertApproxEqAbs(share.withdrawableRevenueOf(alice), 60e6, DUST);
+        assertApproxEqAbs(share.withdrawableRevenueOf(bob), 40e6, DUST);
+        assertEq(share.totalRevenueDistributed(), 100e6);
+    }
+
+    function test_autoRouting_claimAutoSyncs() public {
+        // income lands directly; a holder claims without anyone calling sync first
+        vm.prank(payer);
+        usdg.transfer(address(share), 100e6);
+
+        vm.prank(alice);
+        share.claim(); // claim auto-syncs, so alice still gets her 60
+        assertApproxEqAbs(usdg.balanceOf(alice), 60e6, DUST);
+        assertApproxEqAbs(share.withdrawableRevenueOf(bob), 40e6, DUST);
+    }
+
+    function test_autoRouting_dustNotRedistributed() public {
+        vm.prank(payer);
+        usdg.transfer(address(share), 100e6);
+        share.syncRevenue();
+
+        vm.prank(alice);
+        share.claim();
+        vm.prank(bob);
+        share.claim();
+
+        // syncing again must not invent revenue from leftover dust
+        uint256 distributedBefore = share.totalRevenueDistributed();
+        share.syncRevenue();
+        assertEq(share.totalRevenueDistributed(), distributedBefore);
+    }
 }
