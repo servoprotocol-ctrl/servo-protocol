@@ -82,6 +82,28 @@
       <p class="sub">Revenue shares you hold, and the income you can claim. Claiming pulls in any freshly-earned revenue first.</p>
       <div id="holdings"><div class="empty">Connect your wallet to see your revenue shares.</div></div>
     </section>
+
+    <!-- ---------------------------------------------------------- rewards -->
+    <section class="panel">
+      <div><span class="panel-num">05</span><h2 style="display:inline">Stock rewards</h2></div>
+      <p class="sub">Every trade on the Servo marketplace earns the buyer a dividend, funded from the protocol fee. Claim yours as real tokenized stock (Nvidia, via Uniswap on Robinhood Chain) or as plain USDG.</p>
+
+      <div id="rewardsBox">
+        <div class="holding">
+          <div class="holding-top"><span class="holding-name">Marketplace dividends</span><span class="badge" id="rwAsset">NVDA</span></div>
+          <div class="holding-rows">
+            <div><span>CLAIMABLE</span><span class="holding-claim" id="rwClaimable">&mdash;</span></div>
+            <div><span>&asymp; IN STOCK</span><span id="rwQuote">&mdash;</span></div>
+            <div><span>NETWORK PAID OUT</span><span id="rwLifetime">&mdash;</span></div>
+          </div>
+          <div class="holding-actions">
+            <button class="btn btn-sm" id="claimStockBtn" disabled>Claim as NVDA</button>
+            <button class="btn btn-sm" id="claimUsdgBtn" disabled>Claim as USDG</button>
+            <span class="hint" id="rwHint" style="margin:0">Rewards go live with the next marketplace upgrade.</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="foot">SERVO APP &middot; RWA REVENUE RAILS &middot; ROBINHOOD CHAIN &middot; SETTLED IN USDG</footer>
