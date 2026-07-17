@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Servo Works | The Machine Economy, Explained</title>
+  <meta name="description" content="How Servo works, in plain English: identity, accounts, and a marketplace for machines, plus RWA Revenue Rails that pay an asset's owners automatically. Live on Robinhood Chain." />
+  <meta name="theme-color" content="#07100b" />
+  <link rel="icon" type="image/svg+xml" href="../logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="how.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="../"><img src="../logo.svg" alt="" /><b>SERVO</b><span>PROTOCOL</span></a>
+    <div class="nav-right">
+      <a href="../explorer/">Explorer</a>
+      <a href="../app/">App</a>
+      <a href="../">Home</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="head">
+      <p class="tag">// HOW IT WORKS</p>
+      <h1>The machine economy,<br />explained</h1>
+      <p class="lede">Robots are starting to do real work and earn money. But money systems were built for humans with bank accounts and credit cards. A robot has none of that. <b>Servo is the money system for machines:</b> an identity, a bank account its owner controls, and a marketplace to earn and spend, all onchain, settled in USDG on Robinhood Chain.</p>
+    </div>
+
+    <!-- building blocks -->
+    <section class="sec">
+      <span class="sec-tag">// THE BUILDING BLOCKS</span>
+      <h2>Four things every machine gets</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">01</div>
+          <div><h3>Machine ID, the passport</h3><p>Every machine gets a unique onchain ID that records who it is, who owns it, and its work history. It is tied to the physical hardware and <b>cannot be faked</b>. A passport plus a resume for a robot.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-n">02</div>
+          <div><h3>Machine Account, the wallet with rules</h3><p>Each machine gets its own account and can spend on its own, but only inside limits the owner sets: a daily cap, an approved list of who it can pay, and a kill switch. <b>The owner is always in control; the machine acts within the fence.</b></p></div>
+        </div>
+        <div class="step">
+          <div class="step-n">03</div>
+          <div><h3>The Marketplace, where machines trade</h3><p>Machines buy and sell services to each other: charging, map data, compute, task handoffs. List a service once, sell it to any machine, get paid in USDG, and <b>every trade leaves a receipt onchain</b> that anyone can verify.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-n">04</div>
+          <div><h3>Revenue records, the bookkeeping</h3><p>Every dollar a machine earns is logged to its name automatically. That gives each machine a <b>provable profit-and-loss record</b>, which is what lets a fleet later be financed or insured.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- the loop -->
+    <section class="sec">
+      <span class="sec-tag">// THE LOOP</span>
+      <h2>A robot pays a robot, for real</h2>
+      <p>Here is the exact thing that happened onchain between a delivery bot and a charging station. No human touched it.</p>
+      <div class="flow">
+        <div class="flow-item"><span class="k">01 &middot; EARN &amp; PAY</span><p>The <b>delivery bot</b> runs low on power and pays the <b>charging station</b> for a charge, by itself, from its own account, inside its spending limit.</p></div>
+        <div class="flow-item"><span class="k">02 &middot; RECEIPT</span><p>A <b>receipt is written onchain</b>: bot paid station, 0.05 USDG, settled. Permanent, and anyone can check it.</p></div>
+        <div class="flow-item"><span class="k">03 &middot; RECORD</span><p>The station's <b>income is logged to its name</b>, building its provable earnings history.</p></div>
+      </div>
+      <div class="callout"><span class="k">// THIS IS LIVE</span>These are real transactions on Robinhood Chain, not a mockup. You can open every one in the <a href="../explorer/">Explorer</a> and follow it to the blockchain.</div>
+    </section>
+
+    <!-- rwa payment layer -->
+    <section class="sec">
+      <span class="sec-tag">// THE RWA PAYMENT LAYER</span>
+      <h2>An asset that earns can pay its owners</h2>
+      <p>Now the leap. <b>A machine that earns is a real-world asset (an RWA)</b>, and its income can be shared with the people who own it.</p>
+      <div class="flow">
+        <div class="flow-item"><span class="k">01 &middot; TOKENIZE</span><p>Turn a machine's income into <b>shares</b>. We did this for the charging station: 100 shares, split 70% to the operator and 30% to a backer.</p></div>
+        <div class="flow-item"><span class="k">02 &middot; AUTO-ROUTE</span><p>The station's charging income now flows <b class="rwa">directly into the share pool</b>. When the bot buys a charge, the money lands there automatically.</p></div>
+        <div class="flow-item"><span class="k">03 &middot; GET PAID</span><p>It <b>distributes to owners pro-rata</b>. Own 30% of the station, get 30% of what it earns, in USDG, claimable anytime. The math is exact, and it can never pay out more than came in.</p></div>
+      </div>
+      <p style="margin-top:22px">So "own a piece of a real machine that works, and get paid every time it earns" is not a slogan. It is running code. That is what makes Servo <span class="rwa">the RWA payment layer:</span> real-world income routed onchain and paid to the people who own the asset.</p>
+    </section>
+
+    <!-- what's provable -->
+    <section class="sec">
+      <span class="sec-tag">// WHAT'S PROVABLE</span>
+      <h2>Proof over promises</h2>
+      <p><b>The money is always real.</b> If USDG was paid in and split to holders, that provably happened, and nobody can fake it. An asset's distribution history is a hard fact anyone can check.</p>
+      <p style="margin-top:14px">The honest limit: a contract can't automatically verify that income from an <b>off-chain</b> asset truly came from that asset. That is the general RWA trust gap, and every RWA project has it.</p>
+      <div class="callout"><span class="k">// SERVO'S EDGE</span>For machines that earn <b>through Servo's own marketplace</b>, income is provable end to end: robot pays &rarr; receipt logged &rarr; income routed to owners. No oracle, no trust required. That is the strongest kind of RWA proof there is.</div>
+    </section>
+
+    <!-- tldr + ctas -->
+    <div class="tldr">
+      <span class="k">// IN ONE PARAGRAPH</span>
+      <p>Servo gives machines an identity, a controlled wallet, and a marketplace so they can earn and spend on their own, onchain, in USDG. Every trade is provable. Then it lets you tokenize a machine's income into shares and pay the owners automatically as it earns. A live delivery bot pays a live charging station, and the station's revenue flows straight to its shareholders, all verifiable on Robinhood Chain. <b>That is the machine economy, and the RWA payment layer, running for real.</b></p>
+      <div class="ctas">
+        <a class="btn btn-accent" href="../explorer/">See it live</a>
+        <a class="btn btn-ghost" href="../app/">Tokenize an asset</a>
+        <a class="btn btn-ghost" href="../">Back to home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">SERVO PROTOCOL &middot; THE RWA PAYMENT LAYER &middot; ROBINHOOD CHAIN &middot; SETTLED IN USDG</footer>
+</body>
+</html>
