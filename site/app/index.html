@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servo App | Tokenize &amp; Claim RWA Revenue</title>
+  <meta name="description" content="Tokenize any real-world asset's income into shares and let its owners claim their revenue, onchain, on Robinhood Chain." />
+  <meta name="theme-color" content="#07100b" />
+  <link rel="icon" type="image/svg+xml" href="../logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="../"><img src="../logo.svg" alt="" /><b>SERVO</b><span>APP</span></a>
+    <div class="nav-right">
+      <a href="../explorer/">Explorer</a>
+      <a href="../">Home</a>
+      <button class="btn btn-sm" id="connectBtn">Connect wallet</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="head">
+      <p class="tag">// RWA REVENUE RAILS</p>
+      <h1>Put a real-world asset's income onchain</h1>
+      <p>Tokenize any income-producing asset into shares, then let its owners claim their revenue automatically. Runs on Robinhood Chain, settled in USDG.</p>
+      <p class="status" id="status">Connect a wallet on Robinhood Chain to begin.</p>
+    </div>
+
+    <!-- ---------------------------------------------------------- tokenize -->
+    <section class="panel">
+      <div><span class="panel-num">01</span><h2 style="display:inline">Tokenize an asset</h2></div>
+      <p class="sub">Create a revenue-share token for your asset. You become the operator and issue ownership shares.</p>
+
+      <div class="field-row">
+        <div class="field"><label>Asset name</label><input id="tName" placeholder="e.g. Downtown Charger #4" /></div>
+        <div class="field"><label>Share symbol</label><input id="tSymbol" placeholder="e.g. sCHG4" maxlength="11" /></div>
+      </div>
+      <div class="field"><label>Metadata link (optional)</label><input id="tUri" placeholder="https://... or ipfs://..." /></div>
+      <button class="btn" id="createBtn" disabled>Create revenue share</button>
+      <p class="hint">Deploys a RevenueShare contract. Gas is paid in ETH on Robinhood Chain.</p>
+
+      <div id="mintBox" class="hidden" style="margin-top:22px;border-top:1px solid var(--line-soft);padding-top:20px">
+        <p class="sub" style="margin-bottom:14px">Created <a class="link" id="createdLink" target="_blank" rel="noreferrer"></a>. Now issue shares to owners.</p>
+        <div class="field-row">
+          <div class="field"><label>Owner address</label><input id="mTo" placeholder="0x..." /></div>
+          <div class="field"><label>Shares</label><input id="mAmount" placeholder="e.g. 100" /></div>
+        </div>
+        <button class="btn" id="mintBtn">Issue shares</button>
+        <p class="hint">Shares are 18-decimal. Issue in whole numbers; each share is one unit of ownership.</p>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------- claim -->
+    <section class="panel">
+      <div><span class="panel-num">02</span><h2 style="display:inline">Your revenue</h2></div>
+      <p class="sub">Revenue shares you hold, and the income you can claim. Claiming pulls in any freshly-earned revenue first.</p>
+      <div id="holdings"><div class="empty">Connect your wallet to see your revenue shares.</div></div>
+    </section>
+  </main>
+
+  <footer class="foot">SERVO APP &middot; RWA REVENUE RAILS &middot; ROBINHOOD CHAIN &middot; SETTLED IN USDG</footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
