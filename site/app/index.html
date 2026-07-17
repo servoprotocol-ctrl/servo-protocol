@@ -56,9 +56,29 @@
       </div>
     </section>
 
+    <!-- ---------------------------------------------------------- sell -->
+    <section class="panel">
+      <div><span class="panel-num">02</span><h2 style="display:inline">Sell shares (raise capital)</h2></div>
+      <p class="sub">List some of your shares for sale at a fixed price. Buyers pay USDG, you receive the capital, and they get a claim on the asset's future income.</p>
+      <div class="field-row">
+        <div class="field"><label>Revenue share address</label><input id="sShare" placeholder="0x... (a share you operate)" /></div>
+        <div class="field"><label>Price per share (USDG)</label><input id="sPrice" placeholder="e.g. 8" /></div>
+      </div>
+      <div class="field"><label>Shares to sell</label><input id="sQty" placeholder="e.g. 30" /></div>
+      <button class="btn" id="sellBtn" disabled>List shares for sale</button>
+      <p class="hint">Creates an offering, then loads it with your shares (you'll approve the share token, then fund).</p>
+    </section>
+
+    <!-- ---------------------------------------------------------- invest -->
+    <section class="panel">
+      <div><span class="panel-num">03</span><h2 style="display:inline">Invest in an asset</h2></div>
+      <p class="sub">Open offerings: buy shares of a real-world asset and earn a cut of everything it makes. Price is set by the operator; the value is anchored in the asset's onchain income.</p>
+      <div id="offerings"><div class="empty">Reading open offerings…</div></div>
+    </section>
+
     <!-- ---------------------------------------------------------- claim -->
     <section class="panel">
-      <div><span class="panel-num">02</span><h2 style="display:inline">Your revenue</h2></div>
+      <div><span class="panel-num">04</span><h2 style="display:inline">Your revenue</h2></div>
       <p class="sub">Revenue shares you hold, and the income you can claim. Claiming pulls in any freshly-earned revenue first.</p>
       <div id="holdings"><div class="empty">Connect your wallet to see your revenue shares.</div></div>
     </section>

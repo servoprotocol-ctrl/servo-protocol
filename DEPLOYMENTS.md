@@ -53,3 +53,10 @@ Robinhood Chain deployment above.
 - Charger RevenueShare (sCHG): [`0x664b19AC98fEb5051d4aE659eBb4D8B6e326CD0e`](https://robinhoodchain.blockscout.com/address/0x664b19AC98fEb5051d4aE659eBb4D8B6e326CD0e) (verified) — 70/30 split.
   - AUTO-ROUTING LIVE: SVC #1 payTo routes charging revenue here; syncRevenue()/claim() distributes to holders. Proven: bot bought 2 charges -> 0.099 USDG routed -> operator 0.0693 / backer 0.0297.
 - Superseded: old factory 0xa1e5fd12... + demo share 0x81138bAe... (pre-auto-routing).
+
+## Primary Issuance (Robinhood Chain)
+
+- RevenueShareOfferingFactory: [`0x371877b3310aEd85a6c85d0f846F13Fb9bcC9Df7`](https://robinhoodchain.blockscout.com/address/0x371877b3310aEd85a6c85d0f846F13Fb9bcC9Df7) (verified)
+- Demo offering (charger shares @ 0.5 USDG): [`0x02774eF5d1E68B7eCB4D261a24Cb2822DbeE652E`](https://robinhoodchain.blockscout.com/address/0x02774eF5d1E68B7eCB4D261a24Cb2822DbeE652E) (verified)
+  - LIVE: a real buyer paid 5 USDG for 10 shares (10%) of the charger; capital to operator, buyer now earns 10% of its income.
+- Wired into the Servo App (/app): Sell shares (create offering + fund), Invest (browse + buy).

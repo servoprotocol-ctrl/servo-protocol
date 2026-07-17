@@ -14,6 +14,8 @@ const RPC = "https://rpc.mainnet.chain.robinhood.com";
 const CHAIN_ID = 4663;
 const CHAIN_HEX = "0x1237"; // 4663
 const FACTORY = "0x4ea7aDfE7501E0a925F89545650A28E7c0797E97";
+const OFFERING_FACTORY = "0x371877b3310aEd85a6c85d0f846F13Fb9bcC9Df7";
+const USDG = "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168";
 const SCAN = "https://robinhoodchain.blockscout.com";
 
 const chain = {
@@ -42,6 +44,26 @@ const shareAbi = parseAbi([
   "function claim()",
 ]);
 
+const offeringFactoryAbi = parseAbi([
+  "function offerings() view returns (address[])",
+  "function createOffering(address share, uint256 price) returns (address)",
+  "event OfferingCreated(address indexed offering, address indexed share, address indexed operator, uint256 price)",
+]);
+const offeringAbi = parseAbi([
+  "function SHARE() view returns (address)",
+  "function PRICE() view returns (uint256)",
+  "function available() view returns (uint256)",
+  "function totalRaised() view returns (uint256)",
+  "function sharesSold() view returns (uint256)",
+  "function closed() view returns (bool)",
+  "function buy(uint256 wholeShares)",
+  "function fund(uint256 wholeShares)",
+]);
+const erc20Abi = parseAbi([
+  "function approve(address,uint256) returns (bool)",
+  "function allowance(address,address) view returns (uint256)",
+]);
+
 const $ = (id) => document.getElementById(id);
 const short = (a) => a.slice(0, 6) + "…" + a.slice(-4);
 const usdg = (v) => Number(formatUnits(v, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 });
@@ -62,6 +84,7 @@ async function connect() {
     wallet = createWalletClient({ account, chain, transport: custom(window.ethereum) });
     $("connectBtn").textContent = short(addr);
     $("createBtn").disabled = false;
+    $("sellBtn").disabled = false;
     setStatus("Connected on Robinhood Chain: " + short(addr), "ok");
     await loadHoldings();
   } catch (e) {
@@ -209,10 +232,124 @@ async function claim(addr) {
   }
 }
 
+// ------------------------------------------------------------ invest (buy)
+async function loadOfferings() {
+  const box = $("offerings");
+  box.innerHTML = '<div class="empty">Reading open offerings…</div>';
+  try {
+    const offs = await pub.readContract({ address: OFFERING_FACTORY, abi: offeringFactoryAbi, functionName: "offerings" });
+    const items = [];
+    for (const o of offs) {
+      const [share, price, avail, raised, sold, closed] = await Promise.all([
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "SHARE" }),
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "PRICE" }),
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "available" }),
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "totalRaised" }),
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "sharesSold" }),
+        pub.readContract({ address: o, abi: offeringAbi, functionName: "closed" }),
+      ]);
+      if (closed || avail === 0n) continue;
+      const [name, symbol] = await Promise.all([
+        pub.readContract({ address: share, abi: shareAbi, functionName: "name" }),
+        pub.readContract({ address: share, abi: shareAbi, functionName: "symbol" }),
+      ]);
+      items.push({ o, price, avail, raised, sold, name, symbol });
+    }
+    box.innerHTML = items.length ? items.map(offeringCard).join("") : '<div class="empty">No open offerings right now.</div>';
+    for (const it of items) {
+      const b = document.getElementById("buy-" + it.o);
+      if (b) b.addEventListener("click", () => buyShares(it.o, it.price));
+    }
+  } catch (e) {
+    box.innerHTML = '<div class="empty">Failed to read offerings: ' + (e?.shortMessage || e?.message || e) + "</div>";
+  }
+}
+
+function offeringCard(it) {
+  return `<div class="holding">
+    <div class="holding-top"><span class="holding-name">${it.name}</span><span class="badge">${it.symbol}</span></div>
+    <div class="holding-rows">
+      <div><span>PRICE</span><span class="holding-claim">${usdg(it.price)} USDG / share</span></div>
+      <div><span>AVAILABLE</span><span>${it.avail.toString()} shares</span></div>
+      <div><span>RAISED</span><span>${usdg(it.raised)} USDG</span></div>
+    </div>
+    <div class="holding-actions">
+      <input class="field" style="width:120px;padding:8px 10px" id="qty-${it.o}" placeholder="# shares" />
+      <button class="btn btn-sm" id="buy-${it.o}">Buy</button>
+      <a class="link" href="${SCAN}/address/${it.o}" target="_blank" rel="noreferrer" style="font-family:var(--font-mono);font-size:11px">view &rarr;</a>
+    </div>
+  </div>`;
+}
+
+async function buyShares(offeringAddr, price) {
+  if (!account) { setStatus("Connect your wallet to buy.", "err"); return; }
+  const qtyStr = ($("qty-" + offeringAddr).value || "").trim();
+  const qty = BigInt(qtyStr || "0");
+  if (qty <= 0n) { setStatus("Enter how many shares to buy.", "err"); return; }
+  const cost = qty * price;
+  try {
+    const allowance = await pub.readContract({ address: USDG, abi: erc20Abi, functionName: "allowance", args: [account, offeringAddr] });
+    if (allowance < cost) {
+      setStatus("Approve USDG in your wallet…");
+      const ah = await wallet.writeContract({ address: USDG, abi: erc20Abi, functionName: "approve", args: [offeringAddr, cost] });
+      await pub.waitForTransactionReceipt({ hash: ah });
+    }
+    setStatus("Confirm the purchase in your wallet…");
+    const h = await wallet.writeContract({ address: offeringAddr, abi: offeringAbi, functionName: "buy", args: [qty] });
+    await pub.waitForTransactionReceipt({ hash: h });
+    setStatus("Bought " + qty + " shares. You now own a piece of the asset and earn its income.", "ok");
+    await loadOfferings();
+    await loadHoldings();
+  } catch (e) {
+    setStatus("Buy failed: " + (e?.shortMessage || e?.message || e), "err");
+  }
+}
+
+// ------------------------------------------------------------ sell (create offering + fund)
+async function sellShares() {
+  if (!account) { setStatus("Connect your wallet to list shares.", "err"); return; }
+  const shareAddr = $("sShare").value.trim();
+  const priceStr = $("sPrice").value.trim();
+  const qtyStr = $("sQty").value.trim();
+  if (!/^0x[0-9a-fA-F]{40}$/.test(shareAddr) || !priceStr || !qtyStr) {
+    setStatus("Enter the share address, price per share, and how many to sell.", "err"); return;
+  }
+  const price = parseUnits(priceStr, 6); // USDG per share
+  const qty = BigInt(qtyStr);
+  try {
+    $("sellBtn").disabled = true;
+    setStatus("Creating the offering…");
+    const ch = await wallet.writeContract({ address: OFFERING_FACTORY, abi: offeringFactoryAbi, functionName: "createOffering", args: [shareAddr, price] });
+    const rcpt = await pub.waitForTransactionReceipt({ hash: ch });
+    let offering;
+    for (const log of rcpt.logs) {
+      try { const d = decodeEventLog({ abi: offeringFactoryAbi, data: log.data, topics: log.topics }); if (d.eventName === "OfferingCreated") { offering = d.args.offering; break; } } catch {}
+    }
+    if (!offering) { const all = await pub.readContract({ address: OFFERING_FACTORY, abi: offeringFactoryAbi, functionName: "offerings" }); offering = all[all.length - 1]; }
+
+    setStatus("Approve your shares to the offering…");
+    const ah = await wallet.writeContract({ address: shareAddr, abi: erc20Abi, functionName: "approve", args: [offering, qty * (10n ** 18n)] });
+    await pub.waitForTransactionReceipt({ hash: ah });
+
+    setStatus("Fund the offering with your shares…");
+    const fh = await wallet.writeContract({ address: offering, abi: offeringAbi, functionName: "fund", args: [qty] });
+    await pub.waitForTransactionReceipt({ hash: fh });
+
+    setStatus("Listed " + qty + " shares at " + priceStr + " USDG each. It's live in Invest.", "ok");
+    await loadOfferings();
+  } catch (e) {
+    setStatus("Listing failed: " + (e?.shortMessage || e?.message || e), "err");
+  } finally {
+    $("sellBtn").disabled = false;
+  }
+}
+
 // ------------------------------------------------------------ wire up
 $("connectBtn").addEventListener("click", connect);
 $("createBtn").addEventListener("click", createRevenueShare);
 $("mintBtn").addEventListener("click", mintShares);
+$("sellBtn").addEventListener("click", sellShares);
+loadOfferings();
 if (window.ethereum) {
   window.ethereum.on?.("accountsChanged", () => location.reload());
   window.ethereum.on?.("chainChanged", () => location.reload());
