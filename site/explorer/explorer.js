@@ -14,6 +14,7 @@ const RPC = "https://rpc.mainnet.chain.robinhood.com";
 const REGISTRY = "0x7896Dba19A72278d66C9f0640262C511D24CB871";
 const SERVICES = "0x24f2f3536F65CA2AE36136E3B217a390251a1a90";
 const REVENUE_FACTORY = "0x4ea7aDfE7501E0a925F89545650A28E7c0797E97";
+const ORACLE = "0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107"; // ServoOracle -> Chainlink USDG/USD
 const DEPLOY_BLOCK = 10126181n;
 const SCAN = "https://robinhoodchain.blockscout.com/address/";
 
@@ -45,6 +46,8 @@ const revenueFactoryAbi = parseAbi([
   "function shares() view returns (address[])",
 ]);
 
+const oracleAbi = parseAbi(["function usdgPrice() view returns (int256, uint8)"]);
+
 const revenueShareAbi = parseAbi([
   "function name() view returns (string)",
   "function symbol() view returns (string)",
@@ -68,6 +71,7 @@ const $ = (id) => document.getElementById(id);
 const short = (a) => (a && a !== "0x0000000000000000000000000000000000000000" ? a.slice(0, 6) + "…" + a.slice(-4) : "—");
 const mid = (n) => "MID-" + String(n).padStart(4, "0");
 const usdc = (v) => Number(formatUnits(v, 6)).toLocaleString(undefined, { maximumFractionDigits: 2 });
+const usdEq = (v) => (window._usdgUsd ? " ≈ $" + (Number(formatUnits(v, 6)) * window._usdgUsd).toLocaleString(undefined, { maximumFractionDigits: 2 }) : "");
 const cat = (h) => CAT_MAP[h] || "SERVICE";
 const scanLink = (addr, label) => `<a href="${SCAN}${addr}" target="_blank" rel="noreferrer">${label}</a>`;
 
@@ -175,6 +179,13 @@ async function load() {
   btn.disabled = true;
   $("updated").textContent = "reading Robinhood Chain…";
   try {
+    // Chainlink USDG/USD price (Robinhood Chain's native oracle infra)
+    try {
+      const [price, dec] = await client.readContract({ address: ORACLE, abi: oracleAbi, functionName: "usdgPrice" });
+      window._usdgUsd = Number(price) / 10 ** Number(dec);
+      $("chainlink").innerHTML = `USDG <b>$${window._usdgUsd.toFixed(4)}</b> <span class="cl">&middot; Chainlink</span>`;
+    } catch { window._usdgUsd = null; }
+
     const [nextMid, nextSvc] = await Promise.all([
       client.readContract({ address: REGISTRY, abi: registryAbi, functionName: "nextMid" }),
       client.readContract({ address: SERVICES, abi: servicesAbi, functionName: "nextServiceId" }),
@@ -220,6 +231,7 @@ async function load() {
     $("cReceipts").textContent = logs.length;
     $("statReceipts").textContent = logs.length;
     $("statVolume").textContent = usdc(volume);
+    $("volumeUsd").textContent = usdEq(volume);
     $("receiptsWrap").innerHTML = logs.length
       ? `<table><thead><tr><th>RECEIPT</th><th>BUYER</th><th>PROVIDER</th><th>AMOUNT</th><th>FEE</th><th>RAIL</th></tr></thead>
          <tbody>${logs.map(receiptRow).join("")}</tbody></table>`
@@ -245,6 +257,7 @@ async function load() {
     const rwaVolume = rwas.reduce((acc, r) => acc + r.totalRevenue, 0n);
     $("cRevenue").textContent = rwas.length;
     $("statRwaVolume").textContent = usdc(rwaVolume);
+    $("rwaUsd").textContent = usdEq(rwaVolume);
     $("revenue").innerHTML = rwas.length
       ? rwas.map((r) => revenueCard(r.addr, r)).join("")
       : '<div class="empty">No revenue-share assets yet.</div>';

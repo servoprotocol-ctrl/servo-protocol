@@ -34,6 +34,7 @@
       <div class="refresh-row">
         <button class="btn-refresh" id="refreshBtn">Refresh</button>
         <span class="updated" id="updated">Loading&hellip;</span>
+        <span class="chainlink" id="chainlink"></span>
       </div>
     </div>
 
@@ -41,7 +42,7 @@
       <div class="stat"><span class="n" id="statMachines">&mdash;</span><span class="l">machines registered</span></div>
       <div class="stat"><span class="n" id="statServices">&mdash;</span><span class="l">services listed</span></div>
       <div class="stat"><span class="n" id="statReceipts">&mdash;</span><span class="l">settled receipts</span></div>
-      <div class="stat"><span class="n" id="statVolume">&mdash;</span><span class="l">USDG volume settled</span></div>
+      <div class="stat"><span class="n" id="statVolume">&mdash;</span><span class="l">USDG volume settled<span id="volumeUsd"></span></span></div>
     </section>
 
     <section class="sec">
@@ -56,7 +57,7 @@
 
     <section class="sec">
       <div class="sec-head"><h2>RWA Revenue</h2><span class="c" id="cRevenue">0</span></div>
-      <p class="rwa-note">Tokenized real-world assets paying income to their holders, onchain. <b id="statRwaVolume">&mdash;</b> USDG distributed to holders so far.</p>
+      <p class="rwa-note">Tokenized real-world assets paying income to their holders, onchain. <b id="statRwaVolume">&mdash;</b> USDG<span id="rwaUsd"></span> distributed to holders so far.</p>
       <div class="cards" id="revenue"><div class="loading">reading revenue rails</div></div>
     </section>
 

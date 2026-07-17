@@ -60,3 +60,10 @@ Robinhood Chain deployment above.
 - Demo offering (charger shares @ 0.5 USDG): [`0x02774eF5d1E68B7eCB4D261a24Cb2822DbeE652E`](https://robinhoodchain.blockscout.com/address/0x02774eF5d1E68B7eCB4D261a24Cb2822DbeE652E) (verified)
   - LIVE: a real buyer paid 5 USDG for 10 shares (10%) of the charger; capital to operator, buyer now earns 10% of its income.
 - Wired into the Servo App (/app): Sell shares (create offering + fund), Invest (browse + buy).
+
+## Chainlink integration (Robinhood Chain)
+
+- ServoOracle: [`0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107`](https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107) (verified)
+  - Reads Chainlink's live USDG/USD feed (`0x8bEeE3503F6860D5dac4cE26b5eEe92982951c2e`) with staleness + bad-price guards.
+  - Values Servo's USDG figures in real, Chainlink-verified USD (reflects depeg). Live read confirmed: USDG = $0.99995.
+  - Explorer shows the live Chainlink USDG price + USD equivalents. Robinhood Chain is Chainlink-powered.
