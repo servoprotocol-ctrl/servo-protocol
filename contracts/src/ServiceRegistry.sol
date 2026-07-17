@@ -8,6 +8,7 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import {MachineRegistry} from "./MachineRegistry.sol";
 import {FleetVault} from "./FleetVault.sol";
+import {IStockRewards} from "./interfaces/IStockRewards.sol";
 
 /// @title ServiceRegistry
 /// @notice The machine commerce network: a discovery and settlement layer for
@@ -59,6 +60,15 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
     uint16 public protocolFeeBps; // capped at MAX_FEE_BPS
     uint16 public constant MAX_FEE_BPS = 500; // 5%
 
+    // Marketplace stock rewards (optional). When configured, `rewardShareBps` of the
+    // protocol fee on each onchain settlement is diverted to the StockRewards pool and
+    // credited to the buyer, who can later claim it as tokenized stock. Zero address or
+    // zero share leaves settlement behaving exactly as before.
+    IStockRewards public stockRewards;
+    address public rewardCurrency; // cached StockRewards.rewardCurrency() (the USDG token)
+    uint16 public rewardShareBps; // share of the fee routed to rewards, <= BPS_DENOMINATOR
+    uint16 public constant BPS_DENOMINATOR = 10_000;
+
     // --------------------------------------------------------------- events
 
     event ServiceRegistered(
@@ -82,6 +92,8 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
     );
     event FacilitatorSet(address indexed facilitator, bool allowed);
     event ProtocolFeeSet(uint16 feeBps, address treasury);
+    event StockRewardsSet(address indexed stockRewards, uint16 rewardShareBps);
+    event RewardAccrued(uint256 indexed serviceId, address indexed buyer, uint256 amount);
 
     // --------------------------------------------------------------- errors
 
@@ -93,6 +105,7 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
     error ZeroAddress();
     error ZeroPrice();
     error VaultSettlementNeedsMachine();
+    error RewardShareTooHigh(uint16 bps);
 
     // ---------------------------------------------------------- constructor
 
@@ -187,7 +200,25 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
         } else {
             token.safeTransferFrom(msg.sender, s.payTo, net);
         }
-        if (fee > 0) token.safeTransferFrom(msg.sender, treasury, fee);
+
+        // Split the protocol fee between the treasury and marketplace stock rewards.
+        // The reward is carved out of the fee (not added on top), so the buyer's total
+        // outlay stays exactly `price`. Rewards only apply when the service settles in
+        // the rewards pool's currency (USDG).
+        if (fee > 0) {
+            uint256 reward;
+            IStockRewards rewards = stockRewards;
+            if (address(rewards) != address(0) && rewardShareBps > 0 && s.token == rewardCurrency) {
+                reward = (fee * rewardShareBps) / BPS_DENOMINATOR;
+            }
+            uint256 treasuryFee = fee - reward;
+            if (treasuryFee > 0) token.safeTransferFrom(msg.sender, treasury, treasuryFee);
+            if (reward > 0) {
+                token.safeTransferFrom(msg.sender, address(rewards), reward);
+                rewards.accrue(msg.sender, reward);
+                emit RewardAccrued(serviceId, msg.sender, reward);
+            }
+        }
 
         s.unitsSold += 1;
         s.grossRevenue += SafeCast.toUint128(price);
@@ -225,6 +256,17 @@ contract ServiceRegistry is Ownable, ReentrancyGuard {
         protocolFeeBps = feeBps;
         treasury = treasury_;
         emit ProtocolFeeSet(feeBps, treasury_);
+    }
+
+    /// @notice Configure marketplace stock rewards. `rewards` of zero disables them and
+    ///         restores plain treasury-only fee settlement. `rewardShareBps` is the
+    ///         portion of the protocol fee diverted to rewards (e.g. 5000 = half).
+    function setStockRewards(address rewards, uint16 rewardShareBps_) external onlyOwner {
+        if (rewardShareBps_ > BPS_DENOMINATOR) revert RewardShareTooHigh(rewardShareBps_);
+        stockRewards = IStockRewards(rewards);
+        rewardCurrency = rewards == address(0) ? address(0) : IStockRewards(rewards).rewardCurrency();
+        rewardShareBps = rewardShareBps_;
+        emit StockRewardsSet(rewards, rewardShareBps_);
     }
 
     // ----------------------------------------------------------------- views
