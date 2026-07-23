@@ -356,8 +356,8 @@
               <div><span>CLASS</span><span>MOBILE_GROUND</span></div>
               <div><span>OWNER</span><span>0x7099...79C8</span></div>
               <div><span>KEY</span><span class="accent">BOUND &#10003;</span></div>
-              <div><span>JOBS DONE</span><span>1,204</span></div>
-              <div><span>LIFETIME INCOME</span><span>6,020.00 USDG</span></div>
+              <div><span>JOBS DONE</span><span id="idJobs">1,204</span></div>
+              <div><span>LIFETIME INCOME</span><span id="idIncome">6,020.00 USDG</span></div>
             </div>
             <div class="id-card-foot">ROBINHOOD CHAIN&nbsp;|&nbsp;HW:9f2a...c771</div>
           </div>
@@ -425,6 +425,13 @@
             <span class="own-label">YOU GET PAID</span>
             <div class="own-value accent"><span id="ownPay">300</span><span class="own-unit">USDG</span></div>
           </div>
+        </div>
+        <div class="own-flow" aria-hidden="true">
+          <span class="flow-label">MID-0001</span>
+          <div class="flow-track" id="flowTrack">
+            <span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span><span class="flow-dot"></span>
+          </div>
+          <span class="flow-label flow-you">YOU</span>
         </div>
         <div class="own-foot">PAID OUT AUTOMATICALLY, AS THE MACHINE EARNS. NO INVOICES. NO WAITING.</div>
       </div>
@@ -497,6 +504,7 @@
         <a class="oracle-readout" href="https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107" target="_blank" rel="noreferrer">
           <span class="status-dot"></span>
           <span class="oracle-pair">USDG / USD</span>
+          <svg class="oracle-spark" viewBox="0 0 120 34" aria-hidden="true"><polyline id="oracleSpark" points="" /></svg>
           <span class="oracle-price" id="oraclePrice">$0.99995</span>
           <span class="oracle-live">LIVE FEED &rarr;</span>
         </a>

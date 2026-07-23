@@ -194,6 +194,8 @@ main, .nav, .footer { position: relative; z-index: 1; }
   grid-template-columns: 1.02fr 0.98fr;
   align-items: center;
   gap: 24px;
+  /* ambient scene light behind the machine */
+  background: radial-gradient(ellipse 58% 48% at 72% 60%, rgba(140, 255, 102, 0.06), transparent 72%);
 }
 .hero-copy { min-width: 0; }
 
@@ -207,14 +209,41 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 .hero-visual-glow {
   position: absolute;
-  width: 72%;
-  height: 58%;
-  top: 16%;
-  background: radial-gradient(ellipse at center, rgba(140, 255, 102, 0.13), transparent 68%);
-  filter: blur(22px);
+  width: 92%;
+  height: 66%;
+  top: 24%;
+  background: radial-gradient(ellipse at center, rgba(140, 255, 102, 0.14), transparent 66%);
+  filter: blur(26px);
   animation: glowPulse 5s ease-in-out infinite;
   pointer-events: none;
 }
+/* ground glow: the machine stands on a lit platform */
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  left: -6%;
+  right: -10%;
+  bottom: 20px;
+  height: 36%;
+  background: radial-gradient(ellipse 68% 100% at 52% 100%, rgba(140, 255, 102, 0.2), rgba(140, 255, 102, 0.05) 52%, transparent 76%);
+  filter: blur(16px);
+  animation: groundBreathe 6s ease-in-out infinite;
+  pointer-events: none;
+}
+/* stage edge: a crisp light line at its feet */
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 0;
+  bottom: 26px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(140, 255, 102, 0.45) 28%, rgba(140, 255, 102, 0.7) 52%, rgba(140, 255, 102, 0.45) 76%, transparent);
+  box-shadow: 0 0 22px rgba(140, 255, 102, 0.4), 0 -6px 30px rgba(140, 255, 102, 0.18);
+  animation: groundBreathe 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes groundBreathe { 50% { opacity: 0.62; } }
 #heroDots {
   position: relative;
   width: 112%;
@@ -1289,13 +1318,172 @@ input[type="range"]#ownRange::-moz-range-thumb {
   .hero h1 { font-size: clamp(44px, 12.5vw, 72px); }
 }
 
+/* ============================================================
+   SECTION SET-PIECES — every section gets a moving part
+   ============================================================ */
+
+/* live tick flash: a value just changed onchain */
+.tick-flash {
+  animation: tickFlash 0.6s ease;
+}
+@keyframes tickFlash {
+  25% { color: var(--accent); text-shadow: 0 0 14px rgba(140, 255, 102, 0.7); }
+}
+
+/* id card: periodic scan sweep, like the passport is being read */
+.id-card { overflow: hidden; }
+.id-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10%;
+  height: 26px;
+  background: linear-gradient(to bottom, transparent, rgba(140, 255, 102, 0.09), transparent);
+  animation: cardScan 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cardScan {
+  0%, 55% { top: -12%; opacity: 0; }
+  62% { opacity: 1; }
+  85%, 100% { top: 108%; opacity: 0; }
+}
+
+/* pain cards: the TODAY side flickers like a failing system */
+.pain-today .pain-label { animation: badFlicker 5s steps(1) infinite; }
+.pain-card:nth-child(2) .pain-today .pain-label { animation-delay: 1.6s; }
+.pain-card:nth-child(3) .pain-today .pain-label { animation-delay: 3.1s; }
+@keyframes badFlicker {
+  0%, 91% { opacity: 1; }
+  92% { opacity: 0.25; }
+  93% { opacity: 1; }
+  95% { opacity: 0.45; }
+  96%, 100% { opacity: 1; }
+}
+.pain-card:hover .pain-head {
+  animation: headGlitch 0.35s steps(2) 1;
+}
+@keyframes headGlitch {
+  25% { text-shadow: -2px 0 var(--danger), 2px 0 var(--accent); transform: translateX(1px); }
+  75% { text-shadow: 2px 0 var(--danger), -2px 0 var(--accent); transform: translateX(-1px); }
+}
+
+/* money loop: node burst ring when the coin ignites a stop */
+.loop-stop.lit .stop-node::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 255, 102, 0.7);
+  animation: nodeBurst 0.7s ease-out 1 both;
+}
+@keyframes nodeBurst {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(3.2); opacity: 0; }
+}
+.loop-stop.lit .stop-amt { animation: chipIn 0.5s ease 1; }
+@keyframes chipIn {
+  from { transform: translateY(6px); opacity: 0; }
+}
+
+/* market sim: ambient current on the edges + arrival ping */
+.sim-edge { animation: edgeFlow 26s linear infinite; }
+@keyframes edgeFlow { to { stroke-dashoffset: -220; } }
+.sim-ping {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: simPing 0.7s ease-out 1 both;
+  pointer-events: none;
+}
+@keyframes simPing {
+  from { transform: scale(0.3); opacity: 0.9; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+/* own widget: USDG flowing from the machine to you */
+.own-flow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 26px;
+  --flow-dur: 2.6s;
+}
+.flow-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  flex: none;
+}
+.flow-you { color: var(--accent); }
+.flow-track {
+  position: relative;
+  flex: 1;
+  height: 14px;
+  border-bottom: 1px dashed var(--line);
+}
+.flow-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(140, 255, 102, 0.7);
+  transform: translate(-8px, -50%);
+  animation: flowMove var(--flow-dur) linear infinite;
+}
+.flow-dot:nth-child(2) { animation-delay: calc(var(--flow-dur) / 8 * 1); }
+.flow-dot:nth-child(3) { animation-delay: calc(var(--flow-dur) / 8 * 2); }
+.flow-dot:nth-child(4) { animation-delay: calc(var(--flow-dur) / 8 * 3); }
+.flow-dot:nth-child(5) { animation-delay: calc(var(--flow-dur) / 8 * 4); }
+.flow-dot:nth-child(6) { animation-delay: calc(var(--flow-dur) / 8 * 5); }
+.flow-dot:nth-child(7) { animation-delay: calc(var(--flow-dur) / 8 * 6); }
+.flow-dot:nth-child(8) { animation-delay: calc(var(--flow-dur) / 8 * 7); }
+@keyframes flowMove {
+  0% { left: 0; opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* oracle: self-drawing live sparkline */
+.oracle-spark {
+  width: 120px;
+  height: 34px;
+  flex: none;
+}
+.oracle-spark polyline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(140, 255, 102, 0.5));
+}
+
+/* next cards: dot field drifts on hover */
+.next-card {
+  background-image: radial-gradient(rgba(140, 255, 102, 0.05) 1px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+.next-card:hover { animation: dotDrift 5s linear infinite; }
+@keyframes dotDrift { to { background-position: 40px 20px; } }
+
 /* ------------------------------------------------------------ reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .ticker-track { animation: none; }
   .reveal, .reveal.stagger > * { opacity: 1; transform: none; filter: none; transition: none; }
   .hero-visual-glow, .status-dot, .sim-stage-head::before, .sim-log-head::before,
-  .loop-coin::after, .rw-dot, .sim-node .sim-core, .grid-overlay::after { animation: none; }
+  .loop-coin::after, .rw-dot, .sim-node .sim-core, .grid-overlay::after,
+  .hero-visual::before, .hero-visual::after, .id-card::after,
+  .pain-today .pain-label, .pain-card:hover .pain-head,
+  .loop-stop.lit .stop-node::after, .loop-stop.lit .stop-amt,
+  .sim-edge, .sim-ping, .flow-dot, .next-card:hover { animation: none; }
   .stop-card { opacity: 1; }
   .hero-hint { transition: none; }
   [data-tilt] { transform: none !important; }

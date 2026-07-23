@@ -43,17 +43,20 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-  /* ------------------------------------------------------------ stat counters */
+  /* ------------------------------------------------------------ stat counters: terminal decode */
   function animateCount(el) {
-    const target = parseInt(el.dataset.count, 10);
-    const suffix = el.dataset.suffix || "";
-    if (REDUCED) { el.textContent = target + suffix; return; }
-    const dur = 1400;
+    const final = (el.dataset.count || "0") + (el.dataset.suffix || "");
+    if (REDUCED) { el.textContent = final; return; }
+    const dur = 1000;
     const start = performance.now();
     function tick(now) {
       const t = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(target * eased) + suffix;
+      let out = "";
+      for (let i = 0; i < final.length; i++) {
+        const resolveAt = ((i + 1) / final.length) * 0.8;
+        out += t >= resolveAt ? final[i] : String(Math.floor(Math.random() * 10));
+      }
+      el.textContent = out;
       if (t < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -245,6 +248,14 @@
           setTimeout(() => el.classList.remove("hot"), 700);
           pkt.setAttribute("cx", -20);
           pkt.setAttribute("cy", -20);
+          // radar ping where the payment landed
+          const ping = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          ping.setAttribute("cx", to.x);
+          ping.setAttribute("cy", to.y);
+          ping.setAttribute("r", 16);
+          ping.setAttribute("class", "sim-ping");
+          simSvg.appendChild(ping);
+          setTimeout(() => ping.remove(), 750);
           logReceipt(log, from.mid, to.mid, t.svc, t.amt, rcpt++);
           busy = false;
         }
@@ -348,11 +359,14 @@
   const ownFill = document.getElementById("ownFill");
   if (ownRange && ownPct && ownPay && ownFill) {
     const MONTHLY = 1000; // USDG, the example month
+    const flowTrack = document.getElementById("flowTrack");
     const renderOwn = () => {
       const pct = parseInt(ownRange.value, 10);
       ownPct.textContent = pct;
       ownPay.textContent = Math.round((MONTHLY * pct) / 100);
       ownFill.style.width = pct + "%";
+      // the more you own, the faster the money flows to you
+      if (flowTrack) flowTrack.parentElement.style.setProperty("--flow-dur", (3.6 - pct * 0.028).toFixed(2) + "s");
     };
     ownRange.addEventListener("input", renderOwn);
     renderOwn();
@@ -426,14 +440,122 @@
       }
       requestAnimationFrame(drain);
     });
+
+    // dividends never sleep: the balance keeps accruing between claims
+    if (!REDUCED) {
+      setInterval(() => {
+        if (claiming) return;
+        const v = parseFloat(rwBalance.textContent);
+        if (isNaN(v)) return;
+        rwBalance.textContent = (v + 0.0001).toFixed(4);
+        rwBalance.classList.add("tick-flash");
+        setTimeout(() => rwBalance.classList.remove("tick-flash"), 650);
+      }, 3600);
+    }
   }
 
-  /* ------------------------------------------------------------ oracle: live-feel price */
+  /* ------------------------------------------------------------ oracle: live price + self-drawing sparkline */
   const oraclePrice = document.getElementById("oraclePrice");
-  if (oraclePrice && !REDUCED) {
+  const oracleSpark = document.getElementById("oracleSpark");
+  if (oracleSpark) {
+    const N = 32;
+    const pts = Array.from({ length: N }, () => 17);
+    const draw = () => {
+      oracleSpark.setAttribute(
+        "points",
+        pts.map((y, i) => ((i * 120) / (N - 1)).toFixed(1) + "," + y.toFixed(1)).join(" "),
+      );
+    };
+    if (REDUCED) {
+      draw();
+    } else {
+      let sparkTick = 0;
+      setInterval(() => {
+        pts.shift();
+        pts.push(Math.min(28, Math.max(6, pts[pts.length - 1] + (Math.random() - 0.5) * 7)));
+        draw();
+        if (oraclePrice && ++sparkTick % 4 === 0) {
+          oraclePrice.textContent = "$" + (0.99992 + Math.random() * 0.00006).toFixed(5);
+        }
+      }, 750);
+    }
+  }
+
+  /* ------------------------------------------------------------ section tags type themselves out */
+  if (!REDUCED) {
+    const typeEls = document.querySelectorAll(".section-tag, .eyebrow, .oracle-tag");
+    const typeObserver = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          typeObserver.unobserve(e.target);
+          const full = e.target.textContent;
+          const perChar = Math.min(28, 650 / full.length);
+          e.target.textContent = "";
+          let i = 0;
+          const iv = setInterval(() => {
+            e.target.textContent = full.slice(0, ++i);
+            if (i >= full.length) clearInterval(iv);
+          }, perChar);
+        }
+      },
+      { threshold: 0.6 },
+    );
+    typeEls.forEach((el) => typeObserver.observe(el));
+  }
+
+  /* ------------------------------------------------------------ id card: the machine is working right now */
+  const idIncome = document.getElementById("idIncome");
+  const idJobs = document.getElementById("idJobs");
+  if (idIncome && idJobs && !REDUCED) {
+    let income = 6020.0;
+    let jobs = 1204;
+    let beat = 0;
+    const money = (v) =>
+      v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USDG";
     setInterval(() => {
-      const p = 0.99992 + Math.random() * 0.00006;
-      oraclePrice.textContent = "$" + p.toFixed(5);
-    }, 2800);
+      income += 0.05; // another charge sold
+      idIncome.textContent = money(income);
+      idIncome.classList.add("tick-flash");
+      setTimeout(() => idIncome.classList.remove("tick-flash"), 650);
+      if (++beat % 3 === 0) {
+        jobs += 1;
+        idJobs.textContent = jobs.toLocaleString("en-US");
+        idJobs.classList.add("tick-flash");
+        setTimeout(() => idJobs.classList.remove("tick-flash"), 650);
+      }
+    }, 3400);
+  }
+
+  /* ------------------------------------------------------------ proof: contract hashes decode on hover */
+  if (FINE_POINTER && !REDUCED) {
+    const HEXPOOL = "0123456789abcdefABCDEF";
+    document.querySelectorAll(".addr-card").forEach((card) => {
+      const hash = card.querySelector(".addr-hash");
+      if (!hash) return;
+      const original = hash.textContent;
+      let busy = false;
+      card.addEventListener("mouseenter", () => {
+        if (busy) return;
+        busy = true;
+        const start = performance.now();
+        const dur = 460;
+        function scramble(now) {
+          const t = Math.min((now - start) / dur, 1);
+          let out = "";
+          for (let i = 0; i < original.length; i++) {
+            const c = original[i];
+            const isHex = HEXPOOL.indexOf(c) !== -1 && i > 1; // keep the 0x
+            out += isHex && Math.random() > t
+              ? HEXPOOL[Math.floor(Math.random() * HEXPOOL.length)]
+              : c;
+          }
+          hash.textContent = out;
+          if (t < 1) requestAnimationFrame(scramble);
+          else { hash.textContent = original; busy = false; }
+        }
+        requestAnimationFrame(scramble);
+      });
+    });
   }
 })();
