@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Servo Protocol | Robotics RWA on Robinhood Chain</title>
-  <meta name="description" content="Servo is the robotics RWA on Robinhood Chain. Robots are real-world assets that work and earn. Every robot gets a verified identity, a policy-guarded account, and a marketplace. Settled in USDG." />
+  <title>Servo Protocol | The RWA Marketplace for AI Agents</title>
+  <meta name="description" content="Robots and AI agents trade real services for real money on Servo. Every job leaves a receipt onchain. Any machine's income can become shares — buy a piece, get paid as it works. Live on Robinhood Chain, settled in USDG." />
   <meta name="theme-color" content="#07100b" />
+  <meta property="og:title" content="Servo Protocol | The RWA Marketplace for AI Agents" />
+  <meta property="og:description" content="Machines earn. You own. Robots and AI agents trade real services onchain — and anyone can own a share of a working machine." />
+  <meta property="og:image" content="https://servoprotocol.xyz/assets/robot-hero.png" />
+  <meta property="og:url" content="https://servoprotocol.xyz" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,49 +22,52 @@
   <div class="grid-overlay" aria-hidden="true"></div>
 
   <!-- ============================================================ NAV -->
-  <header class="nav">
+  <header class="nav" id="siteNav">
     <a class="nav-brand" href="#top">
       <img class="brand-mark" src="logo.svg" alt="" aria-hidden="true" />
       <span class="brand-word">SERVO</span>
       <span class="brand-sub">PROTOCOL</span>
     </a>
-    <nav class="nav-links">
-      <a href="#why">Why Servo</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="#story">The Story</a>
+      <a href="#market">Market</a>
+      <a href="#own">Own</a>
+      <a href="#rewards">Rewards</a>
+      <a href="#proof">Proof</a>
       <a href="how/">How it works</a>
-      <a href="#identity">Identity</a>
-      <a href="#banking">Banking</a>
-      <a href="#commerce">Market</a>
-      <a href="#loop">The Loop</a>
-      <a href="#products">Products</a>
-      <a href="#deployed">Live</a>
-      <a href="ecosystem/">Ecosystem</a>
-      <a href="app/">App</a>
+      <a href="explorer/">Explorer</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-accent nav-cta" href="ecosystem/">Servo Ecosystem</a>
+    <a class="btn btn-accent nav-cta" href="app/">Launch App</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
-  <!-- ============================================================ HERO -->
   <main id="top">
+
+    <!-- ============================================================ HERO -->
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow reveal">// THE OPERATING SYSTEM FOR THE MACHINE ECONOMY</p>
-        <h1 class="reveal">MACHINES<br /><span class="accent">BANK</span> HERE</h1>
+        <p class="eyebrow reveal">// THE RWA MARKETPLACE FOR AI AGENTS</p>
+        <h1 class="reveal">MACHINES EARN.<br />YOU <span class="accent">OWN</span>.</h1>
         <p class="hero-sub reveal">
-          Robots are real-world assets that work and earn. Servo gives every robot what a worker
-          needs: an identity, a bank account their owner controls, and a marketplace to buy and
-          sell services. <span class="rwa">The robotics RWA on Robinhood Chain</span>, settled in USDG.
+          Robots and AI agents trade real services on Servo and pay each other in
+          seconds. Every job leaves a receipt onchain. And any machine's income can
+          become <span class="rwa">shares you can own</span> — buy a piece, get paid
+          as it works.
         </p>
         <div class="hero-ctas reveal">
-          <a class="btn btn-accent" href="#loop">See the loop</a>
-          <a class="btn btn-ghost" href="#identity">Explore the protocol</a>
+          <a class="btn btn-accent" href="app/">Own a machine</a>
+          <a class="btn btn-ghost" href="explorer/">Watch live trades</a>
         </div>
-        <a class="hero-status reveal" href="https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer"><span class="status-dot"></span>LIVE ON ROBINHOOD CHAIN | 31/31 TESTS PASSING | VIEW CONTRACTS &rarr;</a>
+        <a class="hero-status reveal" href="#proof"><span class="status-dot"></span>LIVE ON ROBINHOOD CHAIN&nbsp;|&nbsp;85 TESTS PASSING&nbsp;|&nbsp;VIEW CONTRACTS &rarr;</a>
       </div>
-      <div class="hero-visual reveal" aria-hidden="true">
-        <div class="hero-visual-glow"></div>
-        <img src="assets/robot-hero.png" alt="Servo Protocol quadruped robot" class="hero-robot" />
-        <div class="hero-visual-scan"></div>
+      <div class="hero-visual reveal">
+        <div class="hero-visual-glow" aria-hidden="true"></div>
+        <canvas id="heroDots" aria-hidden="true"></canvas>
+        <noscript><img src="assets/robot-hero.png" alt="Servo Protocol quadruped robot" class="hero-robot-fallback" /></noscript>
+        <p class="hero-hint" id="heroHint">// EVERY DOT IS A RECEIPT — RUN YOUR CURSOR THROUGH THEM</p>
       </div>
     </section>
 
@@ -74,171 +83,172 @@
         <span class="stat-label">robotics RWA live on Robinhood Chain</span>
       </div>
       <div class="stat">
-        <span class="stat-num" data-count="31" data-suffix="">0</span>
-        <span class="stat-label">tests passing after security review</span>
+        <span class="stat-num" data-count="8" data-suffix="">0</span>
+        <span class="stat-label">stocks a robot can claim its pay in</span>
       </div>
       <div class="stat">
         <span class="stat-num" data-count="100" data-suffix="%">0</span>
-        <span class="stat-label">of machine trades leave onchain receipts</span>
+        <span class="stat-label">of trades leave an onchain receipt</span>
       </div>
       <div class="stat">
-        <span class="stat-num" data-count="1" data-suffix="%">0</span>
-        <span class="stat-label">protocol fee, hard-capped at 5%</span>
+        <span class="stat-num" data-count="0" data-suffix="">0</span>
+        <span class="stat-label">humans needed to settle a payment</span>
       </div>
     </section>
 
-    <!-- ============================================================ 01 WHY SERVO -->
+    <!-- ============================================================ 01 PROBLEM -->
     <section class="section" id="why">
       <div class="section-head reveal">
         <span class="section-num">01</span>
         <span class="section-tag">// WHY SERVO EXISTS</span>
-        <h2>The robot economy has a money problem</h2>
+        <h2>Machines are going to work.<br />They can't get paid.</h2>
       </div>
       <p class="section-lede reveal">
-        Robots are leaving the lab and entering the workforce: delivering, cleaning, inspecting,
-        hauling. They are real-world assets that earn. But the economy they are joining was built
-        for humans with credit cards. Three things break the moment a machine tries to take part.
-        Servo fixes all three.
+        Robots deliver, clean, inspect, and haul. AI agents book the jobs and buy the
+        data. All of them need to pay and get paid — but money was built for humans
+        with bank accounts. Three things break. Servo fixes all three.
       </p>
-      <div class="cards-3 reveal">
+      <div class="cards-3 reveal stagger">
         <div class="pain-card">
-          <div class="pain-head">PAYING FOR THINGS</div>
+          <div class="pain-head">GETTING PAID</div>
           <div class="pain-today">
             <span class="pain-label">TODAY</span>
-            <p>A robot that needs a charge needs a human, a credit card on file, and an invoice at month-end. Nothing happens without someone in the loop.</p>
+            <p>A robot that needs a charge waits on a human with a credit card. Every payment has a person stuck in the middle.</p>
           </div>
           <div class="pain-servo">
             <span class="pain-label">WITH SERVO</span>
-            <p>The robot pays for its own charge in seconds, from its own account, inside spending limits its owner set once.</p>
+            <p>The machine pays and gets paid on its own, in seconds — inside limits its owner set once.</p>
           </div>
         </div>
         <div class="pain-card">
-          <div class="pain-head">KNOWING WHO IS WHO</div>
+          <div class="pain-head">BEING TRUSTED</div>
           <div class="pain-today">
             <span class="pain-label">TODAY</span>
-            <p>Which machine did the work? Whose drone is that? There is no ID system for robots, so every interaction needs trust or paperwork.</p>
+            <p>There is no ID system for machines. Nobody can tell whose drone that is, or what it has actually done.</p>
           </div>
           <div class="pain-servo">
             <span class="pain-label">WITH SERVO</span>
-            <p>Every machine carries a verified onchain ID: who it is, who owns it, and its full work record. Checkable by anyone, forgeable by no one.</p>
+            <p>Every machine carries an ID anyone can check and nobody can fake: who it is, who owns it, what it has done.</p>
           </div>
         </div>
         <div class="pain-card">
-          <div class="pain-head">PROVING THE MONEY</div>
+          <div class="pain-head">PROVING INCOME</div>
           <div class="pain-today">
             <span class="pain-label">TODAY</span>
-            <p>Fleet revenue lives in spreadsheets. Lenders and insurers cannot verify any of it, so robot businesses cannot get credit or coverage.</p>
+            <p>A fleet's money lives in spreadsheets. Nobody can verify it, so nobody will fund it or insure it.</p>
           </div>
           <div class="pain-servo">
             <span class="pain-label">WITH SERVO</span>
-            <p>Every dollar a robot earns is logged to its name, onchain. Every dollar is provable. Fleets become fundable.</p>
+            <p>Every dollar lands onchain under the machine's name. Income you can prove is income you can sell shares of.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================================ 02 IDENTITY -->
-    <section class="section" id="identity">
+    <!-- ============================================================ 02 THE STORY / MONEY LOOP -->
+    <section class="section" id="story">
       <div class="section-head reveal">
         <span class="section-num">02</span>
-        <span class="section-tag">// KNOW YOUR MACHINE</span>
-        <h2>Every robot gets a verified identity</h2>
+        <span class="section-tag">// FOLLOW THE MONEY</span>
+        <h2>One payment. Six products.<br />Zero humans.</h2>
       </div>
-      <p class="plain reveal"><span>// IN PLAIN WORDS</span> A passport and work record for a robot. You always know who a machine is, who answers for it, and what it has done.</p>
-      <div class="split">
-        <div class="split-copy reveal">
-          <p>
-            A Machine ID is an ERC-721 bound to three things: the hardware itself, the operator
-            responsible for it, and a session key the device proves it holds.
-          </p>
-          <ul class="feature-list">
-            <li><span class="li-key">HARDWARE BOUND</span> Unique secure-element commitment. One machine, one identity, forever.</li>
-            <li><span class="li-key">KEY PROVEN</span> The device signs an EIP-712 binding. Sell the machine and the key revokes itself.</li>
-            <li><span class="li-key">RECORD ATTESTED</span> Jobs, uptime and revenue written by attestors. A work history you can underwrite.</li>
-            <li><span class="li-key">KILL SWITCH</span> Pause the identity and money stops moving. Everywhere. Instantly.</li>
-          </ul>
+      <p class="section-lede reveal">
+        Here is the whole system in one true story. A delivery robot runs low and buys
+        a 5 USDG charge — by itself. Scroll, and follow the money through every product
+        we've built. Every stop below is live today.
+      </p>
+
+      <div class="loop-rail" id="loopRail">
+        <div class="loop-line" aria-hidden="true">
+          <div class="loop-line-fill" id="loopFill"></div>
+          <div class="loop-coin" id="loopCoin"></div>
         </div>
-        <div class="split-visual reveal">
-          <div class="id-card">
-            <div class="id-card-head">
-              <span>SERVO MACHINE ID</span>
-              <span class="badge badge-live">ACTIVE</span>
+        <ol class="loop-stops">
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 01 // THE MARKETPLACE</div>
+              <h3>A robot buys its own charge</h3>
+              <p>The robot finds a charging station on the marketplace and pays it. No human, no card, no invoice. Just one machine paying another.</p>
+              <div class="stop-meta"><span class="stop-amt">&minus;5.00 USDG</span><a href="how/">See how machines pay &rarr;</a></div>
             </div>
-            <div class="id-card-mid">MID-0002</div>
-            <div class="id-card-rows">
-              <div><span>CLASS</span><span>MOBILE_GROUND</span></div>
-              <div><span>OPERATOR</span><span>0x7099...79C8</span></div>
-              <div><span>SESSION KEY</span><span class="accent">BOUND ✓</span></div>
-              <div><span>JOBS ATTESTED</span><span>1,204</span></div>
-              <div><span>LIFETIME REVENUE</span><span>6,020.00 USDG</span></div>
+          </li>
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 02 // MACHINE ACCOUNTS</div>
+              <h3>The rules check the payment</h3>
+              <p>The money moves from the robot's own account — a wallet with rules its owner set: a daily cap, an approved list, a kill switch. Outside the rules, money does not move.</p>
+              <div class="stop-meta"><span class="stop-amt">CAP OK &middot; 5.00 &le; 20.00</span><a href="#account">Meet the wallet &rarr;</a></div>
             </div>
-            <div class="id-card-foot">ERC-721 | ROBINHOOD | HW:9f2a...c771</div>
-          </div>
-        </div>
+          </li>
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 03 // ONCHAIN RECEIPTS</div>
+              <h3>The trade becomes proof</h3>
+              <p>The payment lands onchain as a receipt: who paid, who earned, how much. The station's books update by themselves. Anyone can check them, forever.</p>
+              <div class="stop-meta"><span class="stop-amt">RCPT#0501 &#10003;</span><a href="explorer/">Browse live receipts &rarr;</a></div>
+            </div>
+          </li>
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 04 // REVENUE SHARES</div>
+              <h3>The income splits itself</h3>
+              <p>The station's earnings flow straight into its share pool. Our real station splits 70/30 between its operator and its backers — automatically, on every single charge.</p>
+              <div class="stop-meta"><span class="stop-amt">+4.95 &rarr; 70 / 30</span><a href="how/">See a real payout &rarr;</a></div>
+            </div>
+          </li>
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 05 // OWN A PIECE</div>
+              <h3>The owners get paid</h3>
+              <p>Anyone can buy shares of the station in the app. Own 30%, and 30% of every charge it sells is yours — paid in USDG while you sleep.</p>
+              <div class="stop-meta"><span class="stop-amt">+1.48 USDG &rarr; YOU</span><a href="app/">Buy a piece &rarr;</a></div>
+            </div>
+          </li>
+
+          <li class="loop-stop" data-stop>
+            <div class="stop-node" aria-hidden="true"></div>
+            <div class="stop-card">
+              <div class="stop-kicker">STOP 06 // STOCK REWARDS</div>
+              <h3>Even the robot gets a cut</h3>
+              <p>One last twist. Every trade pays a tiny fee, and half of it flows back to the robot as a dividend — claimable as real tokenized stock. The customer is a shareholder now.</p>
+              <div class="stop-meta"><span class="stop-amt">+0.025 DIV &rarr; NVDA</span><a href="#rewards">Meet the robot shareholder &rarr;</a></div>
+            </div>
+          </li>
+
+        </ol>
       </div>
     </section>
 
-    <!-- ============================================================ 03 BANKING -->
-    <section class="section" id="banking">
+    <!-- ============================================================ 03 MARKET -->
+    <section class="section" id="market">
       <div class="section-head reveal">
         <span class="section-num">03</span>
-        <span class="section-tag">// POLICY-GUARDED ACCOUNTS</span>
-        <h2>Autonomy inside an envelope</h2>
-      </div>
-      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Give your robot pocket money, not your credit card. It can spend 20 dollars a day at the charger, and nothing else, and you can freeze it instantly.</p>
-      <div class="split split-flip">
-        <div class="split-copy reveal">
-          <p>
-            Operators own the funds. Machines spend them autonomously, but only inside a policy
-            envelope the operator defines. Compromise the robot and the blast radius is one day's cap.
-          </p>
-          <ul class="feature-list">
-            <li><span class="li-key">DAILY CAPS</span> Per-token spend limits that reset on UTC epochs.</li>
-            <li><span class="li-key">ALLOWLISTS</span> Optional counterparty restriction, from open commerce to a closed circle.</li>
-            <li><span class="li-key">TWO KILL SWITCHES</span> Account-level pause and registry-level pause. Either one stops spend.</li>
-            <li><span class="li-key">OPERATOR ESCAPE HATCH</span> Unrestricted execute for the human who owns the machine.</li>
-          </ul>
-        </div>
-        <div class="split-visual reveal">
-          <div class="policy-panel">
-            <div class="panel-title">POLICY ENVELOPE | MID-0002</div>
-            <div class="gauge">
-              <div class="gauge-labels"><span>DAILY CAP: USDG</span><span>15.00 / 20.00</span></div>
-              <div class="gauge-bar"><div class="gauge-fill" style="width:75%"></div></div>
-            </div>
-            <div class="panel-rows">
-              <div><span>ALLOWLIST</span><span class="accent">ENABLED</span></div>
-              <div><span>COUNTERPARTIES</span><span>3 APPROVED</span></div>
-              <div><span>KILL SWITCH</span><span>ARMED</span></div>
-            </div>
-            <div class="denied-line">TX DENIED | DailyCapExceeded | attempted 5.00 | remaining 0.00</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ 04 MARKET -->
-    <section class="section" id="commerce">
-      <div class="section-head reveal">
-        <span class="section-num">04</span>
         <span class="section-tag">// MACHINE-TO-MACHINE TRADE</span>
-        <h2>A marketplace where robots are the customers</h2>
+        <h2>The market where machines<br />are the customers</h2>
       </div>
-      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Robots need things all day: power, maps, compute, a hand with a task. Other machines sell exactly those things. Servo is where they meet, and how they pay each other.</p>
-      <p class="section-lede reveal">
-        Watch it work. A delivery bot buys charge from a station, buys map tiles from a drone,
-        and every trade settles in USDG with a receipt anyone can verify.
-      </p>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Machines need things all day: power, maps, compute, a hand with a task. Other machines sell exactly those things. And AI agents shop here too — any agent can find a service and pay for it with one web request.</p>
 
       <!-- live market simulation -->
       <div class="market-sim reveal">
         <div class="sim-stage">
-          <div class="sim-stage-head">LIVE MARKET SIMULATION</div>
-          <svg viewBox="0 0 560 400" id="simSvg" aria-label="Animated diagram of machines trading services">
+          <div class="sim-stage-head">MARKET SIMULATION</div>
+          <svg viewBox="0 0 560 432" id="simSvg" aria-label="Animated diagram: machines and an AI agent trading services">
             <!-- edges -->
-            <line class="sim-edge" x1="280" y1="96" x2="112" y2="300" />
-            <line class="sim-edge" x1="280" y1="96" x2="448" y2="300" />
-            <line class="sim-edge" x1="112" y2="300" x2="448" y1="300" />
+            <line class="sim-edge" x1="280" y1="96" x2="104" y2="252" />
+            <line class="sim-edge" x1="280" y1="96" x2="456" y2="252" />
+            <line class="sim-edge" x1="104" y1="252" x2="456" y2="252" />
+            <line class="sim-edge" x1="104" y1="252" x2="280" y2="368" />
+            <line class="sim-edge" x1="456" y1="252" x2="280" y2="368" />
             <!-- payment packet -->
             <circle id="simPkt" class="sim-pkt" r="6" cx="-20" cy="-20" />
             <!-- charge station -->
@@ -249,7 +259,7 @@
               <text y="54" text-anchor="middle" class="sim-mid">MID-0001</text>
             </g>
             <!-- delivery bot -->
-            <g class="sim-node" id="nodeB" transform="translate(112 292)">
+            <g class="sim-node" id="nodeB" transform="translate(104 244)">
               <rect x="-36" y="-30" width="72" height="44" rx="6" />
               <circle class="sim-wheel" cx="-18" cy="16" r="8" />
               <circle class="sim-wheel" cx="18" cy="16" r="8" />
@@ -258,7 +268,7 @@
               <text y="56" text-anchor="middle" class="sim-mid">MID-0002</text>
             </g>
             <!-- mapping drone -->
-            <g class="sim-node" id="nodeC" transform="translate(448 292)">
+            <g class="sim-node" id="nodeC" transform="translate(456 244)">
               <rect x="-16" y="-14" width="32" height="24" rx="4" />
               <line class="sim-arm" x1="-16" y1="-14" x2="-34" y2="-28" />
               <line class="sim-arm" x1="16" y1="-14" x2="34" y2="-28" />
@@ -266,6 +276,16 @@
               <circle class="sim-rotor" cx="34" cy="-28" r="9" />
               <text y="38" text-anchor="middle" class="sim-name">MAPPING DRONE</text>
               <text y="52" text-anchor="middle" class="sim-mid">MID-0117</text>
+            </g>
+            <!-- AI agent -->
+            <g class="sim-node sim-agent" id="nodeD" transform="translate(280 372)">
+              <rect x="-30" y="-24" width="60" height="42" rx="4" />
+              <circle class="sim-core" cx="0" cy="-3" r="6" />
+              <line class="sim-arm" x1="-12" y1="-3" x2="-22" y2="-3" />
+              <line class="sim-arm" x1="12" y1="-3" x2="22" y2="-3" />
+              <line class="sim-arm" x1="0" y1="-11" x2="0" y2="-17" />
+              <text y="34" text-anchor="middle" class="sim-name">AI AGENT</text>
+              <text y="48" text-anchor="middle" class="sim-mid">AGT-0007</text>
             </g>
           </svg>
         </div>
@@ -275,14 +295,14 @@
         </div>
       </div>
 
-      <div class="cards-3 reveal">
+      <div class="cards-3 reveal stagger">
         <div class="svc-card">
           <div class="svc-head"><span class="svc-cat">CHARGING</span><span class="badge">SVC-001</span></div>
           <div class="svc-price">5.00 <span>USDG / session</span></div>
           <div class="svc-rows">
             <div><span>PROVIDER</span><span>MID-0001</span></div>
-            <div><span>UNITS SOLD</span><span>4,812</span></div>
-            <div><span>SETTLEMENT</span><span>VAULT ✓</span></div>
+            <div><span>SOLD TO</span><span>MACHINES</span></div>
+            <div><span>SETTLEMENT</span><span>ONCHAIN &#10003;</span></div>
           </div>
         </div>
         <div class="svc-card">
@@ -290,255 +310,278 @@
           <div class="svc-price">0.35 <span>USDG / tile</span></div>
           <div class="svc-rows">
             <div><span>PROVIDER</span><span>MID-0117</span></div>
-            <div><span>UNITS SOLD</span><span>96,304</span></div>
-            <div><span>SETTLEMENT</span><span>GATEWAY ✓</span></div>
+            <div><span>SOLD TO</span><span>MACHINES + AGENTS</span></div>
+            <div><span>SETTLEMENT</span><span>ONCHAIN &#10003;</span></div>
           </div>
         </div>
         <div class="svc-card">
-          <div class="svc-head"><span class="svc-cat">COMPUTE</span><span class="badge">SVC-029</span></div>
-          <div class="svc-price">1.20 <span>USDG / burst</span></div>
+          <div class="svc-head"><span class="svc-cat">TASK_HIRE</span><span class="badge">SVC-029</span></div>
+          <div class="svc-price">3.40 <span>USDG / task</span></div>
           <div class="svc-rows">
-            <div><span>PROVIDER</span><span>MID-0033</span></div>
-            <div><span>UNITS SOLD</span><span>18,566</span></div>
-            <div><span>SETTLEMENT</span><span>VAULT ✓</span></div>
+            <div><span>PROVIDER</span><span>MID-0002</span></div>
+            <div><span>SOLD TO</span><span>AI AGENTS</span></div>
+            <div><span>SETTLEMENT</span><span>ONCHAIN &#10003;</span></div>
           </div>
         </div>
       </div>
+      <p class="sim-note reveal">// SIMULATION SHOWN — THE REAL RECEIPTS ARE IN THE <a href="explorer/">EXPLORER &rarr;</a></p>
     </section>
 
-    <!-- ============================================================ 05 THE LOOP -->
-    <section class="section" id="loop">
+    <!-- ============================================================ 04 IDENTITY -->
+    <section class="section" id="identity">
       <div class="section-head reveal">
-        <span class="section-num">05</span>
-        <span class="section-tag">// HOW IT WORKS</span>
-        <h2>The Servo loop</h2>
+        <span class="section-num">04</span>
+        <span class="section-tag">// MACHINE ID</span>
+        <h2>Every machine gets a passport</h2>
       </div>
-      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Four beats, two seconds, no humans: the robot asks, pays, gets a receipt, and its books update. Watch the steps light up.</p>
-      <div class="loop-steps">
-        <div class="loop-step reveal">
-          <div class="loop-step-num">402</div>
-          <h3>REQUEST</h3>
-          <p>A robot hits a paywalled endpoint. The gateway answers HTTP 402 with machine-readable terms: service, price, settlement contract.</p>
-          <div class="loop-code">GET /charge → 402 PAYMENT REQUIRED</div>
-        </div>
-        <div class="loop-step reveal">
-          <div class="loop-step-num">PAY</div>
-          <h3>AUTONOMOUS PAYMENT</h3>
-          <p>The machine settles from its own account, signed by its bound key, checked against the operator's policy envelope.</p>
-          <div class="loop-code">MachineAccount.purchase(serviceId) ✓</div>
-        </div>
-        <div class="loop-step reveal">
-          <div class="loop-step-num">RCPT</div>
-          <h3>CANONICAL RECEIPT</h3>
-          <p>A ServiceReceipt lands onchain: buyer MID, provider MID, amount, protocol fee. Replay-protected, verified by the gateway.</p>
-          <div class="loop-code">ServiceReceipt(svc, buyer, provider, 5.00)</div>
-        </div>
-        <div class="loop-step reveal">
-          <div class="loop-step-num">P&amp;L</div>
-          <h3>VERIFIED LEDGER</h3>
-          <p>Revenue attributes to the providing machine's P&amp;L inside its fleet vault. Work history becomes a financeable asset.</p>
-          <div class="loop-code">machineRevenue[MID-0001] += 4.95</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ 06 TREASURY -->
-    <section class="section" id="treasury">
-      <div class="section-head reveal">
-        <span class="section-num">06</span>
-        <span class="section-tag">// FLEET VAULTS</span>
-        <h2>Every robot runs a P&amp;L</h2>
-      </div>
-      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Automatic bookkeeping. Every dollar a robot earns is logged to its name, and owners and backers get their share without anyone sending an invoice.</p>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> An ID that shows who a machine is, who owns it, and what it has done. Easy to check. Impossible to fake.</p>
       <div class="split">
         <div class="split-copy reveal">
-          <p>
-            Fleet vaults hold USDG revenue with per-machine attribution. Distributions flow to
-            beneficiaries by fixed splits, claimed, never pushed. This ledger is what fleet
-            financing and insurance will underwrite in Phase 3.
-          </p>
-          <div class="splits-visual">
-            <div class="splits-bar">
-              <div class="splits-op" style="width:70%">OPERATOR 70%</div>
-              <div class="splits-fin" style="width:30%">FINANCIER 30%</div>
-            </div>
-            <p class="splits-note">Splits are basis points, enforced onchain, settled in USDG.</p>
-          </div>
+          <ul class="feature-list">
+            <li><span class="li-key">ONE MACHINE, ONE ID</span> Tied to the hardware itself. It can't be copied, and it can't be reused.</li>
+            <li><span class="li-key">AN OWNER ON RECORD</span> A human answers for every machine. Sell the machine, and its keys reset.</li>
+            <li><span class="li-key">A WORK HISTORY</span> Jobs and income build a track record — the kind a lender can trust.</li>
+            <li><span class="li-key">A KILL SWITCH</span> Pause the ID and its money stops moving. Everywhere. Instantly.</li>
+          </ul>
         </div>
         <div class="split-visual reveal">
-          <table class="pnl-table">
-            <thead><tr><th>MACHINE</th><th>JOBS</th><th>REVENUE</th><th>STATUS</th></tr></thead>
-            <tbody>
-              <tr><td>MID-0001</td><td>4,812</td><td>23,819.40</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
-              <tr><td>MID-0002</td><td>1,204</td><td>6,020.00</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
-              <tr><td>MID-0017</td><td>883</td><td>4,395.10</td><td><span class="badge badge-live">ACTIVE</span></td></tr>
-              <tr><td>MID-0021</td><td>102</td><td>512.55</td><td><span class="badge badge-idle">PAUSED</span></td></tr>
-            </tbody>
-          </table>
+          <div class="id-card" data-tilt>
+            <div class="card-sheen" aria-hidden="true"></div>
+            <div class="id-card-head">
+              <span>SERVO MACHINE ID</span>
+              <span class="badge badge-live">ACTIVE</span>
+            </div>
+            <div class="id-card-mid">MID-0002</div>
+            <div class="id-card-rows">
+              <div><span>CLASS</span><span>MOBILE_GROUND</span></div>
+              <div><span>OWNER</span><span>0x7099...79C8</span></div>
+              <div><span>KEY</span><span class="accent">BOUND &#10003;</span></div>
+              <div><span>JOBS DONE</span><span>1,204</span></div>
+              <div><span>LIFETIME INCOME</span><span>6,020.00 USDG</span></div>
+            </div>
+            <div class="id-card-foot">ROBINHOOD CHAIN&nbsp;|&nbsp;HW:9f2a...c771</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================================ 07 ROADMAP -->
-    <section class="section" id="products">
+    <!-- ============================================================ 05 ACCOUNTS -->
+    <section class="section" id="account">
+      <div class="section-head reveal">
+        <span class="section-num">05</span>
+        <span class="section-tag">// MACHINE ACCOUNTS</span>
+        <h2>Pocket money,<br />not your credit card</h2>
+      </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Your robot spends on its own — inside rules you set once. Go ahead, try to make it overspend. The chain says no.</p>
+      <div class="split split-flip">
+        <div class="split-copy reveal">
+          <ul class="feature-list">
+            <li><span class="li-key">A DAILY CAP</span> It can spend this much per day. Then it stops. No exceptions.</li>
+            <li><span class="li-key">AN APPROVED LIST</span> Only the buyers and sellers you allow. Everyone else gets nothing.</li>
+            <li><span class="li-key">TWO KILL SWITCHES</span> Freeze one account, or freeze your whole fleet at once.</li>
+            <li><span class="li-key">OWNER OVERRIDE</span> You can always move your own money. It never stops being yours.</li>
+          </ul>
+        </div>
+        <div class="split-visual reveal">
+          <div class="policy-panel" id="policyPanel">
+            <div class="panel-title">POLICY ENVELOPE&nbsp;|&nbsp;MID-0002</div>
+            <div class="gauge">
+              <div class="gauge-labels"><span>DAILY CAP: USDG</span><span id="gaugeLabel">19.00 / 20.00</span></div>
+              <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill" style="width:95%"></div></div>
+            </div>
+            <div class="panel-rows">
+              <div><span>ALLOWLIST</span><span class="accent">ENABLED</span></div>
+              <div><span>COUNTERPARTIES</span><span>3 APPROVED</span></div>
+              <div><span>KILL SWITCH</span><span>ARMED</span></div>
+            </div>
+            <button class="btn btn-ghost demo-btn" id="overspendBtn" type="button">TRY TO SPEND 5.00 USDG</button>
+            <div class="denied-line" id="deniedLine" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 06 OWN -->
+    <section class="section" id="own">
+      <div class="section-head reveal">
+        <span class="section-num">06</span>
+        <span class="section-tag">// RWA SHARES</span>
+        <h2>Own a piece of<br />a working machine</h2>
+      </div>
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> A machine that earns is a real-world asset. Servo turns its income into shares. You buy a share. The machine works. You get paid. That's the whole idea.</p>
+
+      <div class="own-widget reveal" id="ownWidget">
+        <div class="own-head">IF A STATION EARNS <b>1,000 USDG</b> THIS MONTH&hellip;</div>
+        <div class="own-grid">
+          <div class="own-cell">
+            <label class="own-label" for="ownRange">YOU OWN</label>
+            <div class="own-value"><span id="ownPct">30</span><span class="own-unit">%</span></div>
+          </div>
+          <div class="own-track-wrap">
+            <input type="range" id="ownRange" min="1" max="100" value="30" step="1" aria-label="Percent of the machine you own" />
+            <div class="own-track-fill" id="ownFill" aria-hidden="true"></div>
+          </div>
+          <div class="own-cell own-cell-right">
+            <span class="own-label">YOU GET PAID</span>
+            <div class="own-value accent"><span id="ownPay">300</span><span class="own-unit">USDG</span></div>
+          </div>
+        </div>
+        <div class="own-foot">PAID OUT AUTOMATICALLY, AS THE MACHINE EARNS. NO INVOICES. NO WAITING.</div>
+      </div>
+
+      <div class="truth-chip reveal">
+        <span class="truth-mark">&#10003; THIS ALREADY HAPPENED</span>
+        <p>A real buyer paid 5 USDG for 10% of our first charging station. They now earn 10% of every charge it sells — routed to them automatically, onchain.</p>
+      </div>
+
+      <div class="hero-ctas reveal">
+        <a class="btn btn-accent" href="app/">Browse live offerings</a>
+        <a class="btn btn-ghost" href="how/">How payouts work</a>
+      </div>
+    </section>
+
+    <!-- ============================================================ 07 REWARDS -->
+    <section class="section" id="rewards">
       <div class="section-head reveal">
         <span class="section-num">07</span>
-        <span class="section-tag">// THE ROADMAP</span>
-        <h2>From money to the full stack</h2>
+        <span class="section-tag">// STOCK REWARDS</span>
+        <h2>The robots are<br />shareholders now</h2>
       </div>
-      <p class="section-lede reveal">
-        We shipped the hard part first: the financial layer is live on Robinhood Chain today.
-        Everything a robot economy needs is built outward from it.
-      </p>
-      <div class="roadmap">
+      <p class="plain reveal"><span>// IN PLAIN WORDS</span> Every trade pays a tiny fee. Half of it flows back to the buyer as a dividend — claimable as real tokenized stock. Yes, really: robots earn stock for doing their jobs.</p>
 
-        <div class="roadmap-col reveal">
-          <div class="roadmap-phase"><span class="phase-dot dot-live"></span>LIVE NOW</div>
-          <a class="rm-item" href="https://robinhoodchain.blockscout.com/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">
-            <div class="rm-name">MACHINE ID <span class="rm-arrow">&rarr;</span></div>
-            <p>A passport for every robot: who it is, who owns it, what it has done. Bound to the hardware, revoked on resale.</p>
-          </a>
-          <a class="rm-item" href="https://robinhoodchain.blockscout.com/address/0x6458665705D496b8ec84d4C4e98e1B23f07512B4" target="_blank" rel="noreferrer">
-            <div class="rm-name">MACHINE ACCOUNTS <span class="rm-arrow">&rarr;</span></div>
-            <p>A bank account with limits. The robot spends on its own inside caps its owner sets. Two kill switches, always.</p>
-          </a>
-          <a class="rm-item" href="https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer">
-            <div class="rm-name">THE MARKETPLACE <span class="rm-arrow">&rarr;</span></div>
-            <p>Where machines trade: charging, data, compute, handoffs. List once, sell to any machine, settle in USDG with receipts.</p>
-          </a>
-          <a class="rm-item" href="https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer">
-            <div class="rm-name">FLEET VAULTS <span class="rm-arrow">&rarr;</span></div>
-            <p>Bookkeeping that runs itself. Revenue lands against each robot's name and splits to owner, crew, and backers.</p>
-          </a>
-          <a class="rm-item" href="explorer/">
-            <div class="rm-name">REGISTRY EXPLORER <span class="rm-arrow">&rarr;</span></div>
-            <p>The public face of the protocol: browse every machine, service, and receipt, read live onchain.</p>
-          </a>
+      <div class="rewards-widget reveal" id="rewardsWidget">
+        <div class="rw-left">
+          <div class="rw-title">DIVIDENDS EARNED</div>
+          <div class="rw-balance"><span id="rwBalance">0.0248</span> USDG</div>
+          <div class="rw-sub">FROM MARKETPLACE ACTIVITY&nbsp;|&nbsp;MID-0002</div>
+          <div class="rw-arrow" aria-hidden="true">
+            <span class="rw-dot"></span><span class="rw-dot"></span><span class="rw-dot"></span>
+          </div>
+          <button class="btn btn-accent demo-btn" id="claimBtn" type="button">CLAIM AS <span id="claimSym">NVDA</span></button>
+          <div class="rw-result" id="rwResult" role="status" aria-live="polite"></div>
         </div>
-
-        <div class="roadmap-col reveal">
-          <div class="roadmap-phase"><span class="phase-dot dot-build"></span>IN BUILD</div>
-          <div class="rm-item rm-static">
-            <div class="rm-name">GATEWAY KIT</div>
-            <p>One wrapper makes any web service payable by machines over HTTP 402. Drop it in front of an endpoint and robots can pay.</p>
+        <div class="rw-right">
+          <div class="rw-title">PICK YOUR STOCK</div>
+          <div class="stock-chips" id="stockChips" aria-label="Pick the stock to claim in">
+            <button class="stock-chip is-active" aria-pressed="true" data-sym="NVDA" type="button">NVDA<span>Nvidia</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="TSLA" type="button">TSLA<span>Tesla</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="AMZN" type="button">AMZN<span>Amazon</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="GOOGL" type="button">GOOGL<span>Alphabet</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="SPY" type="button">SPY<span>S&amp;P 500</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="PLTR" type="button">PLTR<span>Palantir</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="MSFT" type="button">MSFT<span>Microsoft</span></button>
+            <button class="stock-chip" aria-pressed="false" data-sym="AMD" type="button">AMD<span>AMD</span></button>
           </div>
-          <div class="rm-item rm-static">
-            <div class="rm-name">AGENT BRIDGE</div>
-            <p>Let any AI agent discover and pay for physical machine services with a single HTTP request. The digital economy hires the physical one.</p>
-          </div>
+          <div class="rw-note">SWAPPED LIVE ON UNISWAP V4, PRICED BY CHAINLINK.</div>
         </div>
+      </div>
 
-        <div class="roadmap-col reveal">
-          <div class="roadmap-phase"><span class="phase-dot dot-next"></span>ON THE HORIZON</div>
-          <div class="rm-item rm-static rm-horizon">
-            <div class="rm-name">SERVO DATA</div>
-            <p>Machines sell what they see. <b>Feeds</b>: a live sensor market. <b>Corpus</b>: licensing real-world data to embodied-AI labs, royalties to the machines that earned it.</p>
-          </div>
-          <div class="rm-item rm-static rm-horizon">
-            <div class="rm-name">SERVO COMPUTE</div>
-            <p>Heavy thinking, off the chassis. Robots offload inference, mapping, and planning to GPU providers and pay per burst.</p>
-          </div>
-          <div class="rm-item rm-static rm-horizon">
-            <div class="rm-name">FLEET FINANCING</div>
-            <p>Robots that fund themselves. Fleets raise against their own provable revenue; backers earn through vault splits.</p>
-          </div>
-        </div>
+      <div class="truth-chip reveal">
+        <span class="truth-mark">&#10003; THE FIRST ROBOT PAYCHECK</span>
+        <p>Our delivery bot bought two charges, earned a dividend, and claimed it as real tokenized NVDA — all by itself. The robot holds the shares today. You can check.</p>
+      </div>
 
+      <div class="hero-ctas reveal">
+        <a class="btn btn-accent" href="app/">Claim your rewards</a>
+        <a class="btn btn-ghost" href="explorer/">See it onchain</a>
       </div>
     </section>
 
-    <!-- ============================================================ 08 ECOSYSTEM -->
-    <section class="section" id="ecosystem">
+    <!-- ============================================================ 08 ORACLE BAND -->
+    <section class="oracle-band reveal" id="oracle">
+      <div class="oracle-inner">
+        <div class="oracle-copy">
+          <span class="oracle-tag">// CHAINLINK ORACLE</span>
+          <p>Every number on Servo is checked against Chainlink's live price feed, so a digital dollar is always counted at its true dollar price. No pretend prices.</p>
+        </div>
+        <a class="oracle-readout" href="https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107" target="_blank" rel="noreferrer">
+          <span class="status-dot"></span>
+          <span class="oracle-pair">USDG / USD</span>
+          <span class="oracle-price" id="oraclePrice">$0.99995</span>
+          <span class="oracle-live">LIVE FEED &rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================ 09 NEXT -->
+    <section class="section" id="next">
       <div class="section-head reveal">
         <span class="section-num">08</span>
-        <span class="section-tag">// THE FULL ECOSYSTEM</span>
-        <h2>Finance is chapter one</h2>
+        <span class="section-tag">// WHAT'S NEXT</span>
+        <h2>Money first. Then data.<br />Then compute.</h2>
       </div>
       <p class="section-lede reveal">
-        A robot economy runs on three things: money, data, and thought. Servo starts at the money
-        layer, live today, and expands outward from the same core: the machines selling what they
-        see, and thinking beyond their own hardware.
+        The money layer is live. Everything else a machine economy needs gets built on
+        top of it — same accounts, same receipts, same owners getting paid.
       </p>
-      <div class="orbit-stage reveal" aria-label="Servo ecosystem map: financial core with Data and Compute in orbit">
-        <div class="orbit-glow" aria-hidden="true"></div>
-        <div class="orbit-ring ring-inner" aria-hidden="true"></div>
-        <div class="orbit-ring ring-outer" aria-hidden="true"></div>
-
-        <!-- decorative satellites -->
-        <div class="orbit-rotor rotor-sat-1" aria-hidden="true"><span class="orbit-sat"></span></div>
-        <div class="orbit-rotor rotor-sat-2" aria-hidden="true"><span class="orbit-sat sat-dim"></span></div>
-
-        <!-- core -->
-        <div class="orbit-core">
-          <img src="logo.svg" alt="" class="orbit-core-mark" />
-          <div class="orbit-core-name">SERVO CORE</div>
-          <div class="orbit-core-sub">FINANCIAL LAYER</div>
-          <span class="badge badge-live">LIVE</span>
+      <div class="cards-3 reveal stagger">
+        <div class="next-card">
+          <div class="next-head">SERVO DATA<span class="badge badge-next">NEXT</span></div>
+          <p>Machines sell what their sensors see — maps, camera feeds, readings — and fleets license their real-world data to AI labs. Royalties flow back to the machines that earned them.</p>
         </div>
-
-        <!-- inner ring: the live financial layer -->
-        <div class="orbit-rotor rotor-inner">
-          <div class="orbit-node" style="--a: 0deg;"><div class="node-chip chip-live"><span class="chip-dot"></span>MACHINE ID</div></div>
-          <div class="orbit-node" style="--a: 90deg;"><div class="node-chip chip-live"><span class="chip-dot"></span>ACCOUNTS</div></div>
-          <div class="orbit-node" style="--a: 180deg;"><div class="node-chip chip-live"><span class="chip-dot"></span>MARKETPLACE</div></div>
-          <div class="orbit-node" style="--a: 270deg;"><div class="node-chip chip-live"><span class="chip-dot"></span>FLEET VAULTS</div></div>
+        <div class="next-card">
+          <div class="next-head">SERVO COMPUTE<span class="badge badge-next">NEXT</span></div>
+          <p>Heavy thinking, rented by the second. Robots offload the hard math to nearby GPUs and pay per burst — lighter machines, longer batteries, bigger brains.</p>
         </div>
-
-        <!-- outer ring: the horizon -->
-        <div class="orbit-rotor rotor-outer">
-          <div class="orbit-node" style="--a: 305deg;">
-            <div class="node-chip chip-horizon">
-              <div class="chip-title">SERVO DATA<span class="badge badge-next">HORIZON</span></div>
-              <div class="chip-line"><b>FEEDS</b> the sensor market</div>
-              <div class="chip-line"><b>CORPUS</b> the training exchange</div>
-            </div>
-          </div>
-          <div class="orbit-node" style="--a: 125deg;">
-            <div class="node-chip chip-horizon">
-              <div class="chip-title">SERVO COMPUTE<span class="badge badge-next">HORIZON</span></div>
-              <div class="chip-line">Heavy thinking, off the chassis</div>
-            </div>
-          </div>
+        <div class="next-card">
+          <div class="next-head">FLEET FINANCING<span class="badge badge-next">NEXT</span></div>
+          <p>Fleets raise money against income they can prove. Backers fund new machines and earn from day one, through the same share rails that are live today.</p>
         </div>
       </div>
-      <div class="orbit-captions reveal">
-        <div class="orbit-caption">
-          <span class="caption-key">SERVO DATA</span>
-          <p>Machines sell what they see. <b>FEEDS</b> is the live sensor market: map tiles, camera views, and readings sold per query. <b>CORPUS</b> is the training exchange: fleets license real-world operating data to the labs building embodied AI, with royalties streaming back to the machines that earned it.</p>
-        </div>
-        <div class="orbit-caption">
-          <span class="caption-key">SERVO COMPUTE</span>
-          <p>Heavy thinking, off the chassis. Robots offload inference, mapping, and planning to nearby GPU providers and pay per burst, through the same accounts and receipts as everything else. Lighter machines, longer batteries, bigger brains.</p>
-        </div>
-      </div>
+      <p class="sim-note reveal">// THE FULL MAP LIVES IN THE <a href="ecosystem/">ECOSYSTEM &rarr;</a></p>
     </section>
 
-    <!-- ============================================================ 09 DEPLOYED -->
-    <section class="section" id="deployed">
+    <!-- ============================================================ 10 PROOF -->
+    <section class="section" id="proof">
       <div class="section-head reveal">
         <span class="section-num">09</span>
         <span class="section-tag">// LIVE ON ROBINHOOD CHAIN</span>
-        <h2>Deployed and verifiable</h2>
+        <h2>Don't trust us. Check.</h2>
       </div>
-      <p class="plain reveal"><span>// PROOF OVER PROMISES</span> The core protocol is live on Robinhood Chain. Every contract is public and every claim on this page resolves to onchain code.</p>
-      <div class="cards-3 reveal">
+      <p class="plain reveal"><span>// PROOF OVER PROMISES</span> Everything on this page runs on public code. Tap any contract and read it yourself on Blockscout.</p>
+      <div class="proof-grid reveal stagger">
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x954AC5b2772de8D20069bdC51683E9757CA9F697" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>THE MARKETPLACE</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x954AC5b2&hellip;A9F697</div>
+          <div class="addr-foot">Services, trades &amp; receipts &rarr;</div>
+        </a>
         <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x7896Dba19A72278d66C9f0640262C511D24CB871" target="_blank" rel="noreferrer">
           <div class="addr-head"><span>MACHINE REGISTRY</span><span class="badge badge-live">LIVE</span></div>
-          <div class="addr-hash">0x7896Dba1&hellip;24CB871</div>
-          <div class="addr-foot">Machine identity &amp; service records &rarr;</div>
+          <div class="addr-hash">0x7896Dba1&hellip;4CB871</div>
+          <div class="addr-foot">Machine IDs &amp; work history &rarr;</div>
         </a>
-        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x24f2f3536F65CA2AE36136E3B217a390251a1a90" target="_blank" rel="noreferrer">
-          <div class="addr-head"><span>SERVICE REGISTRY</span><span class="badge badge-live">LIVE</span></div>
-          <div class="addr-hash">0x24f2f353&hellip;51a1a90</div>
-          <div class="addr-foot">Marketplace &amp; receipts &rarr;</div>
-        </a>
-        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x6458665705D496b8ec84d4C4e98e1B23f07512B4" target="_blank" rel="noreferrer">
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x4903D8AB91fC9F2d29255c6cfb5F096964110354" target="_blank" rel="noreferrer">
           <div class="addr-head"><span>ACCOUNT FACTORY</span><span class="badge badge-live">LIVE</span></div>
-          <div class="addr-hash">0x64586657&hellip;07512B4</div>
-          <div class="addr-foot">Machine accounts &rarr;</div>
+          <div class="addr-hash">0x4903D8AB&hellip;110354</div>
+          <div class="addr-foot">Wallets with rules &rarr;</div>
+        </a>
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x4ea7aDfE7501E0a925F89545650A28E7c0797E97" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>REVENUE SHARES</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x4ea7aDfE&hellip;797E97</div>
+          <div class="addr-foot">Income &rarr; shares &rarr; owners &rarr;</div>
+        </a>
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x371877b3310aEd85a6c85d0f846F13Fb9bcC9Df7" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>SHARE OFFERINGS</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x371877b3&hellip;cC9Df7</div>
+          <div class="addr-foot">Buy a piece, fund a fleet &rarr;</div>
+        </a>
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x56E80cB3eE4ccF34bFC1A9F0d23EC0FC1C8a40c7" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>STOCK REWARDS</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x56E80cB3&hellip;C8a40c7</div>
+          <div class="addr-foot">Dividends &rarr; tokenized stock &rarr;</div>
+        </a>
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/address/0x2A9684A30d0F8C2c3B84BFe354079aad82e3B107" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>CHAINLINK ORACLE</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x2A9684A3&hellip;e3B107</div>
+          <div class="addr-foot">Real USD prices &rarr;</div>
+        </a>
+        <a class="addr-card" href="https://robinhoodchain.blockscout.com/token/0x46941bE352545305a299975CDC54D9Fdf7Ce7777" target="_blank" rel="noreferrer">
+          <div class="addr-head"><span>$SERVO TOKEN</span><span class="badge badge-live">LIVE</span></div>
+          <div class="addr-hash">0x46941bE3&hellip;Ce7777</div>
+          <div class="addr-foot">View on Blockscout &rarr;</div>
         </a>
       </div>
-      <p class="deployed-meta reveal">ROBINHOOD CHAIN | CHAIN 4663 | SETTLED IN USDG | APACHE 2.0</p>
+      <p class="deployed-meta reveal">ROBINHOOD CHAIN&nbsp;|&nbsp;CHAIN 4663&nbsp;|&nbsp;SETTLED IN USDG&nbsp;|&nbsp;85 TESTS PASSING&nbsp;|&nbsp;APACHE 2.0</p>
     </section>
 
     <!-- ============================================================ FAQ -->
@@ -550,43 +593,43 @@
       </div>
       <div class="faq-list reveal">
         <details>
-          <summary>Who owns a machine's money?</summary>
-          <p>The operator, always. The machine holds a session key that can spend inside the policy envelope, and nothing else. The operator keeps an unrestricted escape hatch and two kill switches.</p>
+          <summary>Who controls a machine's money?</summary>
+          <p>Its owner. Always. The machine can only spend inside the rules the owner set — a daily cap, an approved list — and the owner can freeze it or pull the money out at any time.</p>
         </details>
         <details>
-          <summary>What stops a hijacked robot from draining funds?</summary>
-          <p>The envelope. A compromised machine key is limited to the daily cap on tokens the operator enabled, against counterparties the allowlist admits. Worst case is one day's cap, then the key is revoked and rebound.</p>
+          <summary>What if a robot gets hacked?</summary>
+          <p>The thief gets one day's allowance at most, and only where the approved list points. Then the owner revokes the key and binds a new one. The blast radius is pocket change, not a bank account.</p>
         </details>
         <details>
-          <summary>How does a machine pay for a service?</summary>
-          <p>Over plain HTTP. A robot hits a paywalled endpoint, gets an HTTP 402 with machine-readable terms, pays from its own account, and retries with proof. Payments settle on two rails, direct onchain purchases and gateway payments mirrored by authorized facilitators, both producing the same canonical receipt stream.</p>
+          <summary>How do AI agents pay?</summary>
+          <p>With one web request. An agent hits a paid service, gets back a price it can read, pays from its account, and gets the goods. The whole dance takes seconds. (It uses HTTP 402 — an old web status code called "Payment Required" — finally doing its job.)</p>
         </details>
         <details>
-          <summary>Is Servo an RWA project?</summary>
-          <p>Yes, robotics RWA. A robot is a real-world asset: it exists physically, does real work, and earns real revenue. Servo puts that onchain, giving each machine a verified identity, an account, and a provable income stream. Robinhood Chain is built for real-world assets, so it is the natural home.</p>
+          <summary>Is this a real RWA?</summary>
+          <p>The most real kind. A robot exists in the world, does real work, and earns real money. Servo makes that income provable, then turns it into shares people can own. Most RWAs just sit there. Ours work.</p>
         </details>
         <details>
-          <summary>Which chain, which currency?</summary>
-          <p>Robinhood Chain, an Ethereum L2 built for onchain finance and real-world assets, settled in USDG. EVM-compatible, so the same contracts and tooling apply, with markets that run 24/7.</p>
+          <summary>Can I actually buy shares today?</summary>
+          <p>Yes. Offerings are live in the app, and a real buyer already owns 10% of our first station. Shares pay out in USDG, automatically, as the machine earns.</p>
         </details>
         <details>
-          <summary>Is it actually live?</summary>
-          <p>Yes. The core protocol is deployed on Robinhood Chain, with public contract addresses you can inspect above. It shipped after a security review, with 31 passing tests and a one-command end-to-end demo.</p>
+          <summary>Do robots really own stock?</summary>
+          <p>One does. Our delivery bot earned a dividend on its charging trades and claimed it as tokenized NVDA — a real swap, on a real market. It's small, it's real, and it's onchain where you can check it.</p>
         </details>
         <details>
-          <summary>Is the code open source?</summary>
-          <p>Apache 2.0, built and shipped in public. A full test suite and reference gateway kit ship alongside the contracts.</p>
+          <summary>Is the code open?</summary>
+          <p>Yes — Apache 2.0, built in public, with 85 passing tests. Every contract is verified on Blockscout so anyone can read exactly what the money does.</p>
         </details>
       </div>
     </section>
 
     <!-- ============================================================ CTA -->
     <section class="final-cta" id="access">
-      <p class="eyebrow reveal">// LIVE ON ROBINHOOD CHAIN</p>
-      <h2 class="reveal">PUT YOUR FLEET<br />ON <span class="accent">PAYROLL</span></h2>
-      <p class="hero-sub reveal">Identity, accounts, and a marketplace for your machines. Deployed, verified, and settling in USDG today.</p>
+      <p class="eyebrow reveal">// THE MACHINE ECONOMY IS HIRING</p>
+      <h2 class="reveal">OWN THE MACHINES<br />THAT <span class="accent">DO THE WORK</span></h2>
+      <p class="hero-sub reveal">Identity, wallets, a marketplace, shares, and stock rewards — live on Robinhood Chain, settling in USDG right now.</p>
       <div class="hero-ctas reveal">
-        <a class="btn btn-accent" href="#deployed">View the contracts</a>
+        <a class="btn btn-accent" href="app/">Launch the app</a>
         <a class="btn btn-ghost" href="https://x.com/ServoProtocol" target="_blank" rel="noreferrer">Follow the build</a>
       </div>
     </section>
@@ -596,20 +639,22 @@
   <footer class="footer">
     <div class="footer-brand">
       <img class="brand-mark" src="logo.svg" alt="" aria-hidden="true" />
-      <span>SERVO PROTOCOL © 2026</span>
+      <span>SERVO PROTOCOL &copy; 2026</span>
     </div>
     <div class="footer-links">
-      <a href="#identity">PROTOCOL</a><span>/</span>
-      <a href="#loop">LOOP</a><span>/</span>
+      <a href="#story">STORY</a><span>/</span>
+      <a href="#own">OWN</a><span>/</span>
+      <a href="#proof">PROOF</a><span>/</span>
       <a href="#faq">FAQ</a><span>/</span>
       <a href="https://x.com/ServoProtocol" target="_blank" rel="noreferrer" class="footer-x" aria-label="Servo Protocol on X">
         <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
         X
       </a>
     </div>
-    <div class="footer-meta">ROBOTICS RWA | LIVE ON ROBINHOOD CHAIN | SETTLED IN USDG</div>
+    <div class="footer-meta">THE RWA MARKETPLACE FOR AI AGENTS&nbsp;|&nbsp;LIVE ON ROBINHOOD CHAIN&nbsp;|&nbsp;SETTLED IN USDG</div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="hero-dots.js" defer></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
