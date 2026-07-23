@@ -155,10 +155,10 @@
   }
 
   // ---------------------------------------------------------- physics + draw
-  const SPRING = 0.026;
-  const DAMP = 0.86;
-  const REACT_R = 86;
-  const PUSH = 7.5;
+  const SPRING = 0.02;
+  const DAMP = 0.885;
+  const REACT_R = 150;
+  const PUSH = 14;
   const ASSEMBLE_MS = 950;
 
   function frame(now) {
@@ -273,17 +273,19 @@
 
     start();
 
-    // pointer interaction (mouse + touch)
+    // pointer interaction (mouse + touch) — tracked on the whole hero visual
+    // so the dots react the moment the cursor gets anywhere near the machine
+    const zone = canvas.parentElement || canvas;
     const updatePointer = (e) => {
       const r = canvas.getBoundingClientRect();
       pointer.x = e.clientX - r.left;
       pointer.y = e.clientY - r.top;
       pointer.active = true;
     };
-    canvas.addEventListener("pointermove", updatePointer);
-    canvas.addEventListener("pointerdown", updatePointer);
-    canvas.addEventListener("pointerleave", () => { pointer.active = false; });
-    canvas.addEventListener("pointercancel", () => { pointer.active = false; });
+    zone.addEventListener("pointermove", updatePointer);
+    zone.addEventListener("pointerdown", updatePointer);
+    zone.addEventListener("pointerleave", () => { pointer.active = false; });
+    zone.addEventListener("pointercancel", () => { pointer.active = false; });
 
     // pause offscreen / hidden tab
     const io = new IntersectionObserver((entries) => {
